@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class SendNotification {
   String title, body, topic;
 
   SendNotification(
-      {required this.title, required this.body, required this.topic});
+      {@required this.title, @required this.body, @required this.topic});
 
   Future<bool> send() async {
     final postUrl = 'https://fcm.googleapis.com/fcm/send';

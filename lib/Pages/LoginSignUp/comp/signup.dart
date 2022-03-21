@@ -54,7 +54,7 @@ class SignUp extends StatelessWidget {
         SLBtn(
           text: "Sign Up",
           onTap: () {
-            if(_key.currentState!.validate()){
+            if(_key.currentState.validate()){
               
             }
           },

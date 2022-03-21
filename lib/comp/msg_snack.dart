@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class MSGSnack {
   String title, msg;
   Color color;
-  MSGSnack({required this.title, required this.msg, required this.color});
+  MSGSnack({@required this.title, @required this.msg, @required this.color});
   show() {
     var textStyle = TextStyle(color: color);
     Get.showSnackbar(GetSnackBar(

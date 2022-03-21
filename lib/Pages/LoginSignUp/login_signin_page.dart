@@ -8,7 +8,7 @@ import 'package:on_edir/constants.dart';
 
 
 class LogInSignInPage extends StatefulWidget {
-  const LogInSignInPage({Key? key}) : super(key: key);
+  const LogInSignInPage({Key key}) : super(key: key);
 
   @override
   _LogInSignInPageState createState() => _LogInSignInPageState();
@@ -49,12 +49,11 @@ class _LogInSignInPageState extends State<LogInSignInPage> {
                 Obx((() => lsController.isLogin.value ? Login() : SignUp())),
                 SizedBox(height: 40,),
                 Obx(
-                  () =>        Text(
+                  () => Text(
                       lsController.isLogin.value ?
                       "New to this app?":"Already have an account?",
                       style: TextStyle(color: textColor, fontSize: 12),
                     )
-                  
                 ),
                 const SizedBox(
                   height: 8,

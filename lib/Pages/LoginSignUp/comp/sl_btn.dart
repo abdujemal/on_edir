@@ -6,7 +6,7 @@ import 'package:on_edir/constants.dart';
 class SLBtn extends StatelessWidget {
   String text;
   void Function() onTap;
-  SLBtn({Key? key, required this.text, required this.onTap}) : super(key: key);
+  SLBtn({Key key, @required this.text, @required this.onTap}) : super(key: key);
 
   LSController lsController = Get.put(LSController());
 
