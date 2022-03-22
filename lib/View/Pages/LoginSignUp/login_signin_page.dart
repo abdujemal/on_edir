@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_edir/Pages/LoginSignUp/comp/login.dart';
-import 'package:on_edir/Pages/LoginSignUp/comp/signup.dart';
-import 'package:on_edir/Pages/LoginSignUp/controller/l_s_controller.dart';
+import 'package:on_edir/View/Pages/LoginSignUp/controller/l_s_controller.dart';
+import 'package:on_edir/View/Widgets/login.dart';
+import 'package:on_edir/View/Widgets/signup.dart';
 import 'package:on_edir/constants.dart';
 
 
@@ -66,12 +66,15 @@ class _LogInSignInPageState extends State<LogInSignInPage> {
                         lsController.setIsLogin(true);
                       }
                     },
-                    child: Obx(()=> Text(
-                      lsController.isLogin.value ?
-                      "Create an Account":
-                      "Already have an account",
-                      style: TextStyle(
-                          color: whiteColor, fontWeight: FontWeight.bold),
+                    child: Obx(()=> Padding(
+                      padding: const EdgeInsets.only(top: 8,bottom: 40),
+                      child: Text(
+                        lsController.isLogin.value ?
+                        "Create an Account":
+                        "Already have an account",
+                        style: TextStyle(
+                            color: whiteColor, fontWeight: FontWeight.bold),
+                      ),
                     ))),
                 const SizedBox(
                   height: 40,

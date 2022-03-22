@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:on_edir/View/Widgets/join_create_edir.dart';
 import 'package:on_edir/constants.dart';
 
 class MainPage extends StatefulWidget {
@@ -15,20 +16,9 @@ class _MainPageState extends State<MainPage> {
     return Container(
       decoration: BoxDecoration(gradient: bgGradient),
       child: Scaffold(
-        appBar: AppBar(title: Text("sdfjklh")),
-        body: Column(
-          children: [
-            Container(
-              child: Column(
-                children: [
-                  Icon(Icons.add, size: 20,),
-                  SizedBox(height: 10,),
-                  Text("Create Edir")
-                ]
-              ),
-            )
-          ],
-        ),
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(title: const Text("My Edir List"),backgroundColor: Colors.transparent,centerTitle: true,),
+        body: JCEdir()
       ),
     );
   }

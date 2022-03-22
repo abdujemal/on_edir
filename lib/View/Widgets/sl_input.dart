@@ -5,8 +5,10 @@ class SLInput extends StatelessWidget {
   String title, hint;
   TextInputType keyboardType;
   TextEditingController controller;
+  bool isObscure;
   SLInput(
       {Key key,
+      this.isObscure = false,
       @required this.title,
       @required this.hint,
       @required this.keyboardType,
@@ -32,7 +34,9 @@ class SLInput extends StatelessWidget {
             },
             controller: controller,
             keyboardType: keyboardType,
+            obscureText: isObscure,
             decoration: InputDecoration(
+                
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: textColor),
                 ),

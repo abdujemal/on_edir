@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_edir/Firebase%20Services/user_service.dart';
-import 'package:on_edir/Pages/LoginSignUp/comp/sl_input.dart';
-import 'package:on_edir/Pages/LoginSignUp/comp/sl_btn.dart';
-import 'package:on_edir/Pages/MainPage/main_page.dart';
+import 'package:on_edir/Controller/user_service.dart';
+import 'package:on_edir/View/Pages/MainPage/main_page.dart';
+import 'package:on_edir/View/Widgets/sl_btn.dart';
+import 'package:on_edir/View/Widgets/sl_input.dart';
 import 'package:on_edir/constants.dart';
 
 class Login extends StatelessWidget {
@@ -32,6 +32,7 @@ class Login extends StatelessWidget {
                 height: 40,
               ),
               SLInput(
+                isObscure: true,
                   title: "Password",
                   hint: "*******",
                   keyboardType: TextInputType.visiblePassword,
@@ -61,7 +62,7 @@ class Login extends StatelessWidget {
             if (_key.currentState.validate()) {
               // Get.find<UserService>().loginWEmailNPW(
               //     emailTC.text, passwordTC.text, context);
-              Get.to(const MainPage());
+              Get.to(()=>const MainPage());
             }
           },
         ),

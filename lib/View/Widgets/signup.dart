@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:on_edir/Pages/LoginSignUp/comp/sl_btn.dart';
-import 'package:on_edir/pages/LoginSignUp/comp/sl_input.dart';
+import 'package:on_edir/View/Widgets/sl_btn.dart';
+import 'package:on_edir/View/Widgets/sl_input.dart';
 
 class SignUp extends StatelessWidget {
   // const Login({ Key? key }) : super(key: key);
@@ -9,6 +9,8 @@ class SignUp extends StatelessWidget {
   TextEditingController passwordTC = TextEditingController();
   TextEditingController confirmPasswordTC = TextEditingController();
   GlobalKey<FormState> _key = GlobalKey();
+
+  TextEditingController userNameTC = TextEditingController();
   
 
   @override
@@ -29,6 +31,16 @@ class SignUp extends StatelessWidget {
                 height: 40,
               ),
               SLInput(
+                controller: userNameTC,
+                keyboardType: TextInputType.text,
+                title: 'User Name',
+                hint: 'chala mola',
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SLInput(
+                isObscure: true,
                   title: "Password",
                   hint: "*******",
                   keyboardType: TextInputType.visiblePassword,
@@ -37,6 +49,7 @@ class SignUp extends StatelessWidget {
                 height: 15,
               ),
               SLInput(
+                isObscure: true,
                   title: "Confirm Password",
                   hint: "*******",
                   keyboardType: TextInputType.visiblePassword,

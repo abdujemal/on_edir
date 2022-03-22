@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_edir/Pages/LoginSignUp/controller/l_s_controller.dart';
+import 'package:on_edir/View/Pages/LoginSignUp/controller/l_s_controller.dart';
 import 'package:on_edir/constants.dart';
 
 class SLBtn extends StatelessWidget {

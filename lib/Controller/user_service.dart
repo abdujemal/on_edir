@@ -4,11 +4,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_edir/Pages/MainPage/main_page.dart';
-import 'package:on_edir/comp/msg_snack.dart';
+import 'package:on_edir/View/Pages/MainPage/main_page.dart';
+import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../Pages/LoginSignUp/controller/l_s_controller.dart';
+import '../View/Pages/LoginSignUp/controller/l_s_controller.dart';
+
 
 class UserService extends GetxService {
   LSController slcontroller = Get.put(LSController());
