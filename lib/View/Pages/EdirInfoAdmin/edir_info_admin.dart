@@ -23,6 +23,12 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
   TextEditingController amountOfMoneyTc = TextEditingController();
   EdirInfoController edirInfoController = Get.put(EdirInfoController());
 
+  var _optionKey;
+
+  var accountTc;
+
+  get bankTc => null;
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -140,6 +146,24 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                         )
                       ],
                     ),
+                    Form(
+                key: _optionKey,
+                child: Column(
+                  children: [
+                    CommonInput(
+                        controller: bankTc,
+                        hint: "Bank or Provider",
+                        keyboardType: TextInputType.text),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    CommonInput(
+                        controller: accountTc,
+                        hint: "Account for transfer money",
+                        keyboardType: TextInputType.text),
+                  ],
+                ),
+              ),
                     ...edirInfoController.options.value.map((v) => ListTile(
                           trailing: const Icon(Icons.payment),
                           title: Text(v.bank),
