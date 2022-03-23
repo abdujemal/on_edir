@@ -23,7 +23,13 @@ class CommonInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: TextField(
+      child: TextFormField(
+        // ignore: missing_return
+        validator: (v) {
+          if (v.isEmpty) {
+            return "This Field is required.";
+          }
+        },
         controller: controller,
         keyboardType: keyboardType,
         maxLines: maxLines,

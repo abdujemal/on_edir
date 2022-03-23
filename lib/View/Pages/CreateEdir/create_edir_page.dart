@@ -16,6 +16,15 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
   TextEditingController edirAddressTc = TextEditingController();
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    edirAddressTc.dispose();
+    edirRulesTc.dispose();
+    edirNameTc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(gradient: bgGradient),
@@ -71,9 +80,13 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                   keyboardType: TextInputType.multiline,
                   maxLines: 7,
                 ),
-                const SizedBox(height: 20,),
-                CommonBtn(text: "Create Edir", action: (){}),
-                SizedBox(height: 30,)
+                const SizedBox(
+                  height: 20,
+                ),
+                CommonBtn(text: "Create Edir", action: () {}),
+                SizedBox(
+                  height: 30,
+                )
               ]),
         ),
       ),

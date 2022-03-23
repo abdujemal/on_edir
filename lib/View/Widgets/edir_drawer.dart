@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:on_edir/View/Pages/EdirGroupChat/edir_group_chat.dart';
+import 'package:on_edir/View/Pages/EdirInfoAdmin/edir_info_admin.dart';
+import 'package:on_edir/View/Widgets/drawer_list_item.dart';
 import 'package:on_edir/constants.dart';
 
 class EdirDrawer extends StatefulWidget {
@@ -9,34 +14,74 @@ class EdirDrawer extends StatefulWidget {
 }
 
 class _EdirDrawerState extends State<EdirDrawer> {
+  Widget topPart = Container(
+    color: const Color.fromARGB(101, 0, 0, 0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 40,
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left: 10.0),
+          child: CircleAvatar(
+            radius: 35,
+            backgroundColor: Colors.white,
+            child: Icon(Icons.account_circle),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 18),
+          child: ExpansionTile(
+              tilePadding: const EdgeInsets.all(0),
+              title: const Text(
+                "Edir Name",
+                style: TextStyle(fontSize: 20),
+              ),
+              subtitle: const Text(
+                "created by Kebe",
+                style: const TextStyle(
+                    fontSize: 15, color: Color.fromARGB(255, 197, 197, 197)),
+              ),
+              children: [
+                const SizedBox(
+                  height: 15,
+                ),
+                DrawerListItem(text: "Add Edir", action: () {}, icon: Icons.add)
+              ]),
+        ),
+      ],
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(gradient: bgGradient),
       child: Drawer(
         backgroundColor: Colors.transparent,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20,),
-            CircleAvatar(
-              child: Icon(Icons.account_circle),
-            ),
-            ExpansionTile(
-              tilePadding: EdgeInsets.all(0),
-              title: Text("Edir Name", style: TextStyle(fontSize: 17),),
-              subtitle: Text("created by Kebe",style: TextStyle(fontSize: 13,color: Color.fromARGB(255, 197, 197, 197)),),
-              children: [
-                Row(children: [
-                  Icon(Icons.add),
-                  Text("Add Edir")
-                ],
-                ),
-              ]),
-          ]),
-        ),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              topPart,
+              const SizedBox(height: 10,),
+              DrawerListItem(text: "My Profile", action: (){}, icon: Icons.account_circle),
+              const SizedBox(height: 5,),
+              DrawerListItem(text: "Edir Info", action: ()=>Get.to(()=>const EdirInfoAdmin()), icon: Icons.info),
+              const SizedBox(height: 5,),
+               DrawerListItem(text: "Edir Members", action: (){}, icon: Icons.group_outlined),
+              const SizedBox(height: 5,),
+              DrawerListItem(text: "Edir Group Chat", action: ()=>Get.to(()=>const EdirGroupChat()), icon: Icons.group),
+              const SizedBox(height: 5,),
+              DrawerListItem(text: "Chat", action: (){}, icon: Icons.chat),
+              const SizedBox(height: 5,),
+              DrawerListItem(text: "Payment", action: (){}, icon: Icons.payment),
+              const SizedBox(height: 5,),
+              
+
+            ]),
       ),
     );
   }
