@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Model/bankaccount_options.dart';
 import 'package:on_edir/View/Pages/EdirInfoAdmin/controller/edir_info_controller.dart';
+import 'package:on_edir/View/Widgets/action_btn.dart';
 import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/View/Widgets/common_input.dart';
-import 'package:on_edir/View/Widgets/payment_options_dialog.dart';
 import 'package:on_edir/constants.dart';
 
 class EdirInfoAdmin extends StatefulWidget {
@@ -23,11 +23,11 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
   TextEditingController amountOfMoneyTc = TextEditingController();
   EdirInfoController edirInfoController = Get.put(EdirInfoController());
 
-  var _optionKey;
+  GlobalKey<FormState> _optionKey = GlobalKey();
 
-  var accountTc;
+  TextEditingController accountTc = TextEditingController();
 
-  get bankTc => null;
+  TextEditingController bankTc = TextEditingController();
 
   @override
   void dispose() {
@@ -35,6 +35,8 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
     edirAddressTc.dispose();
     edirRulesTc.dispose();
     edirNameTc.dispose();
+    accountTc.dispose();
+    bankTc.dispose();
     super.dispose();
   }
 
@@ -66,7 +68,7 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                           icon: const Icon(
                             Icons.add_a_photo_sharp,
                             color: Colors.black,
-                            size: 50,
+                            
                           )))
                 ],
               ),
@@ -120,9 +122,12 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                 height: 10,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                 child: Column(
                   children: [
+                    Obx(
+                      () =>
                     Row(
                       children: [
                         const Text(
@@ -131,44 +136,62 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            Get.bottomSheet(const PaymentOptionsDialog());
-                          },
-                          child: Ink(
-                            padding: const EdgeInsets.all(8.0),
-                            child: const Text(
-                              "Add Options",
-                              style: const TextStyle(
-                                  color: Color.fromARGB(255, 201, 201, 201)),
-                            ),
-                          ),
-                        )
+                        ActionBtn(
+                            text: "Add Option",
+                            action: () {
+                              if (_optionKey.currentState.validate()) {
+                                edirInfoController.addList(BankAccountOption(
+                                    bankTc.text, accountTc.text));
+                                bankTc.text = "";
+                                accountTc.text = "";
+                              }
+                            }),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        edirInfoController.options.value.isEmpty
+                            ? const SizedBox()
+                            : ActionBtn(
+                                text: "Clear",
+                                action: () {
+                                  edirInfoController.options.clear();
+                                },
+                              )
                       ],
                     ),
-                    Form(
-                key: _optionKey,
-                child: Column(
-                  children: [
-                    CommonInput(
-                        controller: bankTc,
-                        hint: "Bank or Provider",
-                        keyboardType: TextInputType.text),
-                    SizedBox(
-                      height: 5,
                     ),
-                    CommonInput(
-                        controller: accountTc,
-                        hint: "Account for transfer money",
-                        keyboardType: TextInputType.text),
-                  ],
-                ),
-              ),
-                    ...edirInfoController.options.value.map((v) => ListTile(
-                          trailing: const Icon(Icons.payment),
-                          title: Text(v.bank),
-                          subtitle: Text(v.account),
-                        ))
+                    Form(
+                      key: _optionKey,
+                      child: Column(
+                        children: [
+                          CommonInput(
+                              controller: bankTc,
+                              hint: "Bank or Provider",
+                              keyboardType: TextInputType.text),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          CommonInput(
+                              controller: accountTc,
+                              hint: "Account for transfer money",
+                              keyboardType: TextInputType.text),
+                        ],
+                      ),
+                    ),
+                    Obx(
+                      () => Column(
+                          children: edirInfoController.options.value.isNotEmpty
+                              ? edirInfoController.options.value
+                                  .map(
+                                    (v) => ListTile(
+                                      trailing: const Icon(Icons.payment),
+                                      title: Text(v.bank),
+                                      subtitle: Text(v.account),
+                                    ),
+                                  )
+                                  .toList()
+                              : []),
+                    )
                   ],
                 ),
               ),

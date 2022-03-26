@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:on_edir/View/Widgets/chat_item.dart';
 import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/constants.dart';
 
@@ -24,7 +25,20 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
         ),
         body: Stack(
           children: [
-             Container(),
+             Padding(
+               padding: const EdgeInsets.only(bottom:8.0),
+               child: Column(
+                 children: [
+                   Flexible(
+                     flex: 1,
+                     child: ListView.builder(
+                       itemCount: 1,
+                       itemBuilder: (context,index)=>ChatItem()
+                       ),
+                   ),
+                 ],
+               ),
+             ),
              Align(
                alignment: Alignment.bottomCenter,
                child: Row(
@@ -41,8 +55,10 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                               padding: const EdgeInsets.all(12.0),
                               child: TextField(
                                 controller: chatTc,
+                                style: TextStyle(color: mainColor),
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration.collapsed(
+                                    hintStyle: TextStyle(color: mainColor),
                                       hintText: "Write something")),
                             ),
                           ),

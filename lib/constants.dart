@@ -12,6 +12,8 @@ Color whiteColor = const Color(0xfff7f7f7);
 
 Color textColor = const Color(0xFFc0cfda);
 
+Color secondColor = const Color.fromRGBO(50, 70, 98, 1);
+
 Gradient btnGradient = const LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
@@ -28,4 +30,4 @@ Gradient orangeGradient = LinearGradient(
 Gradient bgGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [const Color.fromRGBO(50, 70, 98, 1), mainColor]);
+    colors: [secondColor, mainColor]);

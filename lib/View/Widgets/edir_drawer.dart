@@ -3,6 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/View/Pages/EdirGroupChat/edir_group_chat.dart';
 import 'package:on_edir/View/Pages/EdirInfoAdmin/edir_info_admin.dart';
+import 'package:on_edir/View/Pages/EdirInfoUser/edir_info_user.dart';
+import 'package:on_edir/View/Pages/EdirMembers/edir_members_page.dart';
+import 'package:on_edir/View/Pages/MyProfile/my_profile.dart';
+import 'package:on_edir/View/Pages/PaymentAdmin/payment_admin.dart';
 import 'package:on_edir/View/Widgets/drawer_list_item.dart';
 import 'package:on_edir/constants.dart';
 
@@ -63,25 +67,44 @@ class _EdirDrawerState extends State<EdirDrawer> {
       decoration: BoxDecoration(gradient: bgGradient),
       child: Drawer(
         backgroundColor: Colors.transparent,
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              topPart,
-              const SizedBox(height: 10,),
-              DrawerListItem(text: "My Profile", action: (){}, icon: Icons.account_circle),
-              const SizedBox(height: 5,),
-              DrawerListItem(text: "Edir Info", action: ()=>Get.to(()=>const EdirInfoAdmin()), icon: Icons.info),
-              const SizedBox(height: 5,),
-               DrawerListItem(text: "Edir Members", action: (){}, icon: Icons.group_outlined),
-              const SizedBox(height: 5,),
-              DrawerListItem(text: "Edir Group Chat", action: ()=>Get.to(()=>const EdirGroupChat()), icon: Icons.group),
-              const SizedBox(height: 5,),
-              DrawerListItem(text: "Chat", action: (){}, icon: Icons.chat),
-              const SizedBox(height: 5,),
-              DrawerListItem(text: "Payment", action: (){}, icon: Icons.payment),
-              const SizedBox(height: 5,),
-              
-
-            ]),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          topPart,
+          const SizedBox(
+            height: 10,
+          ),
+          DrawerListItem(
+              text: "My Profile",
+              action: () =>
+                Get.to(() => MyProfile())
+              ,
+              icon: Icons.account_circle),
+          const SizedBox(
+            height: 5,
+          ),
+          DrawerListItem(
+              text: "Edir Info",
+              action: () => Get.to(() => EdirInfoUser()),
+              icon: Icons.info),
+          const SizedBox(
+            height: 5,
+          ),
+          DrawerListItem(
+              text: "Edir Members", action: ()=>Get.to(()=>const EdirMembersPage()), icon: Icons.group_outlined),
+          const SizedBox(
+            height: 5,
+          ),
+          DrawerListItem(
+              text: "Edir Group Chat",
+              action: () => Get.to(() => const EdirGroupChat()),
+              icon: Icons.group),
+          const SizedBox(
+            height: 5,
+          ),
+          DrawerListItem(text: "Payment", action: ()=>Get.to(const PaymentAdmin()), icon: Icons.payment),
+          const SizedBox(
+            height: 5,
+          ),
+        ]),
       ),
     );
   }
