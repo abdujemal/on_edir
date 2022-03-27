@@ -10,9 +10,14 @@ import 'package:on_edir/View/Widgets/sl_btn.dart';
 import 'package:on_edir/View/Widgets/sl_input.dart';
 import 'package:on_edir/constants.dart';
 
-class SignUp extends StatelessWidget {
-  // const Login({ Key? key }) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key key}) : super(key: key);
 
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   TextEditingController emailTC = TextEditingController();
   TextEditingController passwordTC = TextEditingController();
   TextEditingController confirmPasswordTC = TextEditingController();
@@ -24,6 +29,31 @@ class SignUp extends StatelessWidget {
 
   UserService userService = Get.put(UserService());
 
+  var userBioTC = TextEditingController();
+
+  var userPhoneTC = TextEditingController();
+
+  var userRsPhoneTC = TextEditingController();
+
+  var userFamilyMembersTC = TextEditingController();
+
+  var userNoOfFamilyMembersTC = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    userBioTC.dispose();
+    userFamilyMembersTC.dispose();
+    userNameTC.dispose();
+    userPhoneTC.dispose();
+    userRsPhoneTC.dispose();
+    userNoOfFamilyMembersTC.dispose();
+    emailTC.dispose();
+    passwordTC.dispose();
+    confirmPasswordTC.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,37 +64,38 @@ class SignUp extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Obx(()=>
-                  lsController.pickedFile.value == File("") ?
-
-                     CircleAvatar(
-                      child: Icon(Icons.account_circle, size: 100),
-                      radius: 50,
-                    ):
-                    CircleAvatar(
-                      backgroundImage: FileImage(lsController.pickedFile.value),                         
-                      radius: 50,
-                    )
-                  ),
+                  Obx(() {
+                    print(lsController.pickedFilePath.value);
+                    return lsController.pickedFilePath.value == ""
+                        ? CircleAvatar(
+                            child: Icon(Icons.account_circle, size: 100),
+                            radius: 50,
+                          )
+                        : CircleAvatar(
+                            backgroundImage: FileImage(
+                                File(lsController.pickedFilePath.value)),
+                            radius: 50,
+                          );
+                  }),
                   Positioned(
                       bottom: -5,
                       right: -5,
                       child: IconButton(
                           color: whiteColor,
-                          onPressed: ()async {
+                          onPressed: () async {
                             XFile imagexFile = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
-                          if (imagexFile != null) {
-                            File imageFile = File(imagexFile.path);
+                                .pickImage(source: ImageSource.gallery);
+                            if (imagexFile != null) {
+                              File imageFile = File(imagexFile.path);
 
-                            lsController.setPickedImage(imageFile);
-                          } else {
-                            MSGSnack msgSnack = MSGSnack(
-                                title: "Alert!",
-                                msg: "Image is not picked",
-                                color: Colors.red);
-                            msgSnack.show();
-                          }
+                              lsController.setPickedImage(imageFile.path);
+                            } else {
+                              MSGSnack msgSnack = MSGSnack(
+                                  title: "Alert!",
+                                  msg: "Image is not picked",
+                                  color: Colors.red);
+                              msgSnack.show();
+                            }
                           },
                           icon: Icon(
                             Icons.add_a_photo,
@@ -87,6 +118,51 @@ class SignUp extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 title: 'User Name',
                 hint: 'chala mola',
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SLInput(
+                controller: userBioTC,
+                keyboardType: TextInputType.text,
+                title: 'User Bio',
+                hint: 'I lova programing ...',
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SLInput(
+                controller: userPhoneTC,
+                keyboardType: TextInputType.phone,
+                title: 'User Phone',
+                hint: '0976894790',
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SLInput(
+                controller: userRsPhoneTC,
+                keyboardType: TextInputType.phone,
+                title: 'Your Reserve PhoneNumber',
+                hint: '0967584930',
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SLInput(
+                controller: userFamilyMembersTC,
+                keyboardType: TextInputType.text,
+                title: 'Your Family Members',
+                hint: 'chala, Awol, ...',
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SLInput(
+                controller: userNoOfFamilyMembersTC,
+                keyboardType: TextInputType.number,
+                title: 'Number Your Family Members',
+                hint: '5',
               ),
               const SizedBox(
                 height: 40,
@@ -121,17 +197,32 @@ class SignUp extends StatelessWidget {
               : SLBtn(
                   text: "Sign Up",
                   onTap: () {
-                    if (_key.currentState.validate()) {
-                      if (confirmPasswordTC.text == passwordTC.text) {
-                        userService.signUpWEmailNPW(emailTC.text,
-                            passwordTC.text, userNameTC.text, context);
-                      } else {
-                        MSGSnack msgSnack = MSGSnack(
+                    if (!_key.currentState.validate()) {
+                      
+                    }else if(lsController.pickedFilePath.value == ""){
+                      MSGSnack msgSnack = MSGSnack(
+                            title: "Alert!",
+                            msg: "Please choose your profile photo.",
+                            color: Colors.red);
+                        msgSnack.show();
+                    }else if(confirmPasswordTC.text != passwordTC.text){
+                      MSGSnack msgSnack = MSGSnack(
                             title: "Alert!",
                             msg: "Please write the same password.",
                             color: Colors.red);
                         msgSnack.show();
-                      }
+                    }else{
+                      userService.signUpWEmailNPW(
+                            File(lsController.pickedFilePath.value),
+                            emailTC.text,
+                            userNameTC.text,
+                            userBioTC.text,
+                            userPhoneTC.text,
+                            userRsPhoneTC.text,
+                            userFamilyMembersTC.text,
+                            userNoOfFamilyMembersTC.text,
+                            passwordTC.text,
+                            context);
                     }
                   },
                 ),

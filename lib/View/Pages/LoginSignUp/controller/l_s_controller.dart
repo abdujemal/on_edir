@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 class LSController extends GetxController {
   RxBool isLogin = true.obs;
   RxBool isLoading = false.obs;
-  Rx<File> pickedFile = File("").obs;
+
+  Rx<String> pickedFilePath = "".obs;
 
   setIsLogin(bool val) {
     isLogin.value = val;
@@ -15,7 +16,11 @@ class LSController extends GetxController {
     isLoading.value = val;
   }
 
-  setPickedImage(File file) {
-    pickedFile.value = file;
+  setPickedImage(String filePath) {
+    pickedFilePath.value = filePath;
+  }
+
+  bool isEmpty() {
+    return pickedFilePath.value == "";
   }
 }

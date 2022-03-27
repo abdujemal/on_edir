@@ -4,13 +4,15 @@ import 'package:get/get.dart';
 
 class CreateEdirController extends GetxController {
   RxBool isLoading = false.obs;
-  Rx<File> pickedfile = File("").obs;
+  RxString pickedfilePath = "".obs;
+  
+  var options = [].obs;
 
   setIsLoading(bool val) {
     isLoading.value = val;
   }
 
-  setImage(File file) {
-    pickedfile.value = file;
+  setImage(String file) {
+    pickedfilePath.value = file;
   }
 }
