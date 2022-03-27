@@ -80,7 +80,7 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                                   child: CircularProgressIndicator(),
                                 )
                               : Padding(
-                                  padding: const EdgeInsets.only(bottom: 15.0),
+                                  padding: const EdgeInsets.only(bottom: 50.0),
                                   child: ListView.builder(
                                       reverse: true,
                                       itemCount: chatList.length,
