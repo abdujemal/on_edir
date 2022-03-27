@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/tabs/announcement_page.dart';
 import 'package:on_edir/View/Pages/EdirPage/tabs/meeting_page.dart';
 import 'package:on_edir/View/Pages/EdirPage/tabs/store_page.dart';
+import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Widgets/bottom_bar.dart';
 import 'package:on_edir/View/Widgets/edir_drawer.dart';
 import 'package:on_edir/constants.dart';
@@ -45,13 +47,17 @@ class _EdirPageState extends State<EdirPage> {
 
   UserService userService = Get.put(UserService());
 
+  MainController mainController = Get.put(MainController());
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.edirId);
+    
+    // userService.getEdirList();
     userService.getEdir(widget.edirId);
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,9 @@ class _EdirPageState extends State<EdirPage> {
         drawer: const EdirDrawer(),
         bottomNavigationBar: BottomBar(items: items),
         appBar: AppBar(
-          title: Text(edirPAgeController.currentEdir.value.edirName),
+          title: Obx(() => edirPAgeController.currentEdir.value != null
+              ? Text(edirPAgeController.currentEdir.value.edirName)
+              : const SizedBox()),
           backgroundColor: Colors.transparent,
           centerTitle: true,
           leading: IconButton(

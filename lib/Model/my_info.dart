@@ -28,7 +28,7 @@ class MyInfo {
 
   MyInfo.fromFirebaseMap(Map<dynamic, dynamic> data)
       : email = data["email"],
-        familyMembers = data["familyMember"],
+        familyMembers = data["familyMembers"],
         img_url = data["img_url"],
         noOfFamily = data["noOfFamily"],
         uid = data["uid"],

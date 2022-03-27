@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:on_edir/Controller/user_service.dart';
+import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/constants.dart';
@@ -27,6 +30,36 @@ class _MyProfileState extends State<MyProfile> {
 
   GlobalKey<FormState> profile_key = GlobalKey();
 
+  MainController mainController = Get.put(MainController());
+
+  UserService userService = Get.put(UserService());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userNameTc.text = mainController.myInfo.value.userName;
+    userBioTc.text = mainController.myInfo.value.userBio;
+    emailAddressTc.text = mainController.myInfo.value.email;
+    phoneNumberTc.text = mainController.myInfo.value.userPhone;
+    reservePhoneNumberTc.text = mainController.myInfo.value.userRsPhone;
+    familyMembersTc.text = mainController.myInfo.value.familyMembers;
+    numOfFamilyMembersTc.text = mainController.myInfo.value.noOfFamily;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    userNameTc.dispose();
+    userBioTc.dispose();
+    emailAddressTc.dispose();
+    phoneNumberTc.dispose();
+    reservePhoneNumberTc.dispose();
+    familyMembersTc.dispose();
+    numOfFamilyMembersTc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,20 +81,27 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Stack(
                   children: [
-                    CircleAvatar(
-                      child: Icon(Icons.account_circle, size: 100),
-                      radius: 50,
+                    Obx(
+                      () => mainController.myInfo.value.img_url != null
+                          ? CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  mainController.myInfo.value.img_url),
+                              radius: 50,
+                            )
+                          : const CircleAvatar(
+                              child: Icon(Icons.account_circle, size: 100),
+                              radius: 50,
+                            ),
                     ),
                     Positioned(
                         bottom: -5,
                         right: -5,
                         child: IconButton(
-                          color: whiteColor,
+                            color: whiteColor,
                             onPressed: () {},
                             icon: Icon(
                               Icons.add_a_photo,
                               color: whiteColor,
-                              
                             )))
                   ],
                 ),
@@ -124,7 +164,17 @@ class _MyProfileState extends State<MyProfile> {
                 CommonBtn(
                     text: "Save Changes",
                     action: () {
-                      if (profile_key.currentState.validate()) {}
+                      if (profile_key.currentState.validate()) {
+                        userService.updateUserInfo(
+                            emailAddressTc.text,
+                            userNameTc.text,
+                            userBioTc.text,
+                            phoneNumberTc.text,
+                            reservePhoneNumberTc.text,
+                            familyMembersTc.text,
+                            numOfFamilyMembersTc.text,
+                            context);
+                      }
                     }),
                 const SizedBox(
                   height: 20,

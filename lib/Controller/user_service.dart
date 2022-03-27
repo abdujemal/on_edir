@@ -13,6 +13,7 @@ import 'package:on_edir/View/Pages/EdirPage/edir_page.dart';
 import 'package:on_edir/View/Pages/JoinEdir/controller/join_edir_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/main_page.dart';
+import 'package:on_edir/View/Pages/MyProfile/controller/my_profile_controller.dart';
 import 'package:on_edir/View/Widgets/msg_snack.dart';
 
 import '../View/Pages/LoginSignUp/controller/l_s_controller.dart';
@@ -34,7 +35,57 @@ class UserService extends GetxService {
 
   JoinEdirController joinEdirController = Get.put(JoinEdirController());
 
-  Future<Edir> getEdir(String eid) async {
+  MyProfileController myProfileController = Get.put(MyProfileController());
+
+  updateUserInfo(
+      String email,
+      String userName,
+      String userBio,
+      String userPhone,
+      String userRsPhone,
+      String familyMembers,
+      String noOfFamily,
+      BuildContext context) async {
+    try {
+      myProfileController.setIsLoading(true);
+
+      Map<String, Object> map = {
+        "email": email,
+        "userName": userName,
+        "userBio": userBio,
+        "userPhone": userPhone,
+        "userRsPhone": userRsPhone,
+        "familyMembers": familyMembers,
+        "noOfFamily": noOfFamily,
+        "uid": auth.currentUser.uid
+      };
+
+      await database
+          .ref()
+          .child("Users")
+          .child(auth.currentUser.uid)
+          .update(map);
+      myProfileController.setIsLoading(false);
+
+      MSGSnack msgSnack = MSGSnack(
+          title: "Success!",
+          msg: "You have successfully updated your profile.",
+          color: Colors.green);
+      msgSnack.show();
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+          (route) => false);
+    } catch (e) {
+      myProfileController.setIsLoading(false);
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+  }
+
+  getEdir(String eid) async {
     try {
       DatabaseEvent databaseEvent =
           await database.ref().child("Edirs").child(eid).once();
@@ -51,24 +102,31 @@ class UserService extends GetxService {
   }
 
   Future<List<Edir>> getEdirList() async {
-    DatabaseReference ref = database.ref().child("Edirs");
+    DatabaseReference ref = database.ref();
 
     List<Edir> edirList = [];
 
-    DatabaseEvent databaseEvent = await ref.once();
-
-    if (databaseEvent.snapshot.exists) {
-      Map<dynamic, dynamic> edirsData =
-          databaseEvent.snapshot.value as Map<dynamic, dynamic>;
-      // ignore: missing_return
-      edirsData.map((key, value) {
-        Map<dynamic, dynamic> edirItem = Map<dynamic, dynamic>.from(value);
-        Edir edirModel = Edir.fromFirebaseMap(edirItem);
-        if (edirItem["created_by"].toString() == auth.currentUser.uid) {
-          edirList.add(edirModel);
+    try {
+      DatabaseEvent databaseEvent =
+          await ref.child("MyEdirLists").child(auth.currentUser.uid).once();
+      if (databaseEvent.snapshot.exists) {
+        Map<dynamic, dynamic> edirData =
+            Map<dynamic, dynamic>.from(databaseEvent.snapshot.value);
+        List<String> edirIds = [];
+        for (String id in edirData.keys) {
+          DatabaseEvent edirEvents = await ref.child("Edirs").child(id).once();
+          Map<dynamic, dynamic> edirData =
+              Map<dynamic, dynamic>.from(edirEvents.snapshot.value);
+          Edir edirModel = Edir.fromFirebaseMap(edirData);
+          mainController.edirList.add(edirModel);
         }
-      });
+      }
+    } catch (e) {
+      MSGSnack msgSnack =
+          MSGSnack(title: "!Error this", msg: e.toString(), color: Colors.red);
+      msgSnack.show();
     }
+
     return edirList;
   }
 
@@ -147,7 +205,7 @@ class UserService extends GetxService {
               builder: (ctx) => EdirPage(
                     edirId: edirId,
                   )));
-      
+
       joinEdirController.setIsLoading(false);
       createEdirController.setIsLoading(false);
     } catch (e) {
