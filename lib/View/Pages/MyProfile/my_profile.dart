@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
+import 'package:on_edir/View/Pages/MyProfile/controller/my_profile_controller.dart';
 import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/constants.dart';
@@ -31,6 +32,8 @@ class _MyProfileState extends State<MyProfile> {
   GlobalKey<FormState> profile_key = GlobalKey();
 
   MainController mainController = Get.put(MainController());
+
+  MyProfileController myProfileController = Get.put(MyProfileController());
 
   UserService userService = Get.put(UserService());
 
@@ -161,6 +164,8 @@ class _MyProfileState extends State<MyProfile> {
                 const SizedBox(
                   height: 10,
                 ),
+                myProfileController.isLoading.value ?
+                const CircularProgressIndicator():
                 CommonBtn(
                     text: "Save Changes",
                     action: () {

@@ -4,10 +4,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_edir/Model/bankaccount_options.dart';
 import 'package:on_edir/Model/edir.dart';
 import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/my_info.dart';
 import 'package:on_edir/View/Pages/CreateEdir/controller/create_edir_controller.dart';
+import 'package:on_edir/View/Pages/EdirInfoAdmin/controller/edir_info_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/edir_page.dart';
 import 'package:on_edir/View/Pages/JoinEdir/controller/join_edir_controller.dart';
@@ -31,11 +33,36 @@ class UserService extends GetxService {
 
   FirebaseStorage storage = FirebaseStorage.instance;
 
+  EdirInfoController edirInfoController = Get.put(EdirInfoController());
+
   CreateEdirController createEdirController = Get.put(CreateEdirController());
 
   JoinEdirController joinEdirController = Get.put(JoinEdirController());
 
   MyProfileController myProfileController = Get.put(MyProfileController());
+
+  Future<List<BankAccountOption>> getOptionsUser(String eid) async {
+    List<BankAccountOption> options = [];
+    try {
+      DatabaseEvent databaseEvent =
+          await database.ref().child("PaymentOptions").child(eid).once();
+      if (databaseEvent.snapshot.exists) {
+        var optionsMap = databaseEvent.snapshot.value;
+        for (Map<dynamic, dynamic> option in optionsMap) {
+          if (option != null) {
+            BankAccountOption optionModel =
+                BankAccountOption.fromFirebase(option);
+            options.add(optionModel);
+          }
+        }
+      }
+    } catch (e) {
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+    return options;
+  }
 
   updateUserInfo(
       String email,
@@ -75,7 +102,10 @@ class UserService extends GetxService {
 
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => MainPage()),
+          MaterialPageRoute(
+              builder: (context) => EdirPage(
+                    edirId: edirPAgeController.currentEdir.value.eid,
+                  )),
           (route) => false);
     } catch (e) {
       myProfileController.setIsLoading(false);
@@ -211,6 +241,62 @@ class UserService extends GetxService {
     } catch (e) {
       MSGSnack msgSnack =
           MSGSnack(title: "!Error", msg: e.toString(), color: Colors.red);
+      msgSnack.show();
+    }
+  }
+
+  updateEdir(
+      Map<String, Object> options,
+      String eid,
+      String edirName,
+      String rules,
+      String edirAddress,
+      String edirBio,
+      String durationOfPayment,
+      String amountOfMoney,
+      BuildContext context) async {
+    DatabaseReference ref = database.ref().child("Edirs").child(eid);
+
+    edirInfoController.setIsLoading(true);
+
+    Map<String, Object> newEdir = {
+      "eid": eid,
+      "edirName": edirName,
+      "edirAddress": edirAddress,
+      "edirBio": edirBio,
+      "durationOfPayment": durationOfPayment,
+      "amountOfMoney": amountOfMoney,
+      "rules": rules,
+      "created_by": auth.currentUser.uid,
+      "created_by_name": mainController.myInfo.value.userName
+    };
+
+    try {
+      await ref.update(newEdir);
+
+      await database
+          .ref() 
+          .child("PaymentOptions")
+          .child(ref.key.toString())
+          .update(options);
+      edirInfoController.setIsLoading(false);
+
+      MSGSnack msgSnack = MSGSnack(
+          title: "Success!",
+          msg: "You have successfully updated you edir.",
+          color: Colors.green);
+      msgSnack.show();
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (c) => EdirPage(edirId: eid)),
+          (route) => false);
+    } catch (e) {
+      edirInfoController.setIsLoading(false);
+      MSGSnack msgSnack = MSGSnack(
+          title: "Error on uploading data!",
+          msg: e.toString(),
+          color: Colors.red);
       msgSnack.show();
     }
   }
