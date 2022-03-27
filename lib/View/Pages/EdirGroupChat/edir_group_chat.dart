@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/Model/chat.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
+import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Widgets/chat_item.dart';
 import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/constants.dart';
@@ -22,6 +23,8 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
       FirebaseDatabase.instance.ref().child("GroupChat");
 
   EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
+
+  MainController mainController = Get.put(MainController());
 
   UserService userService = Get.put(UserService());
 
@@ -51,29 +54,41 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                         builder: (context, snapshot) {
                           List<Chat> chatList = [];
                           if (snapshot.hasData) {
-                            Map<dynamic, dynamic> data =
-                                Map<dynamic, dynamic>.from(
-                                    (snapshot.data as DatabaseEvent)
-                                        .snapshot
-                                        .value);
-                            for (Map<dynamic, dynamic> chatData
-                                in data.values) {
+                            if ((snapshot.data as DatabaseEvent)
+                                    .snapshot
+                                    .value !=
+                                null) {
                               Map<dynamic, dynamic> data =
-                                  Map<dynamic, dynamic>.from(chatData);
-                              Chat chatModel = Chat.fromFirebaseMap(data);
-                              chatList.add(chatModel);
+                                  Map<dynamic, dynamic>.from(
+                                      (snapshot.data as DatabaseEvent)
+                                          .snapshot
+                                          .value);
+                              for (Map<dynamic, dynamic> chatData
+                                  in data.values) {
+                                Map<dynamic, dynamic> data =
+                                    Map<dynamic, dynamic>.from(chatData);
+                                Chat chatModel = Chat.fromFirebaseMap(data);
+                                chatList.add(chatModel);
+                              }
+                              chatList.sort(((a, b) => b.cid
+                                  .toLowerCase()
+                                  .compareTo(a.cid.toLowerCase())));
                             }
                           }
                           return chatList.isEmpty
                               ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
-                              : ListView.builder(
-                                  itemCount: chatList.length,
-                                  itemBuilder: (context, index) => ChatItem(
-                                      userName: chatList[index].userName,
-                                      text: chatList[index].text,
-                                      img_url: chatList[index].img_url));
+                              : Padding(
+                                  padding: const EdgeInsets.only(bottom: 15.0),
+                                  child: ListView.builder(
+                                      reverse: true,
+                                      itemCount: chatList.length,
+                                      itemBuilder: (context, index) => ChatItem(
+                                          userName: chatList[index].userName,
+                                          text: chatList[index].text,
+                                          img_url: chatList[index].img_url)),
+                                );
                         }),
                   ),
                 ],
@@ -108,7 +123,15 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                     width: 5,
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (chatTc.text.isNotEmpty) {
+                        userService.addChat(
+                            chatTc.text,
+                            mainController.myInfo.value.userName,
+                            mainController.myInfo.value.img_url,
+                            edirPAgeController.currentEdir.value.eid);
+                      }
+                    },
                     icon: const Icon(Icons.send),
                     color: Colors.white,
                   ),

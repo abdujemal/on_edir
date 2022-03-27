@@ -42,13 +42,14 @@ class UserService extends GetxService {
 
   MyProfileController myProfileController = Get.put(MyProfileController());
 
-  addChat(String text,String userName, String img_url, String eid) async {
-    try{
-      
-      Chat chat = Chat(text, cid, userName, img_url)
-      Map<String,Object> chatMap = 
-      await database.ref().child("GroupChat").child(eid).update(value)
-    }catch(e){
+  addChat(String text, String userName, String img_url, String eid) async {
+    try {
+      DatabaseReference ref =
+          database.ref().child("GroupChat").child(eid).push();
+      Chat chat = Chat(text, ref.key.toString(), userName, img_url);
+      Map<String, Object> chatMap = chat.toFirebaseMap(chat);
+      await ref.update(chatMap);
+    } catch (e) {
       MSGSnack errorMSG =
           MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
       errorMSG.show();
@@ -289,7 +290,7 @@ class UserService extends GetxService {
       await ref.update(newEdir);
 
       await database
-          .ref() 
+          .ref()
           .child("PaymentOptions")
           .child(ref.key.toString())
           .update(options);
