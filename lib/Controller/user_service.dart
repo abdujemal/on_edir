@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Model/bankaccount_options.dart';
+import 'package:on_edir/Model/chat.dart';
 import 'package:on_edir/Model/edir.dart';
 import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/my_info.dart';
@@ -40,6 +41,19 @@ class UserService extends GetxService {
   JoinEdirController joinEdirController = Get.put(JoinEdirController());
 
   MyProfileController myProfileController = Get.put(MyProfileController());
+
+  addChat(String text,String userName, String img_url, String eid) async {
+    try{
+      
+      Chat chat = Chat(text, cid, userName, img_url)
+      Map<String,Object> chatMap = 
+      await database.ref().child("GroupChat").child(eid).update(value)
+    }catch(e){
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+  }
 
   Future<List<BankAccountOption>> getOptionsUser(String eid) async {
     List<BankAccountOption> options = [];
