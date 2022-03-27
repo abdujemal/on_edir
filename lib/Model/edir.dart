@@ -7,7 +7,8 @@ class Edir {
       edirName,
       eid,
       img_url,
-      rules;
+      rules,
+      created_by_name;
   Edir(
       this.amountOfMoney,
       this.created_by,
@@ -17,7 +18,8 @@ class Edir {
       this.edirName,
       this.eid,
       this.img_url,
-      this.rules);
+      this.rules,
+      this.created_by_name);
 
   Map<String, Object> toFirebaseMap(Edir edir) {
     return {
@@ -29,7 +31,8 @@ class Edir {
       "rules": edir.rules,
       "created_by": edir.created_by,
       "durationOfPayment": edir.durationOfPayment,
-      "amountOfMoney": edir.amountOfMoney
+      "amountOfMoney": edir.amountOfMoney,
+      "created_by_name": edir.created_by_name
     };
   }
 
@@ -42,5 +45,6 @@ class Edir {
         rules = data["rules"],
         created_by = data["created_by"],
         durationOfPayment = data["durationOfPayment"],
-        amountOfMoney = data["amountOfMoney"];
+        amountOfMoney = data["amountOfMoney"],
+        created_by_name = data["created_by_name"];
 }

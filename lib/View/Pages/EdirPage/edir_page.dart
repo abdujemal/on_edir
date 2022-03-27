@@ -10,7 +10,8 @@ import 'package:on_edir/View/Widgets/edir_drawer.dart';
 import 'package:on_edir/constants.dart';
 
 class EdirPage extends StatefulWidget {
-  EdirPage({Key key}) : super(key: key);
+  String edirId;
+  EdirPage({Key key, @required this.edirId}) : super(key: key);
 
   @override
   State<EdirPage> createState() => _EdirPageState();
@@ -32,10 +33,25 @@ class _EdirPageState extends State<EdirPage> {
           Icons.store,
         ),
         label: "Store"),
-    const BottomNavigationBarItem(icon: Icon(Icons.video_call), label: "Meeting")
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.video_call), label: "Meeting")
   ];
 
-  List<Widget> pages = [const AnnouncementPage(), const StorePage(), const MeetingPage()];
+  List<Widget> pages = [
+    const AnnouncementPage(),
+    const StorePage(),
+    const MeetingPage()
+  ];
+
+  UserService userService = Get.put(UserService());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.edirId);
+    userService.getEdir(widget.edirId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +64,7 @@ class _EdirPageState extends State<EdirPage> {
         drawer: const EdirDrawer(),
         bottomNavigationBar: BottomBar(items: items),
         appBar: AppBar(
-          title: const Text("Edir Name"),
+          title: Text(edirPAgeController.currentEdir.value.edirName),
           backgroundColor: Colors.transparent,
           centerTitle: true,
           leading: IconButton(

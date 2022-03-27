@@ -5,14 +5,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Model/edir.dart';
+import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/my_info.dart';
 import 'package:on_edir/View/Pages/CreateEdir/controller/create_edir_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/edir_page.dart';
+import 'package:on_edir/View/Pages/JoinEdir/controller/join_edir_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/main_page.dart';
 import 'package:on_edir/View/Widgets/msg_snack.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../View/Pages/LoginSignUp/controller/l_s_controller.dart';
 
@@ -29,10 +30,33 @@ class UserService extends GetxService {
 
   FirebaseStorage storage = FirebaseStorage.instance;
 
-  Future<List<Edir>> checkEdirList() async {
+  CreateEdirController createEdirController = Get.put(CreateEdirController());
+
+  JoinEdirController joinEdirController = Get.put(JoinEdirController());
+
+  Future<Edir> getEdir(String eid) async {
+    try {
+      DatabaseEvent databaseEvent =
+          await database.ref().child("Edirs").child(eid).once();
+      if (databaseEvent.snapshot.exists) {
+        Map<dynamic, dynamic> data = databaseEvent.snapshot.value;
+        Edir edirModel = Edir.fromFirebaseMap(data);
+        edirPAgeController.setCurrentEdir(edirModel);
+      }
+    } catch (e) {
+      MSGSnack msgSnack =
+          MSGSnack(title: "!Error", msg: e.toString(), color: Colors.red);
+      msgSnack.show();
+    }
+  }
+
+  Future<List<Edir>> getEdirList() async {
     DatabaseReference ref = database.ref().child("Edirs");
+
     List<Edir> edirList = [];
+
     DatabaseEvent databaseEvent = await ref.once();
+
     if (databaseEvent.snapshot.exists) {
       Map<dynamic, dynamic> edirsData =
           databaseEvent.snapshot.value as Map<dynamic, dynamic>;
@@ -48,16 +72,27 @@ class UserService extends GetxService {
     return edirList;
   }
 
-  getUserInfo() async {
-    DatabaseEvent databaseEvent =
-        await database.ref().child("Users").child(auth.currentUser.uid).once();
+  Future<bool> getUserInfo() async {
+    try {
+      DatabaseEvent databaseEvent = await database
+          .ref()
+          .child("Users")
+          .child(auth.currentUser.uid)
+          .once();
 
-    Map<dynamic, dynamic> data =
-        databaseEvent.snapshot.value as Map<dynamic, dynamic>;
+      Map<dynamic, dynamic> data =
+          databaseEvent.snapshot.value as Map<dynamic, dynamic>;
 
-    MyInfo myInfo = MyInfo.fromFirebaseMap(data);
+      MyInfo myInfo = MyInfo.fromFirebaseMap(data);
 
-    mainController.setMyInfo(myInfo);
+      mainController.setMyInfo(myInfo);
+      mainController.setUserInfoIsAvailable(true);
+    } catch (e) {
+      MSGSnack msgSnack =
+          MSGSnack(title: "!Error", msg: e.toString(), color: Colors.red);
+      msgSnack.show();
+      mainController.setUserInfoIsAvailable(true);
+    }
   }
 
   Future<String> uploadImage(String path, File file) async {
@@ -75,22 +110,51 @@ class UserService extends GetxService {
     }
   }
 
-  joinEdir(String edirId) async {
-    // Map<String, Object> joiningEdir = {
-    //   "edirName": edirName,
-    //   "edirAddress": address,
-    //   "uid": auth.currentUser.uid,
-    //   "user_img_url": url
-    // };
+  joinEdir(String edirId, String position, BuildContext context) async {
+    EdirMember edirMember = EdirMember(mainController.myInfo.value.img_url,
+        position, auth.currentUser.uid, mainController.myInfo.value.userName);
+
+    Map<String, Object> joiningUser = edirMember.tofirebaseMap(edirMember);
+    Map<String, Object> myEdirListItem = {"eid": edirId};
 
     try {
-      // await database
-      //       .ref()
-      //       .child("JoinedEdir")
-      //       .child(edirId)
-      //       .child(auth.currentUser.uid)
-      //       .update(joiningEdir);
-    } catch (e) {}
+      joinEdirController.setIsLoading(true);
+
+      await database
+          .ref()
+          .child("EdirMembers")
+          .child(edirId)
+          .child(auth.currentUser.uid)
+          .update(joiningUser);
+      await database
+          .ref()
+          .child("MyEdirLists")
+          .child(auth.currentUser.uid)
+          .child(edirId)
+          .update(myEdirListItem);
+
+      MSGSnack msgSnack = MSGSnack(
+          title: "!Success",
+          msg: position == "Admin"
+              ? "You have successfully created your edir."
+              : "You have successfully joined your edir.",
+          color: Colors.green);
+      msgSnack.show();
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (ctx) => EdirPage(
+                    edirId: edirId,
+                  )));
+      
+      joinEdirController.setIsLoading(false);
+      createEdirController.setIsLoading(false);
+    } catch (e) {
+      MSGSnack msgSnack =
+          MSGSnack(title: "!Error", msg: e.toString(), color: Colors.red);
+      msgSnack.show();
+    }
   }
 
   createEdir(
@@ -103,11 +167,9 @@ class UserService extends GetxService {
       String amountOfMoney,
       File file,
       BuildContext context) async {
-    CreateEdirController controller = Get.put(CreateEdirController());
-
     DatabaseReference ref = database.ref().child("Edirs").push();
 
-    controller.setIsLoading(true);
+    createEdirController.setIsLoading(true);
 
     String url = await uploadImage("EdirImage/${ref.key.toString()}.png", file);
 
@@ -120,7 +182,8 @@ class UserService extends GetxService {
       "amountOfMoney": amountOfMoney,
       "rules": rules,
       "img_url": url,
-      "created_by": auth.currentUser.uid
+      "created_by": auth.currentUser.uid,
+      "created_by_name": mainController.myInfo.value.userName
     };
 
     try {
@@ -132,10 +195,9 @@ class UserService extends GetxService {
           .child(ref.key.toString())
           .update(options);
 
-      Navigator.push(context, MaterialPageRoute(builder: (ctx) => EdirPage()));
-      controller.setIsLoading(false);
+      await joinEdir(ref.key.toString(), "Admin", context);
     } catch (e) {
-      controller.setIsLoading(false);
+      createEdirController.setIsLoading(false);
       MSGSnack msgSnack = MSGSnack(
           title: "Error on uploading data!",
           msg: e.toString(),
@@ -222,8 +284,6 @@ class UserService extends GetxService {
       errorMSG.show();
     }
   }
-
-  signInWGoogleAccount() {}
 
   forgetPassword(String email, BuildContext context) async {
     try {
