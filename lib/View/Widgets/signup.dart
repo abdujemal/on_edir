@@ -42,7 +42,7 @@ class SignUp extends StatelessWidget {
                       radius: 50,
                     ):
                     CircleAvatar(
-                      // backgroundImage: Image.file(lsController.pickedFile.value),                         
+                      backgroundImage: FileImage(lsController.pickedFile.value),                         
                       radius: 50,
                     )
                   ),
