@@ -33,9 +33,9 @@ class _EdirInfoUserState extends State<EdirInfoUser> {
             EdirInfoItem(title: "Amount Of Money", value: "Edir Name"),
             EdirInfoItem(title: "Duration Of Payment", value: "Edir Name"),
             Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(10),
-              child: Column(children: [
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
+              child: Column(children: const [
                 Center(child: Text("Edir Rules And Regulations",style: TextStyle(fontSize: 20),),),
                 SizedBox(height: 20,),
                 Text("Rules")

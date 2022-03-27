@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:on_edir/View/Pages/LoginSignUp/login_signin_page.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
