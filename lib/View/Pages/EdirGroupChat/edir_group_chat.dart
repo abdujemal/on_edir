@@ -77,7 +77,7 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                           }
                           return chatList.isEmpty
                               ? const Center(
-                                  child: CircularProgressIndicator(),
+                                  child: Text("No Chat"),
                                 )
                               : Padding(
                                   padding: const EdgeInsets.only(bottom: 50.0),

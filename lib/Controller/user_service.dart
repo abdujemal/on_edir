@@ -4,12 +4,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_edir/Model/announcement.dart';
 import 'package:on_edir/Model/bankaccount_options.dart';
 import 'package:on_edir/Model/chat.dart';
 import 'package:on_edir/Model/edir.dart';
 import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/my_info.dart';
 import 'package:on_edir/Model/payment_request.dart';
+import 'package:on_edir/View/Pages/AddAnnouncementPage/controller/add_announcement_controller.dart';
 import 'package:on_edir/View/Pages/CreateEdir/controller/create_edir_controller.dart';
 import 'package:on_edir/View/Pages/EdirInfoAdmin/controller/edir_info_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
@@ -43,18 +45,63 @@ class UserService extends GetxService {
 
   MyProfileController myProfileController = Get.put(MyProfileController());
 
-  changePaymentRequestState(String state,String ref)async{
-    try{
-      await database.ref(ref).child("state").set(state);
-    }catch(e){
+  AddAnnouncementController addAnnouncementController =
+      Get.put(AddAnnouncementController());
+
+  addAnnouncement(
+      String title, String description, BuildContext context) async {
+    addAnnouncementController.setIsLoading(true);
+
+    DateTime dt = DateTime.now();
+
+    DatabaseReference ref = database
+        .ref()
+        .child("Announcements")
+        .child(edirPAgeController.currentEdir.value.eid)
+        .push();
+    try {
+      Announcement announcement =
+          Announcement("${dt.day}/${dt.month}/${dt.year} at ${dt.hour}:${dt.minute}", description, title, ref.key.toString());
+
+      Map<String, Object> map = announcement.toFirebaseMap(announcement);
+
+      await ref.update(map);
+
+      addAnnouncementController.setIsLoading(false);
+
+      MSGSnack errorMSG = MSGSnack(
+          color: Colors.green,
+          title: "Success!",
+          msg: "Announcement Is Successfully Added.");
+      errorMSG.show();
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (c) =>
+                  EdirPage(edirId: edirPAgeController.currentEdir.value.eid)),
+          (route) => false);
+    } catch (e) {
+      addAnnouncementController.setIsLoading(false);
+
       MSGSnack errorMSG =
           MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
       errorMSG.show();
     }
   }
 
-  Future<void> sendPaymentRequest(
-      String receiverId, String state, String title, String description, String eid) async {
+  changePaymentRequestState(String state, String ref) async {
+    try {
+      await database.ref(ref).child("state").set(state);
+    } catch (e) {
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+  }
+
+  Future<void> sendPaymentRequest(String receiverId, String state, String title,
+      String description, String eid) async {
     try {
       DatabaseReference ref =
           database.ref().child("PaymentRequest").child(receiverId).push();
