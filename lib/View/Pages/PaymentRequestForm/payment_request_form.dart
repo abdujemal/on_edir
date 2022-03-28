@@ -45,7 +45,7 @@ class _PaymentRequestFormState extends State<PaymentRequestForm> {
     titleTc.text = "";
     descriptionTc.text = "";
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (c) => widget.members.length > 1 ? const PaymentAdmin(): PaymentRequestPageAdmin(uid: widget.members[0].uid)));
+        context, MaterialPageRoute(builder: (c) => widget.members.length > 1 ? const PaymentAdmin(): PaymentRequestPageAdmin(edirMember: widget.members[0])));
   }
 
   @override
@@ -69,14 +69,14 @@ class _PaymentRequestFormState extends State<PaymentRequestForm> {
                 ),
                 CommonInput(
                     controller: titleTc,
-                    hint: "Request Title",
+                    hint: "Request Messege",
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                     controller: descriptionTc,
-                    hint: "Request Description",
+                    hint: "Amount Of Money",
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,

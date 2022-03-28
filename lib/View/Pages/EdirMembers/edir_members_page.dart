@@ -29,7 +29,7 @@ class _EdirMembersPageState extends State<EdirMembersPage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("EdirName Members"),
+          title: Text("${edirPAgeController.currentEdir.value.edirName} Members"),
           centerTitle: true,
         ),
         body: StreamBuilder(

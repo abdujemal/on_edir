@@ -1,11 +1,20 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:on_edir/Controller/user_service.dart';
+import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/payment_request.dart';
+import 'package:on_edir/View/Pages/PaymentRequestForm/payment_request_form.dart';
+import 'package:on_edir/View/Widgets/common_btn.dart';
+import 'package:on_edir/View/Widgets/request_item_admin.dart';
 import 'package:on_edir/constants.dart';
 
 class PaymentRequestPageAdmin extends StatefulWidget {
-  String uid;
-  PaymentRequestPageAdmin({Key key, @required this.uid}) : super(key: key);
+  EdirMember edirMember;
+
+  PaymentRequestPageAdmin(
+      {Key key, @required this.edirMember})
+      : super(key: key);
 
   @override
   State<PaymentRequestPageAdmin> createState() =>
@@ -27,8 +36,13 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
           title: const Text("Request List"),
           centerTitle: true,
         ),
+        floatingActionButton: CommonBtn(
+            text: "Send Request",
+            action: () {
+              Get.to(() => PaymentRequestForm(members: [widget.edirMember]));
+            }),
         body: StreamBuilder(
-          stream: requestRef.child(widget.uid).onValue,
+          stream: requestRef.child(widget.edirMember.uid).onValue,
           builder: (context, snapshot) {
             List<PaymentRequest> reqList = [];
             if (snapshot.hasData) {
@@ -38,25 +52,26 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
                 for (Map<dynamic, dynamic> reqData in data.values) {
                   if (reqData != null) {
                     PaymentRequest paymentRequest =
-                        PaymentRequest.fromFirebaseMap(data);
+                        PaymentRequest.fromFirebaseMap(reqData);
                     reqList.add(paymentRequest);
                   }
                 }
-                reqList..sort(((a, b) =>
+                reqList.sort(((a, b) =>
                     a.eid.toLowerCase().compareTo(b.eid.toLowerCase())));
               }
             }
             return reqList.isEmpty
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: Text("No Request"),
                   )
-                : ListView.builder(
-                    itemCount: reqList.length,
-                    itemBuilder: (context, index) =>
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(height: 30, width: 30, color: Colors.white),
-                        ));
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 80),
+                    child: ListView.builder(
+                        itemCount: reqList.length,
+                        itemBuilder: (context, index) => RequestItemAdmin(
+                              paymentRequest: reqList[index],
+                            )),
+                  );
           },
         ),
       ),

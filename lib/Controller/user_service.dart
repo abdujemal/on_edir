@@ -43,6 +43,16 @@ class UserService extends GetxService {
 
   MyProfileController myProfileController = Get.put(MyProfileController());
 
+  changePaymentRequestState(String state,String ref)async{
+    try{
+      await database.ref(ref).child("state").set(state);
+    }catch(e){
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+  }
+
   Future<void> sendPaymentRequest(
       String receiverId, String state, String title, String description, String eid) async {
     try {
