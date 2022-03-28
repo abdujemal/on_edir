@@ -17,6 +17,7 @@ class AnnouncementItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            
             Center(child: Text(announcement.title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)),
             SizedBox(height: 10,),
             Center(child: Text(announcement.description)),

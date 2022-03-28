@@ -45,7 +45,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                     Announcement announcement =
                         Announcement.fromFirebaseMap(adata);
                     // print(anounceData);
-                    announcementList.add(announcement);
+                    if (announcement.aid != null) {
+                      announcementList.add(announcement);
+                    }
                   }
                   announcementList.sort(((a, b) => a.aid.compareTo(b.aid)));
                 }
