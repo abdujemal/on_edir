@@ -54,7 +54,7 @@ class EdirMemberFrPayment extends StatelessWidget {
                     name,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(

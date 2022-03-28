@@ -84,7 +84,7 @@ class _SignUpState extends State<SignUp> {
                           color: whiteColor,
                           onPressed: () async {
                             XFile imagexFile = await ImagePicker()
-                                .pickImage(source: ImageSource.gallery);
+                              .pickImage(source: ImageSource.gallery);
                             if (imagexFile != null) {
                               File imageFile = File(imagexFile.path);
 
