@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:on_edir/View/Pages/PaymentUser/payment_user.dart';
-import 'package:on_edir/View/Widgets/action_btn.dart';
-import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/constants.dart';
 
 class EdirMemberFrPayment extends StatelessWidget {
-  const EdirMemberFrPayment({Key key}) : super(key: key);
+  String img_url, name, position;
+  void Function() onTap;
+  
+  EdirMemberFrPayment(
+      {Key key,
+      @required this.img_url,
+      @required this.name,
+      @required this.position,
+      @required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Get.to(() => const PaymentUser());
-      },
+      onTap: onTap,
       child: Ink(
         decoration: BoxDecoration(
             color: mainColor,
@@ -24,12 +27,9 @@ class EdirMemberFrPayment extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 30,
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 40,
-                    ),
+                    backgroundImage: NetworkImage(img_url),
                   ),
                   Positioned(
                     bottom: 2,
@@ -49,23 +49,23 @@ class EdirMemberFrPayment extends StatelessWidget {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    "Member name",
+                    name,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "Member Position",
+                    position,
                     style: TextStyle(
                         color: Colors.grey, overflow: TextOverflow.ellipsis),
                   )
                 ],
               ),
               const Spacer(),
-              ActionBtn(text: "Send Request", action: () {})
+              // ActionBtn(text: "Send Request", action: () {})
             ],
           ),
         ),

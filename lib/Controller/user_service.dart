@@ -9,6 +9,7 @@ import 'package:on_edir/Model/chat.dart';
 import 'package:on_edir/Model/edir.dart';
 import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/my_info.dart';
+import 'package:on_edir/Model/payment_request.dart';
 import 'package:on_edir/View/Pages/CreateEdir/controller/create_edir_controller.dart';
 import 'package:on_edir/View/Pages/EdirInfoAdmin/controller/edir_info_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
@@ -41,6 +42,26 @@ class UserService extends GetxService {
   JoinEdirController joinEdirController = Get.put(JoinEdirController());
 
   MyProfileController myProfileController = Get.put(MyProfileController());
+
+  Future<void> sendPaymentRequest(
+      String receiverId, String state, String title, String description, String eid) async {
+    try {
+      DatabaseReference ref =
+          database.ref().child("PaymentRequest").child(receiverId).push();
+      PaymentRequest paymentRequest = PaymentRequest(auth.currentUser.uid,
+          description, receiverId, state, title, ref.key.toString(), eid);
+      Map<String, Object> map = paymentRequest.toFirbaseMap(paymentRequest);
+      await ref.update(map);
+
+      MSGSnack errorMSG = MSGSnack(
+          color: Colors.green, title: "Success!", msg: "Successfully uploaded");
+      errorMSG.show();
+    } catch (e) {
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+  }
 
   addChat(String text, String userName, String img_url, String eid) async {
     try {

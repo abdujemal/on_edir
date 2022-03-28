@@ -15,6 +15,7 @@ import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/main_page.dart';
 import 'package:on_edir/View/Pages/MyProfile/my_profile.dart';
 import 'package:on_edir/View/Pages/PaymentAdmin/payment_admin.dart';
+import 'package:on_edir/View/Pages/PaymentUser/payment_user.dart';
 import 'package:on_edir/View/Widgets/drawer_list_item.dart';
 import 'package:on_edir/View/Widgets/small_edir_member_item.dart';
 import 'package:on_edir/constants.dart';
@@ -165,7 +166,7 @@ class _EdirDrawerState extends State<EdirDrawer> {
           ),
           DrawerListItem(
               text: "Payment",
-              action: () => Get.to(const PaymentAdmin()),
+              action: () => Get.to(()=> edirPAgeController.currentEdir.value.created_by == mainController.myInfo.value.uid ? const PaymentAdmin() : const PaymentUser()),
               icon: Icons.payment),
           const SizedBox(
             height: 5,
