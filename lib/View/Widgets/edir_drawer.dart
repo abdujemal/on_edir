@@ -91,7 +91,6 @@ class _EdirDrawerState extends State<EdirDrawer> {
                       DrawerListItem(
                           text: "Add Edir",
                           action: () {
-                            mainController.edirList.clear();
                             Get.to(() => const MainPage());
                           },
                           icon: Icons.add)
@@ -110,7 +109,7 @@ class _EdirDrawerState extends State<EdirDrawer> {
   }
 
   getMyEdirList() async {
-    mainController.edirList.clear();
+    
     await userService.getEdirList();
     for (Edir edir in mainController.edirList) {
       edirList.add(SmallEdirMemberItem(

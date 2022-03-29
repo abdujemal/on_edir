@@ -61,6 +61,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                       itemBuilder: (context, index) => AnnouncementItem(
                           announcement: announcementList[index]));
             })),
+        Obx(()=>
         edirPAgeController.currentEdir.value.created_by !=
                 mainController.myInfo.value.uid
             ? const SizedBox()
@@ -71,7 +72,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                   onTap: () {
                     Get.to(() => const AddAnnouncement());
                   },
-                ))
+                )))
       ],
     );
   }

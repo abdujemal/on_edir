@@ -36,7 +36,11 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("EdirName Group Chat"),
+          title: Obx(()=> edirPAgeController.currentEdir.value == null?
+              const SizedBox():
+              Text("${edirPAgeController.currentEdir.value.edirName} Group Chat")
+            
+          ),
           centerTitle: true,
         ),
         body: Stack(

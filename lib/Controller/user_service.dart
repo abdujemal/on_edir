@@ -60,8 +60,11 @@ class UserService extends GetxService {
         .child(edirPAgeController.currentEdir.value.eid)
         .push();
     try {
-      Announcement announcement =
-          Announcement("${dt.day}/${dt.month}/${dt.year} at ${dt.hour}:${dt.minute}", description, title, ref.key.toString());
+      Announcement announcement = Announcement(
+          "${dt.day}/${dt.month}/${dt.year} at ${dt.hour}:${dt.minute}",
+          description,
+          title,
+          ref.key.toString());
 
       Map<String, Object> map = announcement.toFirebaseMap(announcement);
 
@@ -241,8 +244,9 @@ class UserService extends GetxService {
           Map<dynamic, dynamic> edirData =
               Map<dynamic, dynamic>.from(edirEvents.snapshot.value);
           Edir edirModel = Edir.fromFirebaseMap(edirData);
-          mainController.edirList.add(edirModel);
+          edirList.add(edirModel);
         }
+        mainController.edirList.value = edirList;
       }
     } catch (e) {
       MSGSnack msgSnack =
