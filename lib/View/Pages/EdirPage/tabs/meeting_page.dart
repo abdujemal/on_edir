@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:on_edir/src/pages/index.dart';
 
 class MeetingPage extends StatefulWidget {
-  const MeetingPage({ Key key }) : super(key: key);
+  const MeetingPage({Key key}) : super(key: key);
 
   @override
   State<MeetingPage> createState() => _MeetingPageState();
@@ -10,8 +11,6 @@ class MeetingPage extends StatefulWidget {
 class _MeetingPageState extends State<MeetingPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(child: Text("Meeting Page")),
-    );
+    return IndexPage();
   }
 }

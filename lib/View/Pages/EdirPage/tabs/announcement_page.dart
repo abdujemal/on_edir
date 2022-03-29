@@ -49,7 +49,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                       announcementList.add(announcement);
                     }
                   }
-                  announcementList.sort(((a, b) => a.aid.compareTo(b.aid)));
+                  announcementList.sort(((a, b) => a.aid.toLowerCase().compareTo(b.aid.toLowerCase())));
                 }
               }
               return announcementList.isEmpty

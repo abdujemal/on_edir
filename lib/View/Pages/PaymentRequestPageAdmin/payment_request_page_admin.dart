@@ -57,7 +57,7 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
                   }
                 }
                 reqList.sort(((a, b) =>
-                    a.eid.toLowerCase().compareTo(b.eid.toLowerCase())));
+                    b.pid.toLowerCase().compareTo(a.pid.toLowerCase())));
               }
             }
             return reqList.isEmpty

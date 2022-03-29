@@ -14,7 +14,7 @@ class CustomFab extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: InkWell(
-          onTap: () => Get.to(() => const AddAnnouncement()),
+          onTap: onTap,
           child: Ink(
               decoration: BoxDecoration(
                   color: secondColor, borderRadius: BorderRadius.circular(30)),
