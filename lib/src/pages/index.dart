@@ -33,10 +33,12 @@ class IndexState extends State<IndexPage> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       height: 400,
       child: Column(
-        
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-         
-          
+          const Text("Video Conference", style: TextStyle(fontSize: 25),),
+          const SizedBox(height: 10,),
+          const Icon(Icons.video_call,size: 100,),
+          const SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Row(
@@ -44,7 +46,7 @@ class IndexState extends State<IndexPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: onJoin,
-                    child: Text('Join'),
+                    child: const Text('Join'),
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.blueAccent),
@@ -75,21 +77,18 @@ class IndexState extends State<IndexPage> {
           ? _validateError = true
           : _validateError = false;
     });
-    if (_channelController.text.isNotEmpty) {
-      // await for camera and mic permissions before pushing video page
-      await _handleCameraAndMic(Permission.camera);
-      await _handleCameraAndMic(Permission.microphone);
-      // push video page with given channel name
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const CallPage(
-            channelName: "hello",
-            role: ClientRole.Broadcaster
-          ),
-        ),
-      );
-    }
+
+    // await for camera and mic permissions before pushing video page
+    await _handleCameraAndMic(Permission.camera);
+    await _handleCameraAndMic(Permission.microphone);
+    // push video page with given channel name
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            const CallPage(channelName: "hello", role: ClientRole.Broadcaster),
+      ),
+    );
   }
 
   Future<void> _handleCameraAndMic(Permission permission) async {

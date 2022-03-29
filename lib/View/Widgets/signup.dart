@@ -83,8 +83,8 @@ class _SignUpState extends State<SignUp> {
                       child: IconButton(
                           color: whiteColor,
                           onPressed: () async {
-                            File imagexFile = await ImagePicker()
-                              .pickImage();
+                            XFile imagexFile = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
                             if (imagexFile != null) {
                               File imageFile = File(imagexFile.path);
 

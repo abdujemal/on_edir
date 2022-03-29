@@ -93,8 +93,8 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                         right: -5,
                         child: IconButton(
                           onPressed: () async {
-                            File imagexFile = await ImagePicker()
-                                .pickImage();
+                            XFile imagexFile = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
                             if (imagexFile != null) {
                               createEdirController.setImage(imagexFile.path);
                             } else {
