@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/View/Pages/AddStoreItemPage/constroller/add_store_controller.dart';
 import 'package:on_edir/View/Widgets/common_btn.dart';
@@ -65,17 +65,17 @@ class _AddStoreItemState extends State<AddStoreItem> {
                       right: -5,
                       child: IconButton(
                         onPressed: () async {
-                          XFile xFile = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
-                          if (xFile != null) {
-                            addStoreController.setFilePath(xFile.path);
-                          } else {
-                            MSGSnack msgSnack = MSGSnack(
-                                title: "Alert!",
-                                msg: "you have not chosen an image",
-                                color: Colors.red);
-                            msgSnack.show();
-                          }
+                          // XFile xFile = await ImagePicker()
+                          //     .pickImage(source: ImageSource.gallery);
+                          // if (xFile != null) {
+                          //   addStoreController.setFilePath(xFile.path);
+                          // } else {
+                          //   MSGSnack msgSnack = MSGSnack(
+                          //       title: "Alert!",
+                          //       msg: "you have not chosen an image",
+                          //       color: Colors.red);
+                          //   msgSnack.show();
+                          // }
                         },
                         icon: const Icon(
                           Icons.add_a_photo_sharp,
