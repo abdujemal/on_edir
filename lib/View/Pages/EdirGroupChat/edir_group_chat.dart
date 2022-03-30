@@ -36,11 +36,10 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: Obx(()=> edirPAgeController.currentEdir.value == null?
-              const SizedBox():
-              Text("${edirPAgeController.currentEdir.value.edirName} Group Chat")
-            
-          ),
+          title: Obx(() => edirPAgeController.currentEdir.value == null
+              ? const SizedBox()
+              : Text(
+                  "${edirPAgeController.currentEdir.value.edirName} Group Chat")),
           centerTitle: true,
         ),
         body: Stack(
@@ -56,8 +55,9 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                             .child(edirPAgeController.currentEdir.value.eid)
                             .onValue,
                         builder: (context, snapshot) {
-                          List<Chat> chatList = [];
+                          List<Chat> chatList = null;
                           if (snapshot.hasData) {
+                            chatList = [];
                             if ((snapshot.data as DatabaseEvent)
                                     .snapshot
                                     .value !=
@@ -72,27 +72,35 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                                 Map<dynamic, dynamic> data =
                                     Map<dynamic, dynamic>.from(chatData);
                                 Chat chatModel = Chat.fromFirebaseMap(data);
-                                chatList.add(chatModel);
+                                if (chatModel.cid != null) {
+                                  chatList.add(chatModel);
+                                }
                               }
                               chatList.sort(((a, b) => b.cid
                                   .toLowerCase()
                                   .compareTo(a.cid.toLowerCase())));
                             }
                           }
-                          return chatList.isEmpty
-                              ? const Center(
-                                  child: Text("No Chat"),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(bottom: 50.0),
-                                  child: ListView.builder(
-                                      reverse: true,
-                                      itemCount: chatList.length,
-                                      itemBuilder: (context, index) => ChatItem(
-                                          userName: chatList[index].userName,
-                                          text: chatList[index].text,
-                                          img_url: chatList[index].img_url)),
-                                );
+                          return chatList == null
+                              ? const Center(child: CircularProgressIndicator())
+                              : chatList.isEmpty
+                                  ? const Center(
+                                      child: Text("No Chat"),
+                                    )
+                                  : Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 50.0),
+                                      child: ListView.builder(
+                                          reverse: true,
+                                          itemCount: chatList.length,
+                                          itemBuilder: (context, index) =>
+                                              ChatItem(
+                                                  userName:
+                                                      chatList[index].userName,
+                                                  text: chatList[index].text,
+                                                  img_url:
+                                                      chatList[index].img_url)),
+                                    );
                         }),
                   ),
                 ],

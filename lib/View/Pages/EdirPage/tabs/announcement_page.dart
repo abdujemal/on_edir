@@ -34,8 +34,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 .child(edirPAgeController.currentEdir.value.eid)
                 .onValue,
             builder: (context, snapshot) {
-              List<Announcement> announcementList = [];
+              List<Announcement> announcementList;
               if (snapshot.hasData) {
+                announcementList = [];
                 if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
                   Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
                       (snapshot.data as DatabaseEvent).snapshot.value);
@@ -49,10 +50,14 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                       announcementList.add(announcement);
                     }
                   }
-                  announcementList.sort(((a, b) => a.aid.compareTo(b.aid)));
+                  announcementList.sort(((a, b) =>
+                      a.aid.toLowerCase().compareTo(b.aid.toLowerCase())));
                 }
               }
-              return announcementList.isEmpty
+              return 
+              announcementList == null?
+              const Center(child: CircularProgressIndicator(),):
+              announcementList.isEmpty
                   ? const Center(
                       child: Text("No Announcement"),
                     )
@@ -61,8 +66,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                       itemBuilder: (context, index) => AnnouncementItem(
                           announcement: announcementList[index]));
             })),
-        Obx(()=>
-        edirPAgeController.currentEdir.value.created_by !=
+        Obx(() => edirPAgeController.currentEdir.value.created_by !=
                 mainController.myInfo.value.uid
             ? const SizedBox()
             : Align(

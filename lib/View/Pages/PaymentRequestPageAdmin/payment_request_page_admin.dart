@@ -12,8 +12,7 @@ import 'package:on_edir/constants.dart';
 class PaymentRequestPageAdmin extends StatefulWidget {
   EdirMember edirMember;
 
-  PaymentRequestPageAdmin(
-      {Key key, @required this.edirMember})
+  PaymentRequestPageAdmin({Key key, @required this.edirMember})
       : super(key: key);
 
   @override
@@ -44,8 +43,9 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
         body: StreamBuilder(
           stream: requestRef.child(widget.edirMember.uid).onValue,
           builder: (context, snapshot) {
-            List<PaymentRequest> reqList = [];
+            List<PaymentRequest> reqList;
             if (snapshot.hasData) {
+              reqList = [];
               if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
                 Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
                     (snapshot.data as DatabaseEvent).snapshot.value);
@@ -53,14 +53,19 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
                   if (reqData != null) {
                     PaymentRequest paymentRequest =
                         PaymentRequest.fromFirebaseMap(reqData);
-                    reqList.add(paymentRequest);
+                    if (paymentRequest.pid != null) {
+                      reqList.add(paymentRequest);
+                    }
                   }
                 }
                 reqList.sort(((a, b) =>
-                    a.eid.toLowerCase().compareTo(b.eid.toLowerCase())));
+                    b.pid.toLowerCase().compareTo(a.pid.toLowerCase())));
               }
             }
-            return reqList.isEmpty
+            return 
+            reqList == null?
+            const Center(child: CircularProgressIndicator(),):
+            reqList.isEmpty
                 ? const Center(
                     child: Text("No Request"),
                   )

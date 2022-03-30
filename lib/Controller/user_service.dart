@@ -11,7 +11,9 @@ import 'package:on_edir/Model/edir.dart';
 import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/my_info.dart';
 import 'package:on_edir/Model/payment_request.dart';
+import 'package:on_edir/Model/store.dart';
 import 'package:on_edir/View/Pages/AddAnnouncementPage/controller/add_announcement_controller.dart';
+import 'package:on_edir/View/Pages/AddStoreItemPage/constroller/add_store_controller.dart';
 import 'package:on_edir/View/Pages/CreateEdir/controller/create_edir_controller.dart';
 import 'package:on_edir/View/Pages/EdirInfoAdmin/controller/edir_info_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
@@ -47,6 +49,51 @@ class UserService extends GetxService {
 
   AddAnnouncementController addAnnouncementController =
       Get.put(AddAnnouncementController());
+
+  AddStoreController addStoreController = Get.put(AddStoreController());
+
+  addStoreItem(String itemName, String itemDescription, File file,
+      BuildContext context) async {
+    addStoreController.setIsLoading(true);
+
+    DateTime dt = DateTime.now();
+
+    DatabaseReference ref = database
+        .ref()
+        .child("Store")
+        .child(edirPAgeController.currentEdir.value.eid)
+        .push();
+    try {
+      String imgUrl =
+          await uploadImage("StoreImage/${ref.key.toString()}.png", file);
+
+      Store store = Store(imgUrl, itemDescription, itemName, ref.key.toString(),
+          "${dt.day}/${dt.month}/${dt.year} at ${dt.hour}:${dt.minute}");
+
+      await ref.update(store.toFirebaseMap(store));
+
+      MSGSnack errorMSG = MSGSnack(
+          color: Colors.green,
+          title: "Success!",
+          msg: "You have successfully added.");
+      errorMSG.show();
+
+      addStoreController.setIsLoading(false);
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (c) =>
+                  EdirPage(edirId: edirPAgeController.currentEdir.value.eid)),
+          (route) => false);
+    } catch (e) {
+      addStoreController.setIsLoading(false);
+      
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+  }
 
   addAnnouncement(
       String title, String description, BuildContext context) async {

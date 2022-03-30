@@ -29,24 +29,30 @@ class _EdirMembersPageState extends State<EdirMembersPage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: Text("${edirPAgeController.currentEdir.value.edirName} Members"),
+          title:
+              Text("${edirPAgeController.currentEdir.value.edirName} Members"),
           centerTitle: true,
         ),
         body: StreamBuilder(
           stream:
               memberRef.child(edirPAgeController.currentEdir.value.eid).onValue,
           builder: ((context, snapshot) {
-            List<EdirMember> memberList = [];
+            List<EdirMember> memberList;
             if (snapshot.hasData) {
+              memberList = [];
               Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
                   (snapshot.data as DatabaseEvent).snapshot.value);
               for (Map<dynamic, dynamic> memberData in data.values) {
-                Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(memberData);
+                Map<dynamic, dynamic> data =
+                    Map<dynamic, dynamic>.from(memberData);
                 EdirMember edirMember = EdirMember.fromFirebaseMap(data);
                 memberList.add(edirMember);
               }
             }
-            return memberList.isEmpty
+            return
+            memberList == null?
+            const Center(child: CircularProgressIndicator(),):
+             memberList.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
                     itemCount: memberList.length,
