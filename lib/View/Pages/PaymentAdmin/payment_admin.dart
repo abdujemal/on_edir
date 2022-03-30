@@ -25,7 +25,7 @@ class _PaymentAdminState extends State<PaymentAdmin> {
   DatabaseReference databaseReference =
       FirebaseDatabase.instance.ref().child("EdirMembers");
 
-  List<EdirMember> memberList = [];
+  List<EdirMember> memberList;
 
   MainController mainController = Get.put(MainController());
 
@@ -51,29 +51,36 @@ class _PaymentAdminState extends State<PaymentAdmin> {
                 .child(edirPAgeController.currentEdir.value.eid)
                 .onValue,
             builder: (context, snapshot) {
-              memberList = [];
-
               if (snapshot.hasData) {
+                memberList = [];
                 Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
                     (snapshot.data as DatabaseEvent).snapshot.value);
 
                 for (Map<dynamic, dynamic> memberData in data.values) {
                   EdirMember edirMember =
                       EdirMember.fromFirebaseMap(memberData);
-                  if (edirMember.uid != mainController.myInfo.value.uid) {
-                    memberList.add(edirMember);
+                  if (edirMember.uid != null) {
+                    if (edirMember.uid != mainController.myInfo.value.uid) {
+                      memberList.add(edirMember);
+                    }
                   }
                 }
               }
-              return memberList.isEmpty
-                  ? const Center(child: Text("No Members"))
-                  : ListView.builder(
-                      itemCount: memberList.length,
-                      itemBuilder: ((context, index) => EdirMemberFrPayment(
-                          img_url: memberList[index].img_url,
-                          name: memberList[index].userName,
-                          position: memberList[index].position,
-                          onTap: () => Get.to(PaymentRequestPageAdmin(edirMember: memberList[index],)))));
+              return memberList == null
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : memberList.isEmpty
+                      ? const Center(child: Text("No Members"))
+                      : ListView.builder(
+                          itemCount: memberList.length,
+                          itemBuilder: ((context, index) => EdirMemberFrPayment(
+                              img_url: memberList[index].img_url,
+                              name: memberList[index].userName,
+                              position: memberList[index].position,
+                              onTap: () => Get.to(PaymentRequestPageAdmin(
+                                    edirMember: memberList[index],
+                                  )))));
             }),
       ),
     );

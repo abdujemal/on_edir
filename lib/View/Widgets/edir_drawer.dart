@@ -69,22 +69,21 @@ class _EdirDrawerState extends State<EdirDrawer> {
               child: Obx(
                 () => ExpansionTile(
                     tilePadding: const EdgeInsets.all(0),
-                    title: Obx(() => Text(
-                          edirPAgeController.currentEdir.value != null
-                              ? edirPAgeController.currentEdir.value.edirName
-                              : "",
+                    title: Obx(() => edirPAgeController.currentEdir.value.edirName != ""? Text(
+                          
+                             edirPAgeController.currentEdir.value.edirName
+                              ,
                           style: const TextStyle(fontSize: 20),
-                        )),
-                    subtitle: Obx(() => Text(
-                          edirPAgeController.currentEdir.value != null
-                              ? "Created by ${edirPAgeController.currentEdir.value.created_by_name}"
-                              : "",
+                        ):const Text("Loading...")),
+                    subtitle: Obx(() =>edirPAgeController.currentEdir.value.created_by != ""? Text(                         
+                              "Created by ${edirPAgeController.currentEdir.value.created_by_name}"
+                              ,
                           style: const TextStyle(
                               fontSize: 15,
                               color: Color.fromARGB(255, 197, 197, 197)),
-                        )),
+                        ):const Text("Loading...")),
                     children: [
-                      ...mainController.edirList.isNotEmpty ? edirList : [],
+                      ...mainController.edirList.isNotEmpty ? edirList : [const Center(child:CircularProgressIndicator())],
                       const SizedBox(
                         height: 15,
                       ),
@@ -110,7 +109,7 @@ class _EdirDrawerState extends State<EdirDrawer> {
 
   getMyEdirList() async {
     
-    await userService.getEdirList();
+    // await userService.getEdirList();
     for (Edir edir in mainController.edirList) {
       edirList.add(SmallEdirMemberItem(
         imgUrl: edir.img_url,

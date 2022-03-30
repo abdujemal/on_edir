@@ -54,7 +54,8 @@ class _EdirPageState extends State<EdirPage> {
     // TODO: implement initState
     super.initState();
     
-    // userService.getEdirList();
+    userService.getEdirList();
+    
     userService.getEdir(widget.edirId);
   }
   
@@ -70,9 +71,9 @@ class _EdirPageState extends State<EdirPage> {
         drawer: const EdirDrawer(),
         bottomNavigationBar: BottomBar(items: items),
         appBar: AppBar(
-          title: Obx(() => edirPAgeController.currentEdir.value != null
+          title: Obx(() => edirPAgeController.currentEdir.value.edirName != ""
               ? Text(edirPAgeController.currentEdir.value.edirName)
-              : const SizedBox()),
+              : const Text("Loading")),
           backgroundColor: Colors.transparent,
           centerTitle: true,
           leading: IconButton(

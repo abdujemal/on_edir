@@ -33,8 +33,9 @@ class _PaymentUserState extends State<PaymentUser> {
         body: StreamBuilder(
           stream: requestRef.child(mainController.myInfo.value.uid).onValue,
           builder: (context, snapshot) {
-            List<PaymentRequest> reqList = [];
+            List<PaymentRequest> reqList;
             if (snapshot.hasData) {
+              reqList = [];
               if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
                 Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
                     (snapshot.data as DatabaseEvent).snapshot.value);
@@ -42,14 +43,19 @@ class _PaymentUserState extends State<PaymentUser> {
                   if (reqData != null) {
                     PaymentRequest paymentRequest =
                         PaymentRequest.fromFirebaseMap(reqData);
-                    reqList.add(paymentRequest);
+                    if (paymentRequest.pid != null) {
+                      reqList.add(paymentRequest);
+                    }
                   }
                 }
                 reqList.sort(((a, b) =>
                     a.eid.toLowerCase().compareTo(b.eid.toLowerCase())));
               }
             }
-            return reqList.isEmpty
+            return 
+            reqList == null?
+            const Center(child: CircularProgressIndicator(),):
+            reqList.isEmpty
                 ? const Center(
                     child: Text("No Request"),
                   )

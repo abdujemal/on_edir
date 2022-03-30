@@ -32,8 +32,9 @@ class _StorePageState extends State<StorePage> {
           () => StreamBuilder(
             stream: ref.child(edirPAgeController.currentEdir.value.eid).onValue,
             builder: (context, snapshot) {
-              List<Store> storeList = [];
+              List<Store> storeList;
               if (snapshot.hasData) {
+                storeList = [];
                 if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
                   Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
                       (snapshot.data as DatabaseEvent).snapshot.value);
@@ -48,7 +49,10 @@ class _StorePageState extends State<StorePage> {
                       a.sid.toLowerCase().compareTo(b.sid.toLowerCase())));
                 }
               }
-              return storeList.isEmpty
+              return 
+              storeList == null?
+              const Center(child: CircularProgressIndicator()):
+              storeList.isEmpty
                   ? const Center(
                       child: Text("No Store Item"),
                     )
