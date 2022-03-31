@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/View/Pages/LoginSignUp/controller/l_s_controller.dart';
 import 'package:on_edir/View/Widgets/msg_snack.dart';
@@ -83,19 +83,19 @@ class _SignUpState extends State<SignUp> {
                       child: IconButton(
                           color: whiteColor,
                           onPressed: () async {
-                            XFile imagexFile = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
-                            if (imagexFile != null) {
-                              File imageFile = File(imagexFile.path);
+                            // File imagexFile = await ImagePicker()
+                            //   .pickImage();
+                            // if (imagexFile != null) {
+                            //   File imageFile = File(imagexFile.path);
 
-                              lsController.setPickedImage(imageFile.path);
-                            } else {
-                              MSGSnack msgSnack = MSGSnack(
-                                  title: "Alert!",
-                                  msg: "Image is not picked",
-                                  color: Colors.red);
-                              msgSnack.show();
-                            }
+                            //   lsController.setPickedImage(imageFile.path);
+                            // } else {
+                            //   MSGSnack msgSnack = MSGSnack(
+                            //       title: "Alert!",
+                            //       msg: "Image is not picked",
+                            //       color: Colors.red);
+                            //   msgSnack.show();
+                            // }
                           },
                           icon: Icon(
                             Icons.add_a_photo,
