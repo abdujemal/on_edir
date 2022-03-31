@@ -6,7 +6,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   agora_rtc_engine
   pdfx
   permission_handler_windows
-  url_launcher_windows
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

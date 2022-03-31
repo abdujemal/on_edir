@@ -1,3 +1,4 @@
+import 'package:clipboard_manager/clipboard_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,9 @@ import 'package:on_edir/View/Pages/MyProfile/my_profile.dart';
 import 'package:on_edir/View/Pages/PaymentAdmin/payment_admin.dart';
 import 'package:on_edir/View/Pages/PaymentUser/payment_user.dart';
 import 'package:on_edir/View/Widgets/drawer_list_item.dart';
+import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:on_edir/View/Widgets/small_edir_member_item.dart';
 import 'package:on_edir/constants.dart';
-import 'package:share_plus/share_plus.dart';
 
 class EdirDrawer extends StatefulWidget {
   const EdirDrawer({Key key}) : super(key: key);
@@ -182,8 +183,13 @@ class _EdirDrawerState extends State<EdirDrawer> {
           ),
           DrawerListItem(
               text: "Invite Members",
-              action: () => Share.share(
-                  "please join our edir using this code: ${edirPAgeController.currentEdir.value.eid}"),
+              action: () => ClipboardManager.copyToClipBoard(
+                      "please join our edir using this code: ${edirPAgeController.currentEdir.value.eid}")
+                  .then(MSGSnack(
+                          title: "",
+                          msg: "Copied to the Clipboard",
+                          color: Colors.green)
+                      .show()),
               icon: Icons.share),
           const SizedBox(
             height: 5,
