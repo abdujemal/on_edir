@@ -175,17 +175,6 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               const Spacer(),
-                              ActionBtn(
-                                  text: "Add Option",
-                                  action: () {
-                                    if (_optionKey.currentState.validate()) {
-                                      createEdirController.options.add(
-                                          BankAccountOption(
-                                              bankTc.text, accountTc.text));
-                                      bankTc.text = "";
-                                      accountTc.text = "";
-                                    }
-                                  }),
                               const SizedBox(
                                 width: 10,
                               ),
@@ -217,6 +206,23 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                                   keyboardType: TextInputType.text),
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        ActionBtn(
+                            text: "Add Option",
+                            action: () {
+                              if (_optionKey.currentState.validate()) {
+                                createEdirController.options.add(
+                                    BankAccountOption(
+                                        bankTc.text, accountTc.text));
+                                bankTc.text = "";
+                                accountTc.text = "";
+                              }
+                            }),
+                        SizedBox(
+                          height: 5,
                         ),
                         Obx(
                           () => Column(

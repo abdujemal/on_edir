@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
+import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 
 import '../utils/settings.dart';
 
@@ -31,6 +32,7 @@ class _CallPageState extends State<CallPage> {
   var _engine;
   EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
   UserService userService = Get.put(UserService());
+  MainController mainController = Get.put(MainController());
 
   @override
   void dispose() {
@@ -280,8 +282,12 @@ class _CallPageState extends State<CallPage> {
   }
 
   void _onCallEnd(BuildContext context) async {
-    if(await userService.deleteAccessTokenFromFirebase()){
-      print("Call ended");
+    if (edirPAgeController.currentEdir.value.created_by ==
+        mainController.myInfo.value.uid) {
+      if (await userService.deleteAccessTokenFromFirebase()) {
+        Navigator.pop(context);
+      }
+    }else{
       Navigator.pop(context);
     }
   }

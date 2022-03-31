@@ -28,7 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   agora_rtc_engine: null
-  clipboard_manager: ^0.0.4
+  # clipboard_manager: ^0.0.4
   cupertino_icons: ^1.0.2
   firebase_analytics: ^9.1.0
   firebase_auth: ^3.3.7

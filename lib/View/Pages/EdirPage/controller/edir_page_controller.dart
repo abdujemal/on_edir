@@ -12,7 +12,8 @@ class EdirPAgeController extends GetxController {
   Rx<Edir> currentEdir = Edir("", "", "", "", "", "", "", "", "", "").obs;
 
   void setIsTokenLoading(bool val) {
-    isTokenLoading.value = false;
+    
+    isTokenLoading.value = val;
   }
 
   void setAccessToken(String token) {

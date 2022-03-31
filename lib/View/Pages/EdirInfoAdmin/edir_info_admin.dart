@@ -173,20 +173,6 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
-                            ActionBtn(
-                                text: "Add Option",
-                                action: () {
-                                  if (_optionKey.currentState.validate()) {
-                                    edirInfoController.addList(
-                                        BankAccountOption(
-                                            bankTc.text, accountTc.text));
-                                    bankTc.text = "";
-                                    accountTc.text = "";
-                                  }
-                                }),
-                            const SizedBox(
-                              width: 10,
-                            ),
                             edirInfoController.options.value.isEmpty
                                 ? const SizedBox()
                                 : ActionBtn(
@@ -216,6 +202,20 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 5),
+                      ActionBtn(
+                          text: "Add Option",
+                          action: () {
+                            if (_optionKey.currentState.validate()) {
+                              edirInfoController.addList(BankAccountOption(
+                                  bankTc.text, accountTc.text));
+                              bankTc.text = "";
+                              accountTc.text = "";
+                            }
+                          }),
+                      const SizedBox(
+                        height: 5,
+                      ),
                       Obx(
                         () => Column(
                             children:
@@ -237,41 +237,43 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                 const SizedBox(
                   height: 10,
                 ),
-                Obx(() =>
-                edirInfoController.isLoading.value?
-                const CircularProgressIndicator():
-                CommonBtn(
-                    text: "Save Changes",
-                    action: () {
-                      if (!_adminFromKey.currentState.validate()) {
-                      } else if (edirInfoController.options.isEmpty) {
-                        MSGSnack msgSnack = MSGSnack(
-                            title: "Alert!",
-                            msg: "Please add options.",
-                            color: Colors.green);
-                        msgSnack.show();
-                      } else {
-                        int i = 0;
-                        Map<String, Object> optionMap = {};
-                        for (BankAccountOption option
-                            in edirInfoController.options) {
-                          i++;
-                          optionMap.addIf(true, "$i",
-                              {"bank": option.bank, "account": option.account});
-                        }
-                        userService.updateEdir(
-                            optionMap,
-                            edirPAgeController.currentEdir.value.eid,
-                            edirNameTc.text,
-                            edirRulesTc.text,
-                            edirAddressTc.text,
-                            edirBioTc.text,
-                            durationOfPaymentsTc.text,
-                            amountOfMoneyTc.text,
-                            context);
-                      }
-                    },
-                  ),
+                Obx(
+                  () => edirInfoController.isLoading.value
+                      ? const CircularProgressIndicator()
+                      : CommonBtn(
+                          text: "Save Changes",
+                          action: () {
+                            if (!_adminFromKey.currentState.validate()) {
+                            } else if (edirInfoController.options.isEmpty) {
+                              MSGSnack msgSnack = MSGSnack(
+                                  title: "Alert!",
+                                  msg: "Please add options.",
+                                  color: Colors.green);
+                              msgSnack.show();
+                            } else {
+                              int i = 0;
+                              Map<String, Object> optionMap = {};
+                              for (BankAccountOption option
+                                  in edirInfoController.options) {
+                                i++;
+                                optionMap.addIf(true, "$i", {
+                                  "bank": option.bank,
+                                  "account": option.account
+                                });
+                              }
+                              userService.updateEdir(
+                                  optionMap,
+                                  edirPAgeController.currentEdir.value.eid,
+                                  edirNameTc.text,
+                                  edirRulesTc.text,
+                                  edirAddressTc.text,
+                                  edirBioTc.text,
+                                  durationOfPaymentsTc.text,
+                                  amountOfMoneyTc.text,
+                                  context);
+                            }
+                          },
+                        ),
                 ),
                 const SizedBox(
                   height: 20,

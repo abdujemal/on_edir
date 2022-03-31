@@ -111,8 +111,9 @@ class UserService extends GetxService {
   }
 
   Future<bool> getAcccessTokenFromFirebase() async {
+    edirPAgeController.setIsTokenLoading(true);
     try {
-      edirPAgeController.setIsTokenLoading(true);
+      
 
       DatabaseEvent event = await database
           .ref()
@@ -124,10 +125,15 @@ class UserService extends GetxService {
       if (event.snapshot.exists) {
         print(event.snapshot.value);
         edirPAgeController.setAccessToken(event.snapshot.value.toString());
+        edirPAgeController.setIsTokenLoading(false);
+        return true;
+      }else{
+        edirPAgeController.setIsTokenLoading(false);
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg:"Video chat is not started.");
+      errorMSG.show();
+      return false;
       }
-
-      edirPAgeController.setIsTokenLoading(false);
-      return true;
     } catch (e) {
       edirPAgeController.setIsTokenLoading(false);
       MSGSnack errorMSG =
