@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -23,7 +24,7 @@ import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/main_page.dart';
 import 'package:on_edir/View/Pages/MyProfile/controller/my_profile_controller.dart';
 import 'package:on_edir/View/Widgets/msg_snack.dart';
-
+import 'package:http/http.dart' as http;
 import '../View/Pages/LoginSignUp/controller/l_s_controller.dart';
 
 class UserService extends GetxService {
@@ -51,6 +52,107 @@ class UserService extends GetxService {
       Get.put(AddAnnouncementController());
 
   AddStoreController addStoreController = Get.put(AddStoreController());
+
+  Future<bool> deleteAccessTokenFromFirebase() async {
+    try {
+      await database
+          .ref()
+          .child("Edirs")
+          .child(edirPAgeController.currentEdir.value.eid)
+          .child("access_token")
+          .remove();
+
+      return true;
+    } catch (e) {
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+      return false;
+    }
+  }
+
+  Future<bool> saveAccessToken() async {
+    try {
+      edirPAgeController.isTokenLoading(true);
+
+      String token = await getAccessTokenFromServer(
+          edirPAgeController.currentEdir.value.eid);
+
+      if (token != null) {
+        await database
+            .ref()
+            .child("Edirs")
+            .child(edirPAgeController.currentEdir.value.eid)
+            .child("access_token")
+            .set(token);
+
+        edirPAgeController.setAccessToken(token);
+
+        edirPAgeController.setIsTokenLoading(false);
+
+        return true;
+      } else {
+        MSGSnack errorMSG = MSGSnack(
+            color: Colors.red,
+            title: "Error!",
+            msg: "token is null. try again!");
+        errorMSG.show();
+
+        edirPAgeController.setIsTokenLoading(false);
+        return false;
+      }
+    } catch (e) {
+      edirPAgeController.isTokenLoading(false);
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+      return false;
+    }
+  }
+
+  Future<bool> getAcccessTokenFromFirebase() async {
+    try {
+      edirPAgeController.setIsTokenLoading(true);
+
+      DatabaseEvent event = await database
+          .ref()
+          .child("Edirs")
+          .child(edirPAgeController.currentEdir.value.eid)
+          .child("access_token")
+          .once();
+
+      if (event.snapshot.exists) {
+        print(event.snapshot.value);
+        edirPAgeController.setAccessToken(event.snapshot.value.toString());
+      }
+
+      edirPAgeController.setIsTokenLoading(false);
+      return true;
+    } catch (e) {
+      edirPAgeController.setIsTokenLoading(false);
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+      return false;
+    }
+  }
+
+  Future<String> getAccessTokenFromServer(String ChannelName) async {
+    final getUrl =
+        'https://morning-beach-95074.herokuapp.com/access_token?channelName=${ChannelName}';
+
+    final response = await http.get(Uri.parse(getUrl));
+
+    if (response.statusCode == 200) {
+      // on success do st
+      var res = response.body;
+      print(jsonDecode(res)["token"]);
+      return jsonDecode(res)["token"];
+    } else {
+      // on failure do sth
+      return null;
+    }
+  }
 
   addStoreItem(String itemName, String itemDescription, File file,
       BuildContext context) async {
@@ -88,7 +190,7 @@ class UserService extends GetxService {
           (route) => false);
     } catch (e) {
       addStoreController.setIsLoading(false);
-      
+
       MSGSnack errorMSG =
           MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
       errorMSG.show();
