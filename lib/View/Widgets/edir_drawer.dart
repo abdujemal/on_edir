@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,9 @@ import 'package:on_edir/View/Pages/MainPage/main_page.dart';
 import 'package:on_edir/View/Pages/MyProfile/my_profile.dart';
 import 'package:on_edir/View/Pages/PaymentAdmin/payment_admin.dart';
 import 'package:on_edir/View/Pages/PaymentUser/payment_user.dart';
+import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/View/Widgets/drawer_list_item.dart';
+import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:on_edir/View/Widgets/small_edir_member_item.dart';
 import 'package:on_edir/constants.dart';
 
@@ -69,21 +72,26 @@ class _EdirDrawerState extends State<EdirDrawer> {
               child: Obx(
                 () => ExpansionTile(
                     tilePadding: const EdgeInsets.all(0),
-                    title: Obx(() => edirPAgeController.currentEdir.value.edirName != ""? Text(
-                          
-                             edirPAgeController.currentEdir.value.edirName
-                              ,
-                          style: const TextStyle(fontSize: 20),
-                        ):const Text("Loading...")),
-                    subtitle: Obx(() =>edirPAgeController.currentEdir.value.created_by != ""? Text(                         
-                              "Created by ${edirPAgeController.currentEdir.value.created_by_name}"
-                              ,
-                          style: const TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 197, 197, 197)),
-                        ):const Text("Loading...")),
+                    title: Obx(() =>
+                        edirPAgeController.currentEdir.value.edirName != ""
+                            ? Text(
+                                edirPAgeController.currentEdir.value.edirName,
+                                style: const TextStyle(fontSize: 20),
+                              )
+                            : const Text("Loading...")),
+                    subtitle: Obx(() =>
+                        edirPAgeController.currentEdir.value.created_by != ""
+                            ? Text(
+                                "Created by ${edirPAgeController.currentEdir.value.created_by_name}",
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Color.fromARGB(255, 197, 197, 197)),
+                              )
+                            : const Text("Loading...")),
                     children: [
-                      ...mainController.edirList.isNotEmpty ? edirList : [const Center(child:CircularProgressIndicator())],
+                      ...mainController.edirList.isNotEmpty
+                          ? edirList
+                          : [const Center(child: CircularProgressIndicator())],
                       const SizedBox(
                         height: 15,
                       ),
@@ -108,7 +116,6 @@ class _EdirDrawerState extends State<EdirDrawer> {
   }
 
   getMyEdirList() async {
-    
     // await userService.getEdirList();
     for (Edir edir in mainController.edirList) {
       edirList.add(SmallEdirMemberItem(
@@ -128,48 +135,68 @@ class _EdirDrawerState extends State<EdirDrawer> {
       decoration: BoxDecoration(gradient: bgGradient),
       child: Drawer(
         backgroundColor: Colors.transparent,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          topPart(),
-          const SizedBox(
-            height: 10,
-          ),
-          DrawerListItem(
-              text: "My Profile",
-              action: () => Get.to(()=>const MyProfile()),
-              icon: Icons.account_circle),
-          const SizedBox(
-            height: 5,
-          ),
-          DrawerListItem(
-              text: "Edir Info",
-              action: () => Get.to(() => edirPAgeController.currentEdir.value.created_by == uid ? const EdirInfoAdmin():EdirInfoUser()
-              ),
-              icon: Icons.info),
-          const SizedBox(
-            height: 5,
-          ),
-          DrawerListItem(
-              text: "Edir Members",
-              action: () => Get.to(() => const EdirMembersPage()),
-              icon: Icons.group_outlined),
-          const SizedBox(
-            height: 5,
-          ),
-          DrawerListItem(
-              text: "Edir Group Chat",
-              action: () => Get.to(() => const EdirGroupChat()),
-              icon: Icons.group),
-          const SizedBox(
-            height: 5,
-          ),
-          DrawerListItem(
-              text: "Payment",
-              action: () => Get.to(()=> edirPAgeController.currentEdir.value.created_by == mainController.myInfo.value.uid ? const PaymentAdmin() : const PaymentUser()),
-              icon: Icons.payment),
-          const SizedBox(
-            height: 5,
-          ),
-        ]),
+        child: SingleChildScrollView(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            topPart(),
+            const SizedBox(
+              height: 10,
+            ),
+            Obx(()=>
+               edirPAgeController.currentEdir.value.eid != "" ?
+               CommonInput(
+                  controller: TextEditingController(
+                      text: edirPAgeController.currentEdir.value.eid),
+                  hint: "Edir Code",
+                  keyboardType: TextInputType.text):const SizedBox()
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            DrawerListItem(
+                text: "My Profile",
+                action: () => Get.to(() => const MyProfile()),
+                icon: Icons.account_circle),
+            const SizedBox(
+              height: 5,
+            ),
+            DrawerListItem(
+                text: "Edir Info",
+                action: () => Get.to(() =>
+                    edirPAgeController.currentEdir.value.created_by == uid
+                        ? const EdirInfoAdmin()
+                        : EdirInfoUser()),
+                icon: Icons.info),
+            const SizedBox(
+              height: 5,
+            ),
+            DrawerListItem(
+                text: "Edir Members",
+                action: () => Get.to(() => const EdirMembersPage()),
+                icon: Icons.group_outlined),
+            const SizedBox(
+              height: 5,
+            ),
+            DrawerListItem(
+                text: "Edir Group Chat",
+                action: () => Get.to(() => const EdirGroupChat()),
+                icon: Icons.group),
+            const SizedBox(
+              height: 5,
+            ),
+            DrawerListItem(
+                text: "Payment",
+                action: () => Get.to(() =>
+                    edirPAgeController.currentEdir.value.created_by ==
+                            mainController.myInfo.value.uid
+                        ? const PaymentAdmin()
+                        : const PaymentUser()),
+                icon: Icons.payment),
+            const SizedBox(
+              height: 5,
+            ),
+            
+          ]),
+        ),
       ),
     );
   }

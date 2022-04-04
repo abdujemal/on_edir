@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:on_edir/Controller/user_service.dart';
+import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
+import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import './call.dart';
@@ -20,11 +24,24 @@ class IndexState extends State<IndexPage> {
 
   ClientRole _role = ClientRole.Broadcaster;
 
+  UserService userService = Get.put(UserService());
+
+  EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
+
+  MainController mainController = Get.put(MainController());
+
   @override
   void dispose() {
     // dispose input controller
     _channelController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    edirPAgeController.setIsTokenLoading(false);
   }
 
   @override
@@ -35,33 +52,53 @@ class IndexState extends State<IndexPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text("Video Conference", style: TextStyle(fontSize: 25),),
-          const SizedBox(height: 10,),
-          const Icon(Icons.video_call,size: 100,),
-          const SizedBox(height: 10,),
+          const Text(
+            "Video Conference",
+            style: TextStyle(fontSize: 25),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Icon(
+            Icons.video_call,
+            size: 100,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: onJoin,
-                    child: const Text('Join'),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blueAccent),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.white)),
-                  ),
-                ),
-                // Expanded(
-                //   child: RaisedButton(
-                //     onPressed: onJoin,
-                //     child: Text('Join'),
-                //     color: Colors.blueAccent,
-                //     textColor: Colors.white,
-                //   ),
-                // )
+                    child:
+                        Obx(
+                          () => !edirPAgeController.isTokenLoading.value?
+                        ElevatedButton(
+                  onPressed: () async {
+                    if (edirPAgeController.currentEdir.value.created_by ==
+                        mainController.myInfo.value.uid) {
+                      if (await userService.saveAccessToken()) {
+                        onJoin();
+                      }
+                    } else {
+                      if (await userService.getAcccessTokenFromFirebase()) {
+                        onJoin();
+                      }
+                    }
+                  },
+                  child: Text(edirPAgeController.currentEdir.value.created_by ==
+                          mainController.myInfo.value.uid
+                      ? 'Start'
+                      : 'Join'),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.blueAccent),
+                      foregroundColor: MaterialStateProperty.all(Colors.white)),
+                )
+                    : Center(child: const CircularProgressIndicator()),
+                    ),
+                )
               ],
             ),
           )
@@ -85,8 +122,9 @@ class IndexState extends State<IndexPage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            const CallPage(channelName: "hello", role: ClientRole.Broadcaster),
+        builder: (context) => CallPage(
+            channelName: edirPAgeController.currentEdir.value.eid,
+            role: ClientRole.Broadcaster),
       ),
     );
   }

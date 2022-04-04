@@ -5,7 +5,20 @@ import 'package:on_edir/Model/my_info.dart';
 class EdirPAgeController extends GetxController {
   RxInt selectedIndex = 0.obs;
 
+  RxBool isTokenLoading = false.obs;
+
+  RxString accessToken = "".obs;
+
   Rx<Edir> currentEdir = Edir("", "", "", "", "", "", "", "", "", "").obs;
+
+  void setIsTokenLoading(bool val) {
+    
+    isTokenLoading.value = val;
+  }
+
+  void setAccessToken(String token) {
+    accessToken.value = token;
+  }
 
   void setCurrentEdir(Edir val) {
     currentEdir.value = val;

@@ -4,6 +4,10 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:on_edir/Controller/user_service.dart';
+import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
+import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 
 import '../utils/settings.dart';
 
@@ -26,6 +30,9 @@ class _CallPageState extends State<CallPage> {
   final _infoStrings = <String>[];
   bool muted = false;
   var _engine;
+  EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
+  UserService userService = Get.put(UserService());
+  MainController mainController = Get.put(MainController());
 
   @override
   void dispose() {
@@ -61,7 +68,8 @@ class _CallPageState extends State<CallPage> {
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = VideoDimensions(width: 1920, height: 1080);
     await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(Token, widget.channelName, null, 0);
+    await _engine.joinChannel(
+        edirPAgeController.accessToken.value, widget.channelName, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -236,7 +244,8 @@ class _CallPageState extends State<CallPage> {
             itemCount: _infoStrings.length,
             itemBuilder: (BuildContext context, int index) {
               if (_infoStrings.isEmpty) {
-                return Text("null");  // return type can't be null, a widget was required
+                return Text(
+                    "null"); // return type can't be null, a widget was required
               }
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -272,8 +281,15 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
-  void _onCallEnd(BuildContext context) {
-    Navigator.pop(context);
+  void _onCallEnd(BuildContext context) async {
+    if (edirPAgeController.currentEdir.value.created_by ==
+        mainController.myInfo.value.uid) {
+      if (await userService.deleteAccessTokenFromFirebase()) {
+        Navigator.pop(context);
+      }
+    }else{
+      Navigator.pop(context);
+    }
   }
 
   void _onToggleMute() {
