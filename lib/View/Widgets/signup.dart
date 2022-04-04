@@ -171,6 +171,7 @@ class _SignUpState extends State<SignUp> {
                   isObscure: true,
                   title: "Password",
                   hint: "*******",
+                  
                   keyboardType: TextInputType.visiblePassword,
                   controller: passwordTC),
               const SizedBox(
