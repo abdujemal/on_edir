@@ -142,6 +142,8 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                             mainController.myInfo.value.userName,
                             mainController.myInfo.value.img_url,
                             edirPAgeController.currentEdir.value.eid);
+
+                        chatTc.text = "";
                       }
                     },
                     icon: const Icon(Icons.send),

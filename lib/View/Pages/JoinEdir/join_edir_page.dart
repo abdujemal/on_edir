@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/View/Pages/EdirPage/edir_page.dart';
 import 'package:on_edir/View/Pages/JoinEdir/controller/join_edir_controller.dart';
+import 'package:on_edir/View/Pages/QrScannerPage/qr_scanner_page.dart';
 import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/constants.dart';
@@ -44,6 +45,7 @@ class _JoinEdirPageState extends State<JoinEdirPage> {
             const SizedBox(
               height: 200,
             ),
+            IconButton(icon:const Icon(Icons.qr_code),onPressed:()=>Get.to(()=>const QrScannerPage())),
             CommonInput(
                 controller: _edirCodeController,
                 hint: "Edir Code",
@@ -58,6 +60,7 @@ class _JoinEdirPageState extends State<JoinEdirPage> {
                       action: () {
                         if (_edirCodeController.text.isNotEmpty) {
                           userService.joinEdir(
+                            
                               _edirCodeController.text, "User", context);
                         }
                       },
