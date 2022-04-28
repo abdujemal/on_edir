@@ -142,7 +142,7 @@ class _EdirDrawerState extends State<EdirDrawer> {
               height: 10,
             ),
             Obx(()=>
-               edirPAgeController.currentEdir.value.eid != "" ?
+               edirPAgeController.currentEdir.value.eid != ""?
                CommonInput(
                   controller: TextEditingController(
                       text: edirPAgeController.currentEdir.value.eid),
