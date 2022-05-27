@@ -17,11 +17,14 @@ import 'package:on_edir/View/Pages/MainPage/main_page.dart';
 import 'package:on_edir/View/Pages/MyProfile/my_profile.dart';
 import 'package:on_edir/View/Pages/PaymentAdmin/payment_admin.dart';
 import 'package:on_edir/View/Pages/PaymentUser/payment_user.dart';
+import 'package:on_edir/View/Pages/StoreManagementAdmin/store_management_admin.dart';
+import 'package:on_edir/View/Pages/StoreManagementUser/store_management_user.dart';
 import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/View/Widgets/drawer_list_item.dart';
 import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:on_edir/View/Widgets/small_edir_member_item.dart';
 import 'package:on_edir/constants.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class EdirDrawer extends StatefulWidget {
   const EdirDrawer({Key key}) : super(key: key);
@@ -142,7 +145,15 @@ class _EdirDrawerState extends State<EdirDrawer> {
               height: 10,
             ),
             Obx(()=>
-               edirPAgeController.currentEdir.value.eid != ""?
+            edirPAgeController.currentEdir.value.eid != "" ?
+            QrImage(
+              data: edirPAgeController.currentEdir.value.eid,
+              version: QrVersions.auto,
+              size: 200.0,
+            ):const SizedBox()
+            ),
+            Obx(()=>
+               edirPAgeController.currentEdir.value.eid != "" ?
                CommonInput(
                   controller: TextEditingController(
                       text: edirPAgeController.currentEdir.value.eid),
@@ -190,6 +201,17 @@ class _EdirDrawerState extends State<EdirDrawer> {
                             mainController.myInfo.value.uid
                         ? const PaymentAdmin()
                         : const PaymentUser()),
+                icon: Icons.payment),
+            const SizedBox(
+              height: 5,
+            ),
+            DrawerListItem(
+                text: "Store Management",
+                action: () => Get.to(() =>
+                    edirPAgeController.currentEdir.value.created_by ==
+                            mainController.myInfo.value.uid
+                        ? const StoreManagementAdmin()
+                        : const StoreManagemntUser()),
                 icon: Icons.payment),
             const SizedBox(
               height: 5,

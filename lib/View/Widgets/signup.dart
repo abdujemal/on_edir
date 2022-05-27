@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:image_picker/image_picker.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/View/Pages/LoginSignUp/controller/l_s_controller.dart';
 import 'package:on_edir/View/Widgets/msg_snack.dart';
@@ -84,8 +82,8 @@ class _SignUpState extends State<SignUp> {
                       child: IconButton(
                           color: whiteColor,
                           onPressed: () async {
-                            XFile imagexFile = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
+                            var imagexFile = await ImagePicker()
+                              .pickImage();
                             if (imagexFile != null) {
                               File imageFile = File(imagexFile.path);
 
@@ -163,7 +161,7 @@ class _SignUpState extends State<SignUp> {
                 controller: userNoOfFamilyMembersTC,
                 keyboardType: TextInputType.number,
                 title: 'Number Your Family Members',
-                hint: '5',
+                hint: '5',                
               ),
               const SizedBox(
                 height: 40,
@@ -172,6 +170,7 @@ class _SignUpState extends State<SignUp> {
                   isObscure: true,
                   title: "Password",
                   hint: "*******",
+                  
                   keyboardType: TextInputType.visiblePassword,
                   controller: passwordTC),
               const SizedBox(

@@ -13,6 +13,7 @@ import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/my_info.dart';
 import 'package:on_edir/Model/payment_request.dart';
 import 'package:on_edir/Model/store.dart';
+import 'package:on_edir/Model/store_item_request.dart';
 import 'package:on_edir/View/Pages/AddAnnouncementPage/controller/add_announcement_controller.dart';
 import 'package:on_edir/View/Pages/AddStoreItemPage/constroller/add_store_controller.dart';
 import 'package:on_edir/View/Pages/CreateEdir/controller/create_edir_controller.dart';
@@ -23,6 +24,8 @@ import 'package:on_edir/View/Pages/JoinEdir/controller/join_edir_controller.dart
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/main_page.dart';
 import 'package:on_edir/View/Pages/MyProfile/controller/my_profile_controller.dart';
+import 'package:on_edir/View/Pages/StoreDetail/controller/store_detail_controller.dart';
+import 'package:on_edir/View/Pages/StoreDetail/store_detail.dart';
 import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:http/http.dart' as http;
 import '../View/Pages/LoginSignUp/controller/l_s_controller.dart';
@@ -48,10 +51,68 @@ class UserService extends GetxService {
 
   MyProfileController myProfileController = Get.put(MyProfileController());
 
+  StoreDetailController storeDetailController =
+      Get.put(StoreDetailController());
+
   AddAnnouncementController addAnnouncementController =
       Get.put(AddAnnouncementController());
 
   AddStoreController addStoreController = Get.put(AddStoreController());
+
+  Future<String> uploadImage(String path, File file) async {
+    try {
+      UploadTask uploadTask = storage.ref(path).putFile(file);
+      TaskSnapshot taskSnapshot = await uploadTask;
+
+      return taskSnapshot.ref.getDownloadURL();
+    } catch (e) {
+      MSGSnack msgSnack = MSGSnack(
+          title: "Error on Uploading Image!",
+          msg: e.toString(),
+          color: Colors.red);
+      msgSnack.show();
+    }
+  }
+
+  sendStoreRentRequest(String reason, String dateOfReturn, BuildContext context,
+      String p_img, String pid) async {
+    try {
+      storeDetailController.setIsLoading(true);
+
+      DateTime dt = DateTime.now();
+
+      DatabaseReference ref =
+          database.ref().child("StoreItemRentRequest").push();
+
+      StoreItemRequest storeItemRequest = StoreItemRequest(
+          edirPAgeController.currentEdir.value.created_by,
+          "${dt.day}/${dt.month}/${dt.year} at ${dt.hour}:${dt.minute}",
+          dateOfReturn,
+          edirPAgeController.currentEdir.value.eid,
+          p_img,
+          pid,
+          reason,
+          ref.key.toString(),
+          "Pending",
+          auth.currentUser.uid);
+
+      await ref.update(storeItemRequest.toFirebaseMap(storeItemRequest));
+
+      storeDetailController.setIsLoading(false);
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (_) =>
+                  EdirPage(edirId: edirPAgeController.currentEdir.value.eid)),
+          (route) => false);
+    } catch (e) {
+      storeDetailController.setIsLoading(false);
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+  }
 
   Future<bool> deleteAccessTokenFromFirebase() async {
     try {
@@ -113,8 +174,6 @@ class UserService extends GetxService {
   Future<bool> getAcccessTokenFromFirebase() async {
     edirPAgeController.setIsTokenLoading(true);
     try {
-      
-
       DatabaseEvent event = await database
           .ref()
           .child("Edirs")
@@ -127,12 +186,14 @@ class UserService extends GetxService {
         edirPAgeController.setAccessToken(event.snapshot.value.toString());
         edirPAgeController.setIsTokenLoading(false);
         return true;
-      }else{
+      } else {
         edirPAgeController.setIsTokenLoading(false);
-      MSGSnack errorMSG =
-          MSGSnack(color: Colors.red, title: "Error!", msg:"Video chat is not started.");
-      errorMSG.show();
-      return false;
+        MSGSnack errorMSG = MSGSnack(
+            color: Colors.red,
+            title: "Error!",
+            msg: "Video chat is not started.");
+        errorMSG.show();
+        return false;
       }
     } catch (e) {
       edirPAgeController.setIsTokenLoading(false);
@@ -160,8 +221,23 @@ class UserService extends GetxService {
     }
   }
 
-  addStoreItem(String itemName, String itemDescription, File file,
-      BuildContext context) async {
+  editStore(String type, String path, String currentQuantity) async {
+    // increase, decrease and delete a qunatity of store item
+    int quan = int.parse(currentQuantity);
+    DatabaseReference ref = database.ref(path);
+    if (type == "increament") {
+      ref.child("quantity").set("${quan + 1}");
+    } else {
+      if (quan == 1) {
+        ref.remove();
+      } else {
+        ref.child("quantity").set("${quan - 1}");
+      }
+    }
+  }
+
+  addStoreItem(String quantity, String itemName, String itemDescription,
+      File file, BuildContext context) async {
     addStoreController.setIsLoading(true);
 
     DateTime dt = DateTime.now();
@@ -175,8 +251,13 @@ class UserService extends GetxService {
       String imgUrl =
           await uploadImage("StoreImage/${ref.key.toString()}.png", file);
 
-      Store store = Store(imgUrl, itemDescription, itemName, ref.key.toString(),
-          "${dt.day}/${dt.month}/${dt.year} at ${dt.hour}:${dt.minute}");
+      Store store = Store(
+          imgUrl,
+          itemDescription,
+          itemName,
+          ref.key.toString(),
+          "${dt.day}/${dt.month}/${dt.year} at ${dt.hour}:${dt.minute}",
+          quantity);
 
       await ref.update(store.toFirebaseMap(store));
 
@@ -432,21 +513,6 @@ class UserService extends GetxService {
           MSGSnack(title: "!Error", msg: e.toString(), color: Colors.red);
       msgSnack.show();
       mainController.setUserInfoIsAvailable(true);
-    }
-  }
-
-  Future<String> uploadImage(String path, File file) async {
-    try {
-      UploadTask uploadTask = storage.ref(path).putFile(file);
-      TaskSnapshot taskSnapshot = await uploadTask;
-
-      return taskSnapshot.ref.getDownloadURL();
-    } catch (e) {
-      MSGSnack msgSnack = MSGSnack(
-          title: "Error on Uploading Image!",
-          msg: e.toString(),
-          color: Colors.red);
-      msgSnack.show();
     }
   }
 

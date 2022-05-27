@@ -23,6 +23,8 @@ class _AddStoreItemState extends State<AddStoreItem> {
 
   var itemDescriptionTc = TextEditingController();
 
+  var itemQuantityTc = TextEditingController();
+
   GlobalKey<FormState> _key = GlobalKey();
 
   UserService userService = Get.put(UserService());
@@ -66,8 +68,7 @@ class _AddStoreItemState extends State<AddStoreItem> {
                       right: -5,
                       child: IconButton(
                         onPressed: () async {
-                          XFile xFile = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
+                          var xFile = await ImagePicker().pickImage();
                           if (xFile != null) {
                             addStoreController.setFilePath(xFile.path);
                           } else {
@@ -105,6 +106,14 @@ class _AddStoreItemState extends State<AddStoreItem> {
                 const SizedBox(
                   height: 10,
                 ),
+                CommonInput(
+                  controller: itemQuantityTc,
+                  hint: "Item Quantity",
+                  keyboardType: TextInputType.number
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Obx(() => addStoreController.isLoading.value
                     ? const CircularProgressIndicator()
                     : CommonBtn(
@@ -119,6 +128,7 @@ class _AddStoreItemState extends State<AddStoreItem> {
                             msgSnack.show();
                           } else {
                             userService.addStoreItem(
+                              itemQuantityTc.text,
                                 itemNameTc.text,
                                 itemDescriptionTc.text,
                                 File(addStoreController.filePath.value),

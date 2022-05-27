@@ -1,8 +1,8 @@
 class Store {
-  String sid, img_url, itemName, itemDescription, dateTime;
+  String sid, img_url, itemName, itemDescription, dateTime, quantity;
 
   Store(this.img_url, this.itemDescription, this.itemName, this.sid,
-      this.dateTime);
+      this.dateTime, this.quantity);
 
   Map<String, Object> toFirebaseMap(Store store) {
     return {
@@ -10,7 +10,8 @@ class Store {
       "img_url": store.img_url,
       "itemDescription": store.itemDescription,
       "itemName": store.itemName,
-      "dateTime": store.dateTime
+      "dateTime": store.dateTime,
+      "quantity": store.quantity
     };
   }
 
@@ -19,5 +20,6 @@ class Store {
         img_url = data["img_url"],
         itemDescription = data["itemDescription"],
         itemName = data["itemName"],
-        dateTime = data["dateTime"];
+        dateTime = data["dateTime"],
+        quantity = data["quantity"];
 }
