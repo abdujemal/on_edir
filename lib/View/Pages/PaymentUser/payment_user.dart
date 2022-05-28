@@ -27,7 +27,7 @@ class _PaymentUserState extends State<PaymentUser> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("My Payment Request"),
+          title: Text("My Payment Request".tr),
           centerTitle: true,
         ),
         body: StreamBuilder(
@@ -56,8 +56,8 @@ class _PaymentUserState extends State<PaymentUser> {
             reqList == null?
             const Center(child: CircularProgressIndicator(),):
             reqList.isEmpty
-                ? const Center(
-                    child: Text("No Request"),
+                ?Center(
+                    child: Text("No Request".tr),
                   )
                 : Padding(
                     padding: const EdgeInsets.only(bottom: 30),

@@ -6,7 +6,6 @@ import 'package:on_edir/Model/chat.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Widgets/chat_item.dart';
-import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/constants.dart';
 
 class EdirGroupChat extends StatefulWidget {
@@ -39,7 +38,7 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
           title: Obx(() => edirPAgeController.currentEdir.value == null
               ? const SizedBox()
               : Text(
-                  "${edirPAgeController.currentEdir.value.edirName} Group Chat")),
+                  edirPAgeController.currentEdir.value.edirName +"Group Chat".tr)),
           centerTitle: true,
         ),
         body: Stack(
@@ -84,8 +83,8 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                           return chatList == null
                               ? const Center(child: CircularProgressIndicator())
                               : chatList.isEmpty
-                                  ? const Center(
-                                      child: Text("No Chat"),
+                                  ? Center(
+                                      child: Text("No Chat".tr),
                                     )
                                   : Padding(
                                       padding:
@@ -126,7 +125,7 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration.collapsed(
                                   hintStyle: TextStyle(color: mainColor),
-                                  hintText: "Write something")),
+                                  hintText: "Write something".tr)),
                         ),
                       ),
                     ),

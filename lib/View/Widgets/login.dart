@@ -30,15 +30,15 @@ class Login extends StatelessWidget {
               SLInput(
                 controller: emailTC,
                 keyboardType: TextInputType.emailAddress,
-                title: 'Email',
-                hint: 'abc@website.com',
+                title: 'Email'.tr,
+                hint: 'abc@website.com'.tr,
               ),
               const SizedBox(
                 height: 40,
               ),
               SLInput(
                   isObscure: true,
-                  title: "Password",
+                  title: "Password".tr,
                   hint: "*******",
                   keyboardType: TextInputType.visiblePassword,
                   controller: passwordTC),
@@ -54,8 +54,8 @@ class Login extends StatelessWidget {
               userService.forgetPassword(emailTC.text, context);
             } else {
               MSGSnack msgSnack = MSGSnack(
-                  title: "Alert!",
-                  msg: "Please write your email.",
+                  title: "Alert!".tr,
+                  msg: "Please write your email.".tr,
                   color: Colors.red);
               msgSnack.show();
             }
@@ -63,7 +63,7 @@ class Login extends StatelessWidget {
           child: GestureDetector(
             onTap: () {},
             child: Text(
-              "Forget password?",
+              "Forget password?".tr,
               style: TextStyle(color: textColor),
             ),
           ),
@@ -75,7 +75,7 @@ class Login extends StatelessWidget {
           lsController.isLoading.value ?
           const CircularProgressIndicator():
            SLBtn(
-            text: "Log In",
+            text: "Log In".tr,
             onTap: () {
               if (_key.currentState.validate()) {
                 userService.loginWEmailNPW(

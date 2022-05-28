@@ -19,7 +19,7 @@ class JCEdir extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           BigBtn(
-              text: "Create Edir",
+              text: "Create Edir".tr,
               icon: Icons.add,
               action: () =>
               mainController.userInfoIsAvailable.value?
@@ -29,7 +29,7 @@ class JCEdir extends StatelessWidget {
             height: 100,
           ),
           BigBtn(
-              text: "Join Edir",
+              text: "Join Edir".tr,
               icon: Icons.join_inner,
               action: () =>
               mainController.userInfoIsAvailable.value?

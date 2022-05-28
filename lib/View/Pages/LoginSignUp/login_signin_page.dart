@@ -37,7 +37,7 @@ class _LogInSignInPageState extends State<LogInSignInPage> {
                   height: 15,
                 ),
                 Text(
-                  "Online Edir Application",
+                  "Online Edir Application".tr,
                   style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
@@ -51,7 +51,7 @@ class _LogInSignInPageState extends State<LogInSignInPage> {
                 Obx(
                   () => Text(
                       lsController.isLogin.value ?
-                      "New to this app?":"Already have an account?",
+                      "New to this app?".tr:"Already have an account?".tr,
                       style: TextStyle(color: textColor, fontSize: 12),
                     )
                 ),
@@ -70,8 +70,8 @@ class _LogInSignInPageState extends State<LogInSignInPage> {
                       padding: const EdgeInsets.only(top: 8,bottom: 40),
                       child: Text(
                         lsController.isLogin.value ?
-                        "Create an Account":
-                        "Already have an account",
+                        "Create an Account".tr:
+                        "Already have an account".tr,
                         style: TextStyle(
                             color: whiteColor, fontWeight: FontWeight.bold),
                       ),

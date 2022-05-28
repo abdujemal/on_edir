@@ -39,7 +39,7 @@ class _AddStoreItemState extends State<AddStoreItem> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("Add Store Form"),
+          title: Text("Add Store Form".tr),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -73,8 +73,8 @@ class _AddStoreItemState extends State<AddStoreItem> {
                             addStoreController.setFilePath(xFile.path);
                           } else {
                             MSGSnack msgSnack = MSGSnack(
-                                title: "Alert!",
-                                msg: "you have not chosen an image",
+                                title: "Alert!".tr,
+                                msg: "you have not chosen an image".tr,
                                 color: Colors.red);
                             msgSnack.show();
                           }
@@ -92,14 +92,14 @@ class _AddStoreItemState extends State<AddStoreItem> {
                 ),
                 CommonInput(
                     controller: itemNameTc,
-                    hint: "Item Name",
+                    hint: "Item Name".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                   controller: itemDescriptionTc,
-                  hint: "Item Description",
+                  hint: "Item Description".tr,
                   keyboardType: TextInputType.multiline,
                   maxLines: 3,
                 ),
@@ -108,7 +108,7 @@ class _AddStoreItemState extends State<AddStoreItem> {
                 ),
                 CommonInput(
                   controller: itemQuantityTc,
-                  hint: "Item Quantity",
+                  hint: "Item Quantity".tr,
                   keyboardType: TextInputType.number
                 ),
                 const SizedBox(
@@ -117,13 +117,13 @@ class _AddStoreItemState extends State<AddStoreItem> {
                 Obx(() => addStoreController.isLoading.value
                     ? const CircularProgressIndicator()
                     : CommonBtn(
-                        text: "Save",
+                        text: "Save".tr,
                         action: () {
                           if (!_key.currentState.validate()) {
                           } else if (addStoreController.filePath.value == "") {
                             MSGSnack msgSnack = MSGSnack(
-                                title: "Alert!",
-                                msg: "image is blank.",
+                                title: "Alert!".tr,
+                                msg: "image is blank.".tr,
                                 color: Colors.red);
                             msgSnack.show();
                           } else {

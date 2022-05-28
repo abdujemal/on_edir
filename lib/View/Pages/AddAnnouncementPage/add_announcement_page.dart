@@ -41,7 +41,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            title: const Text("Announcement Form"),
+            title: Text("Announcement Form".tr),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
@@ -54,7 +54,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                   ),
                   CommonInput(
                       controller: titleTc,
-                      hint: "Announcement Title",
+                      hint: "Announcement Title".tr,
                       keyboardType: TextInputType.text),
                   const SizedBox(
                     height: 10,
@@ -62,7 +62,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                   CommonInput(
                     maxLines: 6,
                       controller: descriptionTc,
-                      hint: "Announcement Description",
+                      hint: "Announcement Description".tr,
                       keyboardType: TextInputType.text),
                   const SizedBox(
                     height: 10,
@@ -71,7 +71,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                     () => addAnnouncementController.isLoading.value
                         ? const CircularProgressIndicator()
                         : CommonBtn(
-                            text: "Add",
+                            text: "Add".tr,
                             action: () {
                               if (_key.currentState.validate()) {
                                 userService.addAnnouncement(

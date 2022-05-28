@@ -50,7 +50,7 @@ class _MainPageState extends State<MainPage> {
                   )
                 : const SizedBox(),
           ),
-          title: const Text("My Edir List"),
+          title: Text("My Edir List".tr),
           backgroundColor: Colors.transparent,
           centerTitle: true,
           
@@ -77,12 +77,12 @@ class _MainPageState extends State<MainPage> {
               SpeedDialChild(
                 onTap: ()=>Get.to(()=>const CreateEdirPage()),
                 child: const Icon(Icons.add),
-                label: "Create Edir"
+                label: "Create Edir".tr
               ),
               SpeedDialChild(
                 onTap: ()=>Get.to(()=>const JoinEdirPage()),
                 child: const Icon(Icons.join_full_outlined),
-                label: "Join Edir",
+                label: "Join Edir".tr,
               )
             ],
           ),

@@ -82,7 +82,7 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("Edir Info"),
+          title: Text("Edir Info".tr),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -115,28 +115,28 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                 ),
                 CommonInput(
                     controller: edirNameTc,
-                    hint: "Edir Name",
+                    hint: "Edir Name".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                     controller: edirBioTc,
-                    hint: "Edir Bio",
+                    hint: "Edir Bio".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                     controller: edirAddressTc,
-                    hint: "Edir Address",
+                    hint: "Edir Address".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                   controller: edirNameTc,
-                  hint: "Edir Rules And Regulations",
+                  hint: "Edir Rules And Regulations".tr,
                   keyboardType: TextInputType.text,
                   maxLines: 6,
                 ),
@@ -145,7 +145,7 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                 ),
                 CommonInput(
                   controller: amountOfMoneyTc,
-                  hint: "Amount of money",
+                  hint: "Amount of money".tr,
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -153,7 +153,7 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                 ),
                 CommonInput(
                   controller: durationOfPaymentsTc,
-                  hint: "Duration of payment",
+                  hint: "Duration of payment".tr,
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -167,8 +167,8 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                       Obx(
                         () => Row(
                           children: [
-                            const Text(
-                              "Bank Account Options",
+                            Text(
+                              "Bank Account Options".tr,
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -176,7 +176,7 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                             edirInfoController.options.value.isEmpty
                                 ? const SizedBox()
                                 : ActionBtn(
-                                    text: "Clear",
+                                    text: "Clear".tr,
                                     action: () {
                                       edirInfoController.options.clear();
                                     },

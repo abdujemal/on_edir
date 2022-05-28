@@ -35,7 +35,7 @@ class _StoreDetailState extends State<StoreDetail> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("Store Detail"),
+          title: Text("Store Detail".tr),
           backgroundColor: Colors.transparent,
           centerTitle: true,
         ),
@@ -51,22 +51,22 @@ class _StoreDetailState extends State<StoreDetail> {
             const SizedBox(
               height: 10,
             ),
-            EdirInfoItem(title: "Store Item Name", value: widget.store.itemName),
+            EdirInfoItem(title: "Store Item Name".tr, value: widget.store.itemName),
             Column(children: [
-              const Text("Store Description",style: TextStyle(fontSize: 20),),
+              Text("Store Description".tr,style: TextStyle(fontSize: 20),),
               const SizedBox(height: 5,),
               Text(widget.store.itemDescription)
             ],),
             CommonInput(
                 controller: reasonTc,
-                hint: "Reason of Renting",
+                hint: "Reason of Renting".tr,
                 keyboardType: TextInputType.text),
             const SizedBox(
               height: 10,
             ),
             CommonInput(
                 controller: dateOfReturnTC,
-                hint: "Date Of Return",
+                hint: "Date Of Return".tr,
                 keyboardType: TextInputType.text),
             const SizedBox(
               height: 10,
@@ -76,7 +76,7 @@ class _StoreDetailState extends State<StoreDetail> {
                     child: CircularProgressIndicator(),
                   )
                 : CommonBtn(
-                    text: "Send",
+                    text: "Send".tr,
                     action: () {
                       userService.sendStoreRentRequest(reasonTc.text, dateOfReturnTC.text, context, widget.store.img_url, widget.store.sid);
                     }))

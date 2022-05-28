@@ -58,8 +58,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               announcementList == null?
               const Center(child: CircularProgressIndicator(),):
               announcementList.isEmpty
-                  ? const Center(
-                      child: Text("No Announcement"),
+                  ? Center(
+                      child: Text("No Announcement".tr),
                     )
                   : ListView.builder(
                       itemCount: announcementList.length,

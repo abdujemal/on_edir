@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:on_edir/View/Pages/EdirPage/edir_page.dart';
 import 'package:on_edir/View/Pages/LoginSignUp/login_signin_page.dart';
 import 'package:on_edir/View/Pages/MainPage/main_page.dart';
+import 'package:on_edir/translation/translations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,8 +39,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: Language(),
       debugShowCheckedModeBanner: false,
-      title: 'On Edir',
+      title: 'On Edir'.tr,
+      locale: const Locale('en', 'EN'),
       theme: ThemeData.dark(),
       home: checkUser(context),
     );

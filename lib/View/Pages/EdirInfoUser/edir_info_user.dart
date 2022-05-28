@@ -42,7 +42,7 @@ class _EdirInfoUserState extends State<EdirInfoUser> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("Edir Info"),
+          title: Text("Edir Info".tr),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -50,21 +50,21 @@ class _EdirInfoUserState extends State<EdirInfoUser> {
             const SizedBox(height: 10,),
             CircleAvatar(backgroundImage: NetworkImage(edirPAgeController.currentEdir.value.img_url),radius: 70,),
             const SizedBox(height: 10,),
-            EdirInfoItem(title: "Edir Name", value: edirPAgeController.currentEdir.value.edirName),
-            EdirInfoItem(title: "Edir Bio", value: edirPAgeController.currentEdir.value.edirBio),
-            EdirInfoItem(title: "Edir Address", value: edirPAgeController.currentEdir.value.edirAddress),
-            EdirInfoItem(title: "Amount Of Money", value: edirPAgeController.currentEdir.value.amountOfMoney),
-            EdirInfoItem(title: "Duration Of Payment", value: edirPAgeController.currentEdir.value.durationOfPayment),
+            EdirInfoItem(title: "Edir Name".tr, value: edirPAgeController.currentEdir.value.edirName),
+            EdirInfoItem(title: "Edir Bio".tr, value: edirPAgeController.currentEdir.value.edirBio),
+            EdirInfoItem(title: "Edir Address".tr, value: edirPAgeController.currentEdir.value.edirAddress),
+            EdirInfoItem(title: "Amount Of Money".tr, value: edirPAgeController.currentEdir.value.amountOfMoney),
+            EdirInfoItem(title: "Duration Of Payment".tr, value: edirPAgeController.currentEdir.value.durationOfPayment),
 
             Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  const Center(
+                  Center(
                     child: Text(
-                      "Edir Rules And Regulations",
-                      style: TextStyle(fontSize: 20),
+                      "Edir Rules And Regulations".tr,
+                      style: const TextStyle(fontSize: 20),
                     ),
                   ),
                   const SizedBox(
@@ -79,10 +79,10 @@ class _EdirInfoUserState extends State<EdirInfoUser> {
               child: Column(
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Text(
-                        "Bank Account Options",
-                        style: TextStyle(
+                        "Bank Account Options".tr,
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ],

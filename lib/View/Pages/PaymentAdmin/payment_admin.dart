@@ -36,7 +36,7 @@ class _PaymentAdminState extends State<PaymentAdmin> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         floatingActionButton: CommonBtn(
-            text: "Send To All",
+            text: "Send To All".tr,
             action: () {
               Get.to(() => PaymentRequestForm(members: memberList));
             }),
@@ -71,7 +71,7 @@ class _PaymentAdminState extends State<PaymentAdmin> {
                       child: CircularProgressIndicator(),
                     )
                   : memberList.isEmpty
-                      ? const Center(child: Text("No Members"))
+                      ? Center(child: Text("No Members".tr))
                       : ListView.builder(
                           itemCount: memberList.length,
                           itemBuilder: ((context, index) => EdirMemberFrPayment(

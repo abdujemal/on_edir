@@ -50,7 +50,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
               child: (result != null)
                   ? Text(
                       'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}')
-                  : Text('Scan a code'),
+                  : Text('Scan a code'.tr),
             ),
           )
         ],

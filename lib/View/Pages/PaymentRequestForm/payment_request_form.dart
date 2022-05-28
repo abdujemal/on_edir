@@ -31,6 +31,7 @@ class _PaymentRequestFormState extends State<PaymentRequestForm> {
 
   PaymentRequestFormController paymentRequestFormController =
       Get.put(PaymentRequestFormController());
+
   sendRequest() async {
     paymentRequestFormController.setIsLoading(true);
     for (EdirMember edirMember in widget.members) {
@@ -55,7 +56,7 @@ class _PaymentRequestFormState extends State<PaymentRequestForm> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("Payment Request Form"),
+          title: Text("Payment Request Form".tr),
           backgroundColor: Colors.transparent,
           centerTitle: true,
         ),
@@ -69,21 +70,21 @@ class _PaymentRequestFormState extends State<PaymentRequestForm> {
                 ),
                 CommonInput(
                     controller: titleTc,
-                    hint: "Request Messege",
+                    hint: "Request Messege".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                     controller: descriptionTc,
-                    hint: "Amount Of Money",
+                    hint: "Amount Of Money".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 Obx(() => paymentRequestFormController.isLoading.value
                     ? const Center(child: CircularProgressIndicator())
-                    : CommonBtn(text: "Send", action: () => sendRequest()))
+                    : CommonBtn(text: "Send".tr, action: () => sendRequest()))
               ],
             ),
           ),

@@ -71,7 +71,7 @@ class _MyProfileState extends State<MyProfile> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("My Profile"),
+          title: Text("My Profile".tr),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -113,28 +113,28 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 CommonInput(
                     controller: userNameTc,
-                    hint: "User Name",
+                    hint: "User Name".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                     controller: userBioTc,
-                    hint: "User Bio",
+                    hint: "User Bio".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                     controller: emailAddressTc,
-                    hint: "Email Address",
+                    hint: "Email".tr,
                     keyboardType: TextInputType.text),
                 const SizedBox(
                   height: 10,
                 ),
                 CommonInput(
                   controller: phoneNumberTc,
-                  hint: "Your Phone Number",
+                  hint: "User Phone".tr,
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -142,7 +142,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 CommonInput(
                   controller: reservePhoneNumberTc,
-                  hint: "Your Reserve Phone Number",
+                  hint: "Your Reserve PhoneNumber".tr,
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -150,7 +150,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 CommonInput(
                   controller: familyMembersTc,
-                  hint: "Your Family Members",
+                  hint: "Your Family Members".tr,
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -158,7 +158,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 CommonInput(
                   controller: numOfFamilyMembersTc,
-                  hint: "Number of family Members",
+                  hint: "Number Your Family Members".tr,
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -167,7 +167,7 @@ class _MyProfileState extends State<MyProfile> {
                 myProfileController.isLoading.value ?
                 const CircularProgressIndicator():
                 CommonBtn(
-                    text: "Save Changes",
+                    text: "Save Changes".tr,
                     action: () {
                       if (profile_key.currentState.validate()) {
                         userService.updateUserInfo(

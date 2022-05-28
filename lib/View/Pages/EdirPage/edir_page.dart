@@ -25,18 +25,18 @@ class _EdirPageState extends State<EdirPage> {
   EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
 
   List<BottomNavigationBarItem> items = [
-    const BottomNavigationBarItem(
-        icon: Icon(
+       BottomNavigationBarItem(
+        icon: const Icon(
           Icons.announcement,
         ),
-        label: "Announcement"),
-    const BottomNavigationBarItem(
-        icon: Icon(
+        label: "Announcement".tr),
+       BottomNavigationBarItem(
+        icon: const Icon(
           Icons.store,
         ),
-        label: "Store"),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.video_call), label: "Meeting")
+        label: "Store".tr),
+       BottomNavigationBarItem(
+        icon: const Icon(Icons.video_call), label: "Meeting".tr)
   ];
 
   List<Widget> pages = [
@@ -73,7 +73,7 @@ class _EdirPageState extends State<EdirPage> {
         appBar: AppBar(
           title: Obx(() => edirPAgeController.currentEdir.value.edirName != ""
               ? Text(edirPAgeController.currentEdir.value.edirName)
-              : const Text("Loading")),
+              : Text("Loading...".tr)),
           backgroundColor: Colors.transparent,
           centerTitle: true,
           leading: IconButton(

@@ -32,11 +32,11 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("Request List"),
+          title: Text("Request List".tr),
           centerTitle: true,
         ),
         floatingActionButton: CommonBtn(
-            text: "Send Request",
+            text: "Send Request".tr,
             action: () {
               Get.to(() => PaymentRequestForm(members: [widget.edirMember]));
             }),
@@ -66,8 +66,8 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
             reqList == null?
             const Center(child: CircularProgressIndicator(),):
             reqList.isEmpty
-                ? const Center(
-                    child: Text("No Request"),
+                ? Center(
+                    child: Text("No Request".tr),
                   )
                 : Padding(
                     padding: const EdgeInsets.only(bottom: 80),

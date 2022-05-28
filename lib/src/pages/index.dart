@@ -52,8 +52,8 @@ class IndexState extends State<IndexPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text(
-            "Video Conference",
+          Text(
+            "Video Conference".tr,
             style: TextStyle(fontSize: 25),
           ),
           const SizedBox(
@@ -89,8 +89,8 @@ class IndexState extends State<IndexPage> {
                   },
                   child: Text(edirPAgeController.currentEdir.value.created_by ==
                           mainController.myInfo.value.uid
-                      ? 'Start'
-                      : 'Join'),
+                      ? 'Start'.tr
+                      : 'Join'.tr),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.blueAccent),

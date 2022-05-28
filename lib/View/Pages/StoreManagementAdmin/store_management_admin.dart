@@ -16,8 +16,6 @@ class _StoreManagementAdminState extends State<StoreManagementAdmin> {
   DatabaseReference ref =
       FirebaseDatabase.instance.ref().child("StoreItemRentRequest");
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +24,7 @@ class _StoreManagementAdminState extends State<StoreManagementAdmin> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("Store Managment"),
+          title: Text("Store Managment".tr),
         ),
         body: StreamBuilder(
           stream: ref.onValue,
@@ -34,28 +32,33 @@ class _StoreManagementAdminState extends State<StoreManagementAdmin> {
             List<StoreItemRequest> list;
             if (snapshot.hasData) {
               list = [];
-              Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                  (snapshot.data as DatabaseEvent).snapshot.value);
-              for (Map<dynamic, dynamic> reqData in data.values) {
-                if (reqData != null) {
-                  StoreItemRequest storeItemRequest =
-                      StoreItemRequest.fromFirebaseMap(reqData);
-                 
+              if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
+                Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
+                    (snapshot.data as DatabaseEvent).snapshot.value);
+
+                for (Map<dynamic, dynamic> reqData in data.values) {
+                  if (reqData != null) {
+                    StoreItemRequest storeItemRequest =
+                        StoreItemRequest.fromFirebaseMap(reqData);
+
                     list.add(storeItemRequest);
-                 
+                  }
                 }
+                list.sort(((a, b) =>
+                    a.eid.toLowerCase().compareTo(b.eid.toLowerCase())));
               }
-              list.sort(((a, b) =>
-                  a.eid.toLowerCase().compareTo(b.eid.toLowerCase())));
             }
-            return 
-            list == null ?
-            const Center(child: CircularProgressIndicator(),):
-            list.isEmpty ?
-            const Center(child: Text("No Request"),):
-            ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, index) => Container());
+            return list == null
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : list.isEmpty
+                    ? Center(
+                        child: Text("No Request".tr),
+                      )
+                    : ListView.builder(
+                        itemCount: list.length,
+                        itemBuilder: (context, index) => Container());
           },
         ),
       ),

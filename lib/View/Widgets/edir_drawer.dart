@@ -53,18 +53,33 @@ class _EdirDrawerState extends State<EdirDrawer> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
-              child: Obx(
-                () => edirPAgeController.currentEdir.value.img_url == ""
-                    ? const CircleAvatar(
-                        radius: 35,
+              child: Row(
+                children: [
+                  Obx(
+                    () => edirPAgeController.currentEdir.value.img_url == ""
+                        ? const CircleAvatar(
+                            radius: 35,
+                            backgroundColor: Colors.white,
+                            child: Icon(Icons.account_circle),
+                          )
+                        : CircleAvatar(
+                            radius: 35,
+                            backgroundImage: NetworkImage(
+                                edirPAgeController.currentEdir.value.img_url),
+                          ),
+                  ),
+                  Spacer(),
+                   Obx(()=>
+                      edirPAgeController.currentEdir.value.eid != "" ?
+                      QrImage(
                         backgroundColor: Colors.white,
-                        child: Icon(Icons.account_circle),
-                      )
-                    : CircleAvatar(
-                        radius: 35,
-                        backgroundImage: NetworkImage(
-                            edirPAgeController.currentEdir.value.img_url),
+                        data: edirPAgeController.currentEdir.value.eid,
+                        version: QrVersions.auto,
+                        size: 100.0,
+                      ):const SizedBox()
                       ),
+                    Spacer()
+                ],
               ),
             ),
             const SizedBox(
@@ -81,16 +96,16 @@ class _EdirDrawerState extends State<EdirDrawer> {
                                 edirPAgeController.currentEdir.value.edirName,
                                 style: const TextStyle(fontSize: 20),
                               )
-                            : const Text("Loading...")),
+                            : Text("Loading...".tr)),
                     subtitle: Obx(() =>
                         edirPAgeController.currentEdir.value.created_by != ""
                             ? Text(
-                                "Created by ${edirPAgeController.currentEdir.value.created_by_name}",
+                                "Created by".tr+edirPAgeController.currentEdir.value.created_by_name+"creat".tr,
                                 style: const TextStyle(
                                     fontSize: 15,
                                     color: Color.fromARGB(255, 197, 197, 197)),
                               )
-                            : const Text("Loading...")),
+                            : Text("Loading...".tr)),
                     children: [
                       ...mainController.edirList.isNotEmpty
                           ? edirList
@@ -99,7 +114,7 @@ class _EdirDrawerState extends State<EdirDrawer> {
                         height: 15,
                       ),
                       DrawerListItem(
-                          text: "Add Edir",
+                          text: "Add Edir".tr,
                           action: () {
                             Get.to(() => const MainPage());
                           },
@@ -144,34 +159,19 @@ class _EdirDrawerState extends State<EdirDrawer> {
             const SizedBox(
               height: 10,
             ),
-            Obx(()=>
-            edirPAgeController.currentEdir.value.eid != "" ?
-            QrImage(
-              data: edirPAgeController.currentEdir.value.eid,
-              version: QrVersions.auto,
-              size: 200.0,
-            ):const SizedBox()
-            ),
-            Obx(()=>
-               edirPAgeController.currentEdir.value.eid != "" ?
-               CommonInput(
-                  controller: TextEditingController(
-                      text: edirPAgeController.currentEdir.value.eid),
-                  hint: "Edir Code",
-                  keyboardType: TextInputType.text):const SizedBox()
-            ),
+            
             const SizedBox(
               height: 5,
             ),
             DrawerListItem(
-                text: "My Profile",
+                text: "My Profile".tr,
                 action: () => Get.to(() => const MyProfile()),
                 icon: Icons.account_circle),
             const SizedBox(
               height: 5,
             ),
             DrawerListItem(
-                text: "Edir Info",
+                text: "Edir Info".tr,
                 action: () => Get.to(() =>
                     edirPAgeController.currentEdir.value.created_by == uid
                         ? const EdirInfoAdmin()
@@ -181,21 +181,21 @@ class _EdirDrawerState extends State<EdirDrawer> {
               height: 5,
             ),
             DrawerListItem(
-                text: "Edir Members",
+                text: "Edir Members".tr,
                 action: () => Get.to(() => const EdirMembersPage()),
                 icon: Icons.group_outlined),
             const SizedBox(
               height: 5,
             ),
             DrawerListItem(
-                text: "Edir Group Chat",
+                text: "Edir Group Chat".tr,
                 action: () => Get.to(() => const EdirGroupChat()),
                 icon: Icons.group),
             const SizedBox(
               height: 5,
             ),
             DrawerListItem(
-                text: "Payment",
+                text: "Payment".tr,
                 action: () => Get.to(() =>
                     edirPAgeController.currentEdir.value.created_by ==
                             mainController.myInfo.value.uid
@@ -206,13 +206,17 @@ class _EdirDrawerState extends State<EdirDrawer> {
               height: 5,
             ),
             DrawerListItem(
-                text: "Store Management",
+                text: "Store Management".tr,
                 action: () => Get.to(() =>
                     edirPAgeController.currentEdir.value.created_by ==
                             mainController.myInfo.value.uid
                         ? const StoreManagementAdmin()
                         : const StoreManagemntUser()),
-                icon: Icons.payment),
+                icon: Icons.store),
+             DrawerListItem(
+                text: "Switch Language".tr,
+                action: () => Get.locale == const Locale('am',"ET") ? Get.updateLocale(const Locale('en', 'BR')) : Get.updateLocale(const Locale('am',"ET")),
+                icon: Icons.language),
             const SizedBox(
               height: 5,
             ),

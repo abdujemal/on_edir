@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CommonInput extends StatelessWidget {
   TextInputType keyboardType;
@@ -27,9 +28,10 @@ class CommonInput extends StatelessWidget {
         // ignore: missing_return
         validator: (v) {
           if (v.isEmpty) {
-            return "This Field is required.";
+            return "This Field is required.".tr;
           }
         },
+        
         controller: controller,
         keyboardType: keyboardType,
         maxLines: maxLines,

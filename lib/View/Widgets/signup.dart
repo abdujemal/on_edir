@@ -90,8 +90,8 @@ class _SignUpState extends State<SignUp> {
                               lsController.setPickedImage(imageFile.path);
                             } else {
                               MSGSnack msgSnack = MSGSnack(
-                                  title: "Alert!",
-                                  msg: "Image is not picked",
+                                  title: "Alert!".tr,
+                                  msg: "Image is not picked".tr,
                                   color: Colors.red);
                               msgSnack.show();
                             }
@@ -106,7 +106,7 @@ class _SignUpState extends State<SignUp> {
               SLInput(
                 controller: emailTC,
                 keyboardType: TextInputType.emailAddress,
-                title: 'Email',
+                title: 'Email'.tr,
                 hint: 'abc@website.com',
               ),
               const SizedBox(
@@ -115,7 +115,7 @@ class _SignUpState extends State<SignUp> {
               SLInput(
                 controller: userNameTC,
                 keyboardType: TextInputType.text,
-                title: 'User Name',
+                title: 'User Name'.tr,
                 hint: 'chala mola',
               ),
               const SizedBox(
@@ -124,7 +124,7 @@ class _SignUpState extends State<SignUp> {
               SLInput(
                 controller: userBioTC,
                 keyboardType: TextInputType.text,
-                title: 'User Bio',
+                title: 'User Bio'.tr,
                 hint: 'I lova programing ...',
               ),
               const SizedBox(
@@ -133,7 +133,7 @@ class _SignUpState extends State<SignUp> {
               SLInput(
                 controller: userPhoneTC,
                 keyboardType: TextInputType.phone,
-                title: 'User Phone',
+                title: 'User Phone'.tr,
                 hint: '0976894790',
               ),
               const SizedBox(
@@ -142,7 +142,7 @@ class _SignUpState extends State<SignUp> {
               SLInput(
                 controller: userRsPhoneTC,
                 keyboardType: TextInputType.phone,
-                title: 'Your Reserve PhoneNumber',
+                title: 'Your Reserve PhoneNumber'.tr,
                 hint: '0967584930',
               ),
               const SizedBox(
@@ -151,7 +151,7 @@ class _SignUpState extends State<SignUp> {
               SLInput(
                 controller: userFamilyMembersTC,
                 keyboardType: TextInputType.text,
-                title: 'Your Family Members',
+                title: 'Your Family Members'.tr,
                 hint: 'chala, Awol, ...',
               ),
               const SizedBox(
@@ -160,7 +160,7 @@ class _SignUpState extends State<SignUp> {
               SLInput(
                 controller: userNoOfFamilyMembersTC,
                 keyboardType: TextInputType.number,
-                title: 'Number Your Family Members',
+                title: 'Number Your Family Members'.tr,
                 hint: '5',                
               ),
               const SizedBox(
@@ -168,7 +168,7 @@ class _SignUpState extends State<SignUp> {
               ),
               SLInput(
                   isObscure: true,
-                  title: "Password",
+                  title: "Password".tr,
                   hint: "*******",
                   
                   keyboardType: TextInputType.visiblePassword,
@@ -178,7 +178,7 @@ class _SignUpState extends State<SignUp> {
               ),
               SLInput(
                   isObscure: true,
-                  title: "Confirm Password",
+                  title: "Confirm Password".tr,
                   hint: "*******",
                   keyboardType: TextInputType.visiblePassword,
                   controller: confirmPasswordTC),
@@ -195,20 +195,20 @@ class _SignUpState extends State<SignUp> {
           () => lsController.isLoading.value
               ? const CircularProgressIndicator()
               : SLBtn(
-                  text: "Sign Up",
+                  text: "Sign Up".tr,
                   onTap: () {
                     if (!_key.currentState.validate()) {
                       
                     }else if(lsController.pickedFilePath.value == ""){
                       MSGSnack msgSnack = MSGSnack(
-                            title: "Alert!",
-                            msg: "Please choose your profile photo.",
+                            title: "Alert!".tr,
+                            msg: "Please choose your profile photo.".tr,
                             color: Colors.red);
                         msgSnack.show();
                     }else if(confirmPasswordTC.text != passwordTC.text){
                       MSGSnack msgSnack = MSGSnack(
-                            title: "Alert!",
-                            msg: "Please write the same password.",
+                            title: "Alert!".tr,
+                            msg: "Please write the same password.".tr,
                             color: Colors.red);
                         msgSnack.show();
                     }else{

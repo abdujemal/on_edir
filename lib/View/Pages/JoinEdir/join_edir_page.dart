@@ -37,7 +37,7 @@ class _JoinEdirPageState extends State<JoinEdirPage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text("Join Edir"),
+          title: Text("Join Edir".tr),
           centerTitle: true,
         ),
         body: Column(
@@ -48,7 +48,7 @@ class _JoinEdirPageState extends State<JoinEdirPage> {
             IconButton(icon:const Icon(Icons.qr_code),onPressed:()=>Get.to(()=>const QrScannerPage())),
             CommonInput(
                 controller: _edirCodeController,
-                hint: "Edir Code",
+                hint: "Edir Code".tr,
                 keyboardType: TextInputType.text),
             const SizedBox(
               height: 35,
@@ -64,7 +64,7 @@ class _JoinEdirPageState extends State<JoinEdirPage> {
                               _edirCodeController.text, "User", context);
                         }
                       },
-                      text: "Join",
+                      text: "Join".tr,
                     ),
             )
           ],

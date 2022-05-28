@@ -25,7 +25,7 @@ class _EdirListWidgetState extends State<EdirListWidget> {
           imgUrl: mainController.edirList[index].img_url,
           title: mainController.edirList[index].edirName,
           subtitle:
-              "Created by ${mainController.edirList[index].created_by_name}",
+              "Created by".tr+mainController.edirList[index].created_by_name+"creat".tr,
           onTap: () {
             Navigator.pushAndRemoveUntil(
                 context,

@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Model/store.dart';
 import 'package:on_edir/View/Pages/AddStoreItemPage/add_store_item.dart';
-import 'package:on_edir/View/Pages/EdirInfoAdmin/controller/edir_info_controller.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Widgets/custom_fab.dart';
 import 'package:on_edir/View/Widgets/stroe_item.dart';
-import 'package:on_edir/constants.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({Key key}) : super(key: key);
@@ -53,8 +51,8 @@ class _StorePageState extends State<StorePage> {
               storeList == null?
               const Center(child: CircularProgressIndicator()):
               storeList.isEmpty
-                  ? const Center(
-                      child: Text("No Store Item"),
+                  ? Center(
+                      child: Text("No Store Item".tr),
                     )
                   : ListView.builder(
                       itemCount: storeList.length,

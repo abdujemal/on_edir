@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:on_edir/constants.dart';
 
 class SLInput extends StatelessWidget {
@@ -29,7 +30,7 @@ class SLInput extends StatelessWidget {
           TextFormField(
             validator: (value) {
               if (value.isEmpty) {
-                return "This Field is required.";
+                return "This Field is required.".tr;
               }
             },
             controller: controller,

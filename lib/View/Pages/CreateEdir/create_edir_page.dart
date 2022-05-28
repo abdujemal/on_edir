@@ -65,7 +65,7 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("Create Edir"),
+          title: Text("Create Edir".tr),
           backgroundColor: Colors.transparent,
           centerTitle: true,
         ),
@@ -100,8 +100,8 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                               createEdirController.setImage(imagexFile.path);
                             } else {
                               MSGSnack msgSnack = MSGSnack(
-                                  title: "Alert!",
-                                  msg: "Image is not picked",
+                                  title: "Alert!".tr,
+                                  msg: "Image is not picked".tr,
                                   color: Colors.red);
                               msgSnack.show();
                             }
@@ -119,42 +119,42 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                   ),
                   CommonInput(
                       controller: edirNameTc,
-                      hint: "Edir Name",
+                      hint: "Edir Name".tr,
                       keyboardType: TextInputType.text),
                   const SizedBox(
                     height: 20,
                   ),
                   CommonInput(
                       controller: edirBioTc,
-                      hint: "Edir Bio",
+                      hint: "Edir Bio".tr,
                       keyboardType: TextInputType.text),
                   const SizedBox(
                     height: 20,
                   ),
                   CommonInput(
                       controller: edirAddressTc,
-                      hint: "Edir Address",
+                      hint: "Edir Address".tr,
                       keyboardType: TextInputType.text),
                   const SizedBox(
                     height: 20,
                   ),
                   CommonInput(
                       controller: edirAmountOfMoneyTc,
-                      hint: "Amount Of Money",
+                      hint: "Amount Of Money".tr,
                       keyboardType: TextInputType.text),
                   const SizedBox(
                     height: 20,
                   ),
                   CommonInput(
                       controller: edirDurationOfPaymentTc,
-                      hint: "Durations Of Payment",
+                      hint: "Durations Of Payment".tr,
                       keyboardType: TextInputType.text),
                   const SizedBox(
                     height: 20,
                   ),
                   CommonInput(
                     controller: edirRulesTc,
-                    hint: "Edir Rules and Regulations",
+                    hint: "Edir Rules and Regulations".tr,
                     keyboardType: TextInputType.multiline,
                     maxLines: 7,
                   ),
@@ -249,21 +249,21 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                     () => createEdirController.isLoading.value
                         ? const CircularProgressIndicator()
                         : CommonBtn(
-                            text: "Create Edir",
+                            text: "Create Edir".tr,
                             action: () {
                               if (!_createEdirKey.currentState.validate()) {
                               } else if (createEdirController
                                       .pickedfilePath.value ==
                                   "") {
                                 MSGSnack msgSnack = MSGSnack(
-                                    title: "Alert!",
-                                    msg: "Please Choose your Edir Image.",
+                                    title: "Alert!".tr,
+                                    msg: "Please Choose your Edir Image.".tr,
                                     color: Colors.red);
                                 msgSnack.show();
                               } else if (createEdirController.options.isEmpty) {
                                 MSGSnack msgSnack = MSGSnack(
-                                    title: "Alert!",
-                                    msg: "Please add your payment options.",
+                                    title: "Alert!".tr,
+                                    msg: "Please add your payment options.".tr,
                                     color: Colors.red);
                                 msgSnack.show();
                               } else {
