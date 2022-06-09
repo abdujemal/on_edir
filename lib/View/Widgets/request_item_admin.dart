@@ -28,14 +28,14 @@ class RequestItemAdmin extends StatelessWidget {
             IconButton(
                 onPressed: () {
                   userService.changePaymentRequestState("Payed",
-                      "PaymentRequest/${paymentRequest.receiverId}/${paymentRequest.pid}");
+                      "PaymentRequest/${paymentRequest.receiverId}/${paymentRequest.pid}",paymentRequest);
                 },
                 icon: const Icon(Icons.check,color: Colors.green,)),
             const SizedBox(width: 10,),
             IconButton(
                 onPressed: () {
                   userService.changePaymentRequestState("NotPayed",
-                      "PaymentRequest/${paymentRequest.receiverId}/${paymentRequest.pid}");
+                      "PaymentRequest/${paymentRequest.receiverId}/${paymentRequest.pid}",paymentRequest);
                 },
                 icon: const Icon(FontAwesomeIcons.times ,color: Colors.red,)),
           ],
@@ -74,7 +74,12 @@ class RequestItemAdmin extends StatelessWidget {
           ),
           ListTile(
               title: Text(paymentRequest.title),
-              subtitle: Text(paymentRequest.description),
+              subtitle: paymentRequest.transactionId != null ?
+               Text("Amount Of Money: ".tr +
+                  paymentRequest.description +
+                  ", TransactionId: ".tr+ paymentRequest.transactionId):
+                Text("Amount Of Money: ".tr +
+                  paymentRequest.description),
               leading: const Icon(Icons.payment),
               trailing: actionBtn()),
         ]),

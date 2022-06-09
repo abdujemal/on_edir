@@ -61,7 +61,7 @@ class _JoinEdirPageState extends State<JoinEdirPage> {
                         if (_edirCodeController.text.isNotEmpty) {
                           userService.joinEdir(
                             
-                              _edirCodeController.text, "User", context);
+                              _edirCodeController.text, "User", context, "New");
                         }
                       },
                       text: "Join".tr,

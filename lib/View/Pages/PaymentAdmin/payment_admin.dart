@@ -78,7 +78,7 @@ class _PaymentAdminState extends State<PaymentAdmin> {
                               img_url: memberList[index].img_url,
                               name: memberList[index].userName,
                               position: memberList[index].position,
-                              onTap: () => Get.to(PaymentRequestPageAdmin(
+                              onTap: () => Get.to(()=>PaymentRequestPageAdmin(
                                     edirMember: memberList[index],
                                   )))));
             }),

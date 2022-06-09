@@ -31,6 +31,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    
     userService.getUserInfo();
     userService.getEdirList();
   }

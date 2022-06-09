@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_edir/Controller/send_notification.dart';
 import 'package:on_edir/Model/announcement.dart';
 import 'package:on_edir/Model/bankaccount_options.dart';
 import 'package:on_edir/Model/chat.dart';
@@ -75,7 +76,7 @@ class UserService extends GetxService {
   }
 
   sendStoreRentRequest(String reason, String dateOfReturn, BuildContext context,
-      String p_img, String pid) async {
+      String p_img, String pid, String p_name) async {
     try {
       storeDetailController.setIsLoading(true);
 
@@ -94,9 +95,17 @@ class UserService extends GetxService {
           reason,
           ref.key.toString(),
           "Pending",
-          auth.currentUser.uid);
+          auth.currentUser.uid,
+          p_name);
 
       await ref.update(storeItemRequest.toFirebaseMap(storeItemRequest));
+
+      SendNotification sendNotification = SendNotification(
+          title: "Store Rent Request",
+          body: "${mainController.myInfo.value.userName} has sent a request.",
+          topic: edirPAgeController.currentEdir.value.created_by);
+
+      sendNotification.send();
 
       storeDetailController.setIsLoading(false);
 
@@ -108,6 +117,28 @@ class UserService extends GetxService {
           (route) => false);
     } catch (e) {
       storeDetailController.setIsLoading(false);
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
+    }
+  }
+
+  Future<void> setStoreRequiestState(
+      StoreItemRequest storeItemRequest, String state) async {
+    try {
+      DatabaseReference ref = database
+          .ref()
+          .child("StoreItemRentRequest")
+          .child(storeItemRequest.srid);
+      await ref.child("state").set(state);
+
+      SendNotification sendNotification = SendNotification(
+          title: "Store Request",
+          body: "Your ${storeItemRequest.p_name} request is $state",
+          topic: storeItemRequest.uid);
+
+      sendNotification.send();
+    } catch (e) {
       MSGSnack errorMSG =
           MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
       errorMSG.show();
@@ -148,6 +179,25 @@ class UserService extends GetxService {
             .set(token);
 
         edirPAgeController.setAccessToken(token);
+
+        DatabaseEvent events = await database
+            .ref()
+            .child("EdirMembers")
+            .child(edirPAgeController.currentEdir.value.eid)
+            .once();
+
+        Map<dynamic, dynamic> data =
+            events.snapshot.value as Map<dynamic, dynamic>;
+
+        data.forEach((key, value) {
+          SendNotification sendNotification = SendNotification(
+              title: "Video Conference",
+              body:
+                  "${edirPAgeController.currentEdir.value.edirName} had started video conference.",
+              topic: value['uid']);
+
+          sendNotification.send();
+        });
 
         edirPAgeController.setIsTokenLoading(false);
 
@@ -221,18 +271,33 @@ class UserService extends GetxService {
     }
   }
 
-  editStore(String type, String path, String currentQuantity) async {
+  editStore(
+      String type, String path, String currentQuantity, String img_url) async {
     // increase, decrease and delete a qunatity of store item
-    int quan = int.parse(currentQuantity);
-    DatabaseReference ref = database.ref(path);
-    if (type == "increament") {
-      ref.child("quantity").set("${quan + 1}");
-    } else {
-      if (quan == 1) {
-        ref.remove();
+    try {
+      int quan = int.parse(currentQuantity);
+      DatabaseReference ref = database.ref(path);
+      if (type == "increament") {
+        ref.child("quantity").set("${quan + 1}");
       } else {
-        ref.child("quantity").set("${quan - 1}");
+        if (quan == 1) {
+          ref.remove();
+        } else {
+          String imgpath = img_url
+              .replaceAll(
+                  "https://firebasestorage.googleapis.com/v0/b/onedir-42e14.appspot.com/o/",
+                  "")
+              .split("?")[0]
+              .replaceAll("%2F", "/");
+
+          await ref.child("quantity").set("${quan - 1}");
+          await storage.ref(imgpath).delete();
+        }
       }
+    } catch (e) {
+      MSGSnack errorMSG =
+          MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
+      errorMSG.show();
     }
   }
 
@@ -260,6 +325,22 @@ class UserService extends GetxService {
           quantity);
 
       await ref.update(store.toFirebaseMap(store));
+
+      DatabaseEvent events = await database
+          .ref()
+          .child("EdirMembers")
+          .child(edirPAgeController.currentEdir.value.eid)
+          .once();
+
+      Map<dynamic, dynamic> data =
+          events.snapshot.value as Map<dynamic, dynamic>;
+
+      data.forEach((key, value) {
+        SendNotification sendNotification = SendNotification(
+            title: "Store", body: "$itemName is Added.", topic: value['uid']);
+
+        sendNotification.send();
+      });
 
       MSGSnack errorMSG = MSGSnack(
           color: Colors.green,
@@ -306,6 +387,22 @@ class UserService extends GetxService {
 
       await ref.update(map);
 
+      DatabaseEvent events = await database
+          .ref()
+          .child("EdirMembers")
+          .child(edirPAgeController.currentEdir.value.eid)
+          .once();
+
+      Map<dynamic, dynamic> data =
+          events.snapshot.value as Map<dynamic, dynamic>;
+
+      data.forEach((key, value) {
+        SendNotification sendNotification = SendNotification(
+            title: "Announcement", body: "About $title", topic: value['uid']);
+
+        sendNotification.send();
+      });
+
       addAnnouncementController.setIsLoading(false);
 
       MSGSnack errorMSG = MSGSnack(
@@ -329,9 +426,22 @@ class UserService extends GetxService {
     }
   }
 
-  changePaymentRequestState(String state, String ref) async {
+  changePaymentRequestState(String state, String ref, PaymentRequest payment,
+      {String transationId}) async {
     try {
-      await database.ref(ref).child("state").set(state);
+      if (state == "Payed") {
+        await database.ref(ref).child("state").set(state);
+        await database.ref(ref).child("transactionId").set(transationId);
+      } else {
+        await database.ref(ref).child("state").set(state);
+      }
+
+      SendNotification sendNotification = SendNotification(
+          title: "${payment.title}",
+          body: "your payment is ${state}.",
+          topic: payment.receiverId);
+
+      sendNotification.send();
     } catch (e) {
       MSGSnack errorMSG =
           MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
@@ -348,6 +458,13 @@ class UserService extends GetxService {
           description, receiverId, state, title, ref.key.toString(), eid);
       Map<String, Object> map = paymentRequest.toFirbaseMap(paymentRequest);
       await ref.update(map);
+
+      SendNotification sendNotification = SendNotification(
+          title: title,
+          body: "You have recieved payment request",
+          topic: receiverId);
+
+      sendNotification.send();
 
       MSGSnack errorMSG = MSGSnack(
           color: Colors.green, title: "Success!", msg: "Successfully uploaded");
@@ -366,6 +483,22 @@ class UserService extends GetxService {
       Chat chat = Chat(text, ref.key.toString(), userName, img_url);
       Map<String, Object> chatMap = chat.toFirebaseMap(chat);
       await ref.update(chatMap);
+
+      DatabaseEvent events = await database
+          .ref()
+          .child("EdirMembers")
+          .child(edirPAgeController.currentEdir.value.eid)
+          .once();
+
+      Map<dynamic, dynamic> data =
+          events.snapshot.value as Map<dynamic, dynamic>;
+
+      data.forEach((key, value) {
+        SendNotification sendNotification = SendNotification(
+            title: "Group Chat", body: "$userName: $text", topic: value['uid']);
+
+        sendNotification.send();
+      });
     } catch (e) {
       MSGSnack errorMSG =
           MSGSnack(color: Colors.red, title: "Error!", msg: e.toString());
@@ -516,7 +649,8 @@ class UserService extends GetxService {
     }
   }
 
-  joinEdir(String edirId, String position, BuildContext context) async {
+  joinEdir(String edirId, String position, BuildContext context,
+      String edirName) async {
     EdirMember edirMember = EdirMember(mainController.myInfo.value.img_url,
         position, auth.currentUser.uid, mainController.myInfo.value.userName);
 
@@ -538,6 +672,15 @@ class UserService extends GetxService {
           .child(auth.currentUser.uid)
           .child(edirId)
           .update(myEdirListItem);
+
+      if (position != "Admin") {
+        SendNotification sendNotification = SendNotification(
+            title: "Welcome Messege",
+            body: "Welcome to $edirName Edir",
+            topic: mainController.myInfo.value.uid);
+
+        sendNotification.send();
+      }
 
       MSGSnack msgSnack = MSGSnack(
           title: "!Success",
@@ -657,7 +800,7 @@ class UserService extends GetxService {
           .child(ref.key.toString())
           .update(options);
 
-      await joinEdir(ref.key.toString(), "Admin", context);
+      await joinEdir(ref.key.toString(), "Admin", context,edirName);
     } catch (e) {
       createEdirController.setIsLoading(false);
       MSGSnack msgSnack = MSGSnack(

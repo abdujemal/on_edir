@@ -8,10 +8,21 @@ class StoreItemRequest {
       state,
       uid,
       eid,
+      p_name,
       creatorId;
 
-  StoreItemRequest(this.creatorId, this.date, this.dateOfReturn, this.eid,
-      this.p_img, this.pid, this.reason, this.srid, this.state, this.uid);
+  StoreItemRequest(
+      this.creatorId,
+      this.date,
+      this.dateOfReturn,
+      this.eid,
+      this.p_img,
+      this.pid,
+      this.reason,
+      this.srid,
+      this.state,
+      this.uid,
+      this.p_name);
 
   Map<String, Object> toFirebaseMap(StoreItemRequest storeItemRequest) => {
         "srid": storeItemRequest.srid,
@@ -23,7 +34,8 @@ class StoreItemRequest {
         "state": storeItemRequest.state,
         "uid": storeItemRequest.uid,
         "eid": storeItemRequest.eid,
-        "creatorId": storeItemRequest.creatorId
+        "creatorId": storeItemRequest.creatorId,
+        'p_name': storeItemRequest.p_name
       };
 
   StoreItemRequest.fromFirebaseMap(Map<dynamic, dynamic> data)
@@ -36,5 +48,6 @@ class StoreItemRequest {
         state = data["state"],
         uid = data["uid"],
         eid = data["eid"],
-        creatorId = data["creatorId"];
+        creatorId = data["creatorId"],
+        p_name = data["p_name"];
 }

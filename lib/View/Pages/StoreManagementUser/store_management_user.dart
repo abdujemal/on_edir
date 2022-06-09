@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Model/store_item_request.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
+import 'package:on_edir/View/Widgets/common_btn.dart';
 
 import '../../../constants.dart';
 
@@ -29,41 +30,47 @@ class _StoreManagemntUserState extends State<StoreManagemntUser> {
           backgroundColor: Colors.transparent,
           title: Text("Store Managment".tr),
         ),
-        body: StreamBuilder(
-          stream: ref.onValue,
-          builder: (context, snapshot) {
-            List<StoreItemRequest> list;
-            if (snapshot.hasData) {
-              list = [];
-              if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
-                Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                    (snapshot.data as DatabaseEvent).snapshot.value);
-                for (Map<dynamic, dynamic> reqData in data.values) {
-                  if (reqData != null) {
-                    StoreItemRequest storeItemRequest =
-                        StoreItemRequest.fromFirebaseMap(reqData);
-                    if (storeItemRequest.uid ==
-                        mainController.myInfo.value.uid) {
-                      list.add(storeItemRequest);
+       
+        body: Stack(
+          children: [
+            StreamBuilder(
+              stream: ref.onValue,
+              builder: (context, snapshot) {
+                List<StoreItemRequest> list;
+                if (snapshot.hasData) {
+                  list = [];
+                  if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
+                    Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
+                        (snapshot.data as DatabaseEvent).snapshot.value);
+                    for (Map<dynamic, dynamic> reqData in data.values) {
+                      if (reqData != null) {
+                        StoreItemRequest storeItemRequest =
+                            StoreItemRequest.fromFirebaseMap(reqData);
+                        if (storeItemRequest.uid ==
+                            mainController.myInfo.value.uid) {
+                          list.add(storeItemRequest);
+                        }
+                      }
                     }
+                    list.sort(((a, b) =>
+                        a.eid.toLowerCase().compareTo(b.eid.toLowerCase())));
                   }
                 }
-                list.sort(((a, b) =>
-                    a.eid.toLowerCase().compareTo(b.eid.toLowerCase())));
-              }
-            }
-            return list == null
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : list.isEmpty
-                    ? Center(
-                        child: Text("No Request".tr),
+                return list == null
+                    ? const Center(
+                        child: CircularProgressIndicator(),
                       )
-                    : ListView.builder(
-                        itemCount: list.length,
-                        itemBuilder: (context, index) => Container());
-          },
+                    : list.isEmpty
+                        ? Center(
+                            child: Text("No Request".tr),
+                          )
+                        : ListView.builder(
+                            itemCount: list.length,
+                            itemBuilder: (context, index) => Container());
+              },
+            ),
+            
+          ],
         ),
       ),
     );

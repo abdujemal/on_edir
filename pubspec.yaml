@@ -28,27 +28,27 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   agora_rtc_engine: null
-  # clipboard_manager: ^0.0.4
   cupertino_icons: ^1.0.2
   firebase_analytics: ^9.1.0
   firebase_auth: ^3.3.7
   firebase_core: ^1.12.0
   firebase_database: any
+  firebase_messaging: ^11.4.1
   firebase_storage: ^10.2.7
+  flutter:
+    sdk: flutter
   flutter_speed_dial: ^5.0.0+1
   font_awesome_flutter: ^9.2.0
   get: ^4.6.1
   google_sign_in: ^5.2.3
   http: ^0.13.4
   image_picker: ^0.8.4+11
-  qr_flutter: ^4.0.0
   native_pdf_view: ^6.0.0+1
   path_provider: ^2.0.9
-  qr_code_scanner: ^0.7.0
   pdfx: any
   permission_handler: null
-  flutter:
-    sdk: flutter
+  qr_code_scanner: ^0.7.0
+  qr_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0

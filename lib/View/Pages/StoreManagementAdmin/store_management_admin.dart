@@ -1,8 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/Model/store_item_request.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
+import 'package:on_edir/View/Widgets/store_request_item_admin.dart';
 import 'package:on_edir/constants.dart';
 
 class StoreManagementAdmin extends StatefulWidget {
@@ -16,6 +18,7 @@ class _StoreManagementAdminState extends State<StoreManagementAdmin> {
   DatabaseReference ref =
       FirebaseDatabase.instance.ref().child("StoreItemRentRequest");
 
+  UserService userService = Get.put(UserService());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,7 +61,9 @@ class _StoreManagementAdminState extends State<StoreManagementAdmin> {
                       )
                     : ListView.builder(
                         itemCount: list.length,
-                        itemBuilder: (context, index) => Container());
+                        itemBuilder: (context, index) => StoreRequestItemAdmin(
+                            userService: userService,
+                            storeItemRequest: list[index]));
           },
         ),
       ),

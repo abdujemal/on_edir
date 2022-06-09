@@ -5,7 +5,6 @@ import 'package:on_edir/View/Pages/StoreDetail/controller/store_detail_controlle
 import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/View/Widgets/edir_info_item.dart';
-import 'package:on_edir/View/Widgets/stroe_item.dart';
 import 'package:on_edir/constants.dart';
 
 import '../../../Model/store.dart';
@@ -54,8 +53,12 @@ class _StoreDetailState extends State<StoreDetail> {
             EdirInfoItem(title: "Store Item Name".tr, value: widget.store.itemName),
             Column(children: [
               Text("Store Description".tr,style: TextStyle(fontSize: 20),),
-              const SizedBox(height: 5,),
-              Text(widget.store.itemDescription)
+              const SizedBox(height: 8,),
+              Padding(
+                padding: const EdgeInsets.only(right: 10, left: 10),
+                child: Text(widget.store.itemDescription),
+              ),
+              const SizedBox(height: 10,)
             ],),
             CommonInput(
                 controller: reasonTc,
@@ -78,7 +81,7 @@ class _StoreDetailState extends State<StoreDetail> {
                 : CommonBtn(
                     text: "Send".tr,
                     action: () {
-                      userService.sendStoreRentRequest(reasonTc.text, dateOfReturnTC.text, context, widget.store.img_url, widget.store.sid);
+                      userService.sendStoreRentRequest(reasonTc.text, dateOfReturnTC.text, context, widget.store.img_url, widget.store.sid, widget.store.itemName);
                     }))
           ]),
         ),

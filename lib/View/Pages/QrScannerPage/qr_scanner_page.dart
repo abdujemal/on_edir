@@ -64,7 +64,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       setState(() {
         result = scanData;
       });
-      userService.joinEdir(scanData.code,"User",context);
+      userService.joinEdir(scanData.code,"User",context, "New");
     });
   }
 

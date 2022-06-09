@@ -46,7 +46,11 @@ class _PaymentRequestFormState extends State<PaymentRequestForm> {
     titleTc.text = "";
     descriptionTc.text = "";
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (c) => widget.members.length > 1 ? const PaymentAdmin(): PaymentRequestPageAdmin(edirMember: widget.members[0])));
+        context,
+        MaterialPageRoute(
+            builder: (c) => widget.members.length > 1
+                ? const PaymentAdmin()
+                : PaymentRequestPageAdmin(edirMember: widget.members[0])));
   }
 
   @override
@@ -93,3 +97,5 @@ class _PaymentRequestFormState extends State<PaymentRequestForm> {
     );
   }
 }
+
+

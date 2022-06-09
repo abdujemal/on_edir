@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
@@ -25,17 +26,17 @@ class _EdirPageState extends State<EdirPage> {
   EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
 
   List<BottomNavigationBarItem> items = [
-       BottomNavigationBarItem(
+    BottomNavigationBarItem(
         icon: const Icon(
           Icons.announcement,
         ),
         label: "Announcement".tr),
-       BottomNavigationBarItem(
+    BottomNavigationBarItem(
         icon: const Icon(
           Icons.store,
         ),
         label: "Store".tr),
-       BottomNavigationBarItem(
+    BottomNavigationBarItem(
         icon: const Icon(Icons.video_call), label: "Meeting".tr)
   ];
 
@@ -53,12 +54,14 @@ class _EdirPageState extends State<EdirPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+
     userService.getEdirList();
-    
+
     userService.getEdir(widget.edirId);
+
+    FirebaseMessaging.instance
+        .subscribeToTopic(mainController.myInfo.value.uid);
   }
-  
 
   @override
   Widget build(BuildContext context) {

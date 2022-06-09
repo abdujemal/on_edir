@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class PaymentRequest {
   String senderId,
       receiverId,
@@ -7,9 +5,10 @@ class PaymentRequest {
       title,
       description,
       pid,
-      eid;
-  PaymentRequest(this.senderId, this.description,
-      this.receiverId, this.state, this.title, this.pid, this.eid);
+      eid,
+      transactionId;
+  PaymentRequest(this.senderId, this.description, this.receiverId, this.state,
+      this.title, this.pid, this.eid, {this.transactionId});
 
   Map<String, Object> toFirbaseMap(PaymentRequest paymentRequest) {
     return {
@@ -19,7 +18,8 @@ class PaymentRequest {
       "title": paymentRequest.title,
       "description": paymentRequest.description,
       "pid": paymentRequest.pid,
-      "eid": paymentRequest.eid
+      "eid": paymentRequest.eid,
+      "transactionId": paymentRequest.transactionId
     };
   }
 
@@ -30,5 +30,6 @@ class PaymentRequest {
         title = data["title"],
         description = data["description"],
         pid = data["pid"],
-        eid = data["eid"];
+        eid = data["eid"],
+        transactionId = data["transactionId"];
 }
