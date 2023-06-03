@@ -274,24 +274,33 @@ class UserService extends GetxService {
   editStore(
       String type, String path, String currentQuantity, String img_url) async {
     // increase, decrease and delete a qunatity of store item
+    print(img_url);
+    String imgpath = img_url
+              .replaceAll(
+                  "https://firebasestorage.googleapis.com/v0/b/onedir-42e14.appspot.com/o/",
+                  "")
+              .split("?")[0]
+              .replaceAll("%2F", "/").replaceAll(".png", "");
+    print("this "+imgpath);
     try {
       int quan = int.parse(currentQuantity);
       DatabaseReference ref = database.ref(path);
       if (type == "increament") {
         ref.child("quantity").set("${quan + 1}");
       } else {
-        if (quan == 1) {
+        if (quan <= 1) {
           ref.remove();
-        } else {
           String imgpath = img_url
               .replaceAll(
                   "https://firebasestorage.googleapis.com/v0/b/onedir-42e14.appspot.com/o/",
                   "")
               .split("?")[0]
               .replaceAll("%2F", "/");
-
-          await ref.child("quantity").set("${quan - 1}");
+          print(imgpath);
           await storage.ref(imgpath).delete();
+        } else {
+          // https://firebasestorage.googleapis.com/v0/b/onedir-42e14.appspot.com/o/StoreImage%2F-MzLaXxLYNxNuuy5lwHo.png?alt=media&token=464455bf-8044-404e-b9a5-35db338a0113
+          await ref.child("quantity").set("${quan - 1}");
         }
       }
     } catch (e) {
@@ -800,7 +809,7 @@ class UserService extends GetxService {
           .child(ref.key.toString())
           .update(options);
 
-      await joinEdir(ref.key.toString(), "Admin", context,edirName);
+      await joinEdir(ref.key.toString(), "Admin", context, edirName);
     } catch (e) {
       createEdirController.setIsLoading(false);
       MSGSnack msgSnack = MSGSnack(

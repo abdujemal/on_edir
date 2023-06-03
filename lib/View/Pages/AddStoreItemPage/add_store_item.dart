@@ -68,7 +68,7 @@ class _AddStoreItemState extends State<AddStoreItem> {
                       right: -5,
                       child: IconButton(
                         onPressed: () async {
-                          var xFile = await ImagePicker().pickImage();
+                          var xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
                           if (xFile != null) {
                             addStoreController.setFilePath(xFile.path);
                           } else {

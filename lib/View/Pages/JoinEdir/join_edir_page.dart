@@ -40,34 +40,36 @@ class _JoinEdirPageState extends State<JoinEdirPage> {
           title: Text("Join Edir".tr),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 200,
-            ),
-            IconButton(icon:const Icon(Icons.qr_code),onPressed:()=>Get.to(()=>const QrScannerPage())),
-            CommonInput(
-                controller: _edirCodeController,
-                hint: "Edir Code".tr,
-                keyboardType: TextInputType.text),
-            const SizedBox(
-              height: 35,
-            ),
-            Obx(
-              () => joinEdirController.isLoading.value
-                  ? const CircularProgressIndicator()
-                  : CommonBtn(
-                      action: () {
-                        if (_edirCodeController.text.isNotEmpty) {
-                          userService.joinEdir(
-                            
-                              _edirCodeController.text, "User", context, "New");
-                        }
-                      },
-                      text: "Join".tr,
-                    ),
-            )
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 200,
+              ),
+              IconButton(icon:const Icon(Icons.qr_code),onPressed:()=>Get.to(()=>const QrScannerPage())),
+              CommonInput(
+                  controller: _edirCodeController,
+                  hint: "Edir Code".tr,
+                  keyboardType: TextInputType.text),
+              const SizedBox(
+                height: 35,
+              ),
+              Obx(
+                () => joinEdirController.isLoading.value
+                    ? const CircularProgressIndicator()
+                    : CommonBtn(
+                        action: () {
+                          if (_edirCodeController.text.isNotEmpty) {
+                            userService.joinEdir(
+                              
+                                _edirCodeController.text, "User", context, "New");
+                          }
+                        },
+                        text: "Join".tr,
+                      ),
+              )
+            ],
+          ),
         ),
       ),
     );
