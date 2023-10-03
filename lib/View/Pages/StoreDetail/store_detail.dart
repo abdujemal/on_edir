@@ -11,7 +11,7 @@ import '../../../Model/store.dart';
 
 class StoreDetail extends StatefulWidget {
   Store store;
-  StoreDetail({Key key, @required this.store}) : super(key: key);
+  StoreDetail({Key? key, required this.store}) : super(key: key);
 
   @override
   State<StoreDetail> createState() => _StoreDetailState();

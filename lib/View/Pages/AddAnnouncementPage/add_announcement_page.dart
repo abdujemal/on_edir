@@ -7,7 +7,7 @@ import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/constants.dart';
 
 class AddAnnouncement extends StatefulWidget {
-  const AddAnnouncement({Key key}) : super(key: key);
+  const AddAnnouncement({Key? key}) : super(key: key);
 
   @override
   State<AddAnnouncement> createState() => _AddAnnouncementState();
@@ -73,7 +73,7 @@ class _AddAnnouncementState extends State<AddAnnouncement> {
                         : CommonBtn(
                             text: "Add".tr,
                             action: () {
-                              if (_key.currentState.validate()) {
+                              if (_key.currentState!.validate()) {
                                 userService.addAnnouncement(
                                     titleTc.text, descriptionTc.text, context);
                               }

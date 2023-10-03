@@ -8,7 +8,7 @@ import 'package:on_edir/constants.dart';
 
 
 class LogInSignInPage extends StatefulWidget {
-  const LogInSignInPage({Key key}) : super(key: key);
+  const LogInSignInPage({Key? key}) : super(key: key);
 
   @override
   _LogInSignInPageState createState() => _LogInSignInPageState();

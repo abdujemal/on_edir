@@ -11,7 +11,7 @@ import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:on_edir/constants.dart';
 
 class EdirInfoAdmin extends StatefulWidget {
-  const EdirInfoAdmin({Key key}) : super(key: key);
+  const EdirInfoAdmin({Key? key}) : super(key: key);
 
   @override
   State<EdirInfoAdmin> createState() => _EdirInfoAdminState();
@@ -173,7 +173,7 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
-                            edirInfoController.options.value.isEmpty
+                            edirInfoController.options.isEmpty
                                 ? const SizedBox()
                                 : ActionBtn(
                                     text: "Clear".tr,
@@ -206,7 +206,7 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                       ActionBtn(
                           text: "Add Option",
                           action: () {
-                            if (_optionKey.currentState.validate()) {
+                            if (_optionKey.currentState!.validate()) {
                               edirInfoController.addList(BankAccountOption(
                                   bankTc.text, accountTc.text));
                               bankTc.text = "";
@@ -219,8 +219,8 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                       Obx(
                         () => Column(
                             children:
-                                edirInfoController.options.value.isNotEmpty
-                                    ? edirInfoController.options.value
+                                edirInfoController.options.isNotEmpty
+                                    ? edirInfoController.options
                                         .map(
                                           (v) => ListTile(
                                             trailing: const Icon(Icons.payment),
@@ -243,7 +243,7 @@ class _EdirInfoAdminState extends State<EdirInfoAdmin> {
                       : CommonBtn(
                           text: "Save Changes",
                           action: () {
-                            if (!_adminFromKey.currentState.validate()) {
+                            if (!_adminFromKey.currentState!.validate()) {
                             } else if (edirInfoController.options.isEmpty) {
                               MSGSnack msgSnack = MSGSnack(
                                   title: "Alert!",

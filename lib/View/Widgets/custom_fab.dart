@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:on_edir/constants.dart';
 
-import '../Pages/AddAnnouncementPage/add_announcement_page.dart';
 
 class CustomFab extends StatelessWidget {
   IconData icon;
   void Function() onTap;
-  CustomFab({Key key,@required this.icon,@required this.onTap}) : super(key: key);
+  CustomFab({Key? key,required this.icon,required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ class StoreRequestItemAdmin extends StatefulWidget {
   StoreItemRequest storeItemRequest;
   UserService userService;
   StoreRequestItemAdmin(
-      {Key key, @required this.userService, @required this.storeItemRequest})
+      {Key? key, required this.userService, required this.storeItemRequest})
       : super(key: key);
 
   @override

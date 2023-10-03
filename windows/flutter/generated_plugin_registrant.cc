@@ -8,7 +8,6 @@
 
 #include <agora_rtc_engine/agora_rtc_engine_plugin.h>
 #include <iris_event/iris_event_plugin.h>
-#include <pdfx/native_pdf_renderer_plugin.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
@@ -16,8 +15,6 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("AgoraRtcEnginePlugin"));
   IrisEventPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("IrisEventPlugin"));
-  NativePdfRendererPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("NativePdfRendererPlugin"));
   PermissionHandlerWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("PermissionHandlerWindowsPlugin"));
 }

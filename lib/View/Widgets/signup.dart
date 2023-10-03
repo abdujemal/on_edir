@@ -10,7 +10,7 @@ import 'package:on_edir/View/Widgets/sl_input.dart';
 import 'package:on_edir/constants.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key key}) : super(key: key);
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -82,7 +82,7 @@ class _SignUpState extends State<SignUp> {
                       child: IconButton(
                           color: whiteColor,
                           onPressed: () async {
-                            XFile imagexFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+                            XFile? imagexFile = await ImagePicker().pickImage(source: ImageSource.gallery);
                               
                             if (imagexFile != null) {
                               File imageFile = File(imagexFile.path);
@@ -197,7 +197,7 @@ class _SignUpState extends State<SignUp> {
               : SLBtn(
                   text: "Sign Up".tr,
                   onTap: () {
-                    if (!_key.currentState.validate()) {
+                    if (!_key.currentState!.validate()) {
                       
                     }else if(lsController.pickedFilePath.value == ""){
                       MSGSnack msgSnack = MSGSnack(

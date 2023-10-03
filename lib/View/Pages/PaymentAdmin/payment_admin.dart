@@ -1,8 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
@@ -13,7 +11,7 @@ import 'package:on_edir/View/Widgets/edir_member_fr_payment.dart';
 import 'package:on_edir/constants.dart';
 
 class PaymentAdmin extends StatefulWidget {
-  const PaymentAdmin({Key key}) : super(key: key);
+  const PaymentAdmin({Key? key}) : super(key: key);
 
   @override
   State<PaymentAdmin> createState() => _PaymentAdminState();
@@ -25,7 +23,7 @@ class _PaymentAdminState extends State<PaymentAdmin> {
   DatabaseReference databaseReference =
       FirebaseDatabase.instance.ref().child("EdirMembers");
 
-  List<EdirMember> memberList;
+  List<EdirMember>? memberList;
 
   MainController mainController = Get.put(MainController());
 
@@ -38,7 +36,10 @@ class _PaymentAdminState extends State<PaymentAdmin> {
         floatingActionButton: CommonBtn(
             text: "Send To All".tr,
             action: () {
-              Get.to(() => PaymentRequestForm(members: memberList));
+              if(memberList != null){
+
+              Get.to(() => PaymentRequestForm(members: memberList!));
+              }
             }),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -54,14 +55,14 @@ class _PaymentAdminState extends State<PaymentAdmin> {
               if (snapshot.hasData) {
                 memberList = [];
                 Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                    (snapshot.data as DatabaseEvent).snapshot.value);
+                    (snapshot.data as DatabaseEvent).snapshot.value as Map);
 
                 for (Map<dynamic, dynamic> memberData in data.values) {
                   EdirMember edirMember =
                       EdirMember.fromFirebaseMap(memberData);
                   if (edirMember.uid != null) {
                     if (edirMember.uid != mainController.myInfo.value.uid) {
-                      memberList.add(edirMember);
+                      memberList!.add(edirMember);
                     }
                   }
                 }
@@ -70,16 +71,16 @@ class _PaymentAdminState extends State<PaymentAdmin> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : memberList.isEmpty
+                  : memberList!.isEmpty
                       ? Center(child: Text("No Members".tr))
                       : ListView.builder(
-                          itemCount: memberList.length,
+                          itemCount: memberList!.length,
                           itemBuilder: ((context, index) => EdirMemberFrPayment(
-                              img_url: memberList[index].img_url,
-                              name: memberList[index].userName,
-                              position: memberList[index].position,
+                              img_url: memberList![index].img_url,
+                              name: memberList![index].userName,
+                              position: memberList![index].position,
                               onTap: () => Get.to(()=>PaymentRequestPageAdmin(
-                                    edirMember: memberList[index],
+                                    edirMember: memberList![index],
                                   )))));
             }),
       ),

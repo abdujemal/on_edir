@@ -9,7 +9,7 @@ import 'package:on_edir/View/Widgets/chat_item.dart';
 import 'package:on_edir/constants.dart';
 
 class EdirGroupChat extends StatefulWidget {
-  const EdirGroupChat({Key key}) : super(key: key);
+  const EdirGroupChat({Key? key}) : super(key: key);
 
   @override
   State<EdirGroupChat> createState() => _EdirGroupChatState();
@@ -37,8 +37,8 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
           backgroundColor: Colors.transparent,
           title: Obx(() => edirPAgeController.currentEdir.value == null
               ? const SizedBox()
-              : Text(
-                  edirPAgeController.currentEdir.value.edirName +"Group Chat".tr)),
+              : Text(edirPAgeController.currentEdir.value.edirName +
+                  "Group Chat".tr)),
           centerTitle: true,
         ),
         body: Stack(
@@ -54,7 +54,7 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                             .child(edirPAgeController.currentEdir.value.eid)
                             .onValue,
                         builder: (context, snapshot) {
-                          List<Chat> chatList = null;
+                          List<Chat>? chatList = null;
                           if (snapshot.hasData) {
                             chatList = [];
                             if ((snapshot.data as DatabaseEvent)
@@ -62,10 +62,9 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                                     .value !=
                                 null) {
                               Map<dynamic, dynamic> data =
-                                  Map<dynamic, dynamic>.from(
-                                      (snapshot.data as DatabaseEvent)
-                                          .snapshot
-                                          .value);
+                                  (snapshot.data as DatabaseEvent)
+                                      .snapshot
+                                      .value as Map;
                               for (Map<dynamic, dynamic> chatData
                                   in data.values) {
                                 Map<dynamic, dynamic> data =
@@ -95,7 +94,7 @@ class _EdirGroupChatState extends State<EdirGroupChat> {
                                           itemBuilder: (context, index) =>
                                               ChatItem(
                                                   userName:
-                                                      chatList[index].userName,
+                                                      chatList![index].userName,
                                                   text: chatList[index].text,
                                                   img_url:
                                                       chatList[index].img_url)),

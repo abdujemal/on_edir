@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class EdirInfoItem extends StatelessWidget {
   String title;
   String value;
-  EdirInfoItem({ Key key, @required this.title, @required this.value }) : super(key: key);
+  EdirInfoItem({ Key? key, required this.title, required this.value }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

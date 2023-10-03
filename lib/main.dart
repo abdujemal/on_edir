@@ -14,20 +14,23 @@ void main() async {
   if (Platform.isAndroid) {
     await Firebase.initializeApp();
   } else {
-    await Firebase.initializeApp(options: const FirebaseOptions(
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
         apiKey: "AIzaSyBowme8acOL5BbxxptiTTAV8uCq0-7tbfA",
         appId: "1:965611862391:web:e29d7851c15e7120988972",
         messagingSenderId: "965611862391",
-        projectId: "onedir-42e14"));
+        projectId: "onedir-42e14",
+      ),
+    );
   }
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   Widget checkUser(BuildContext context) {
-    User auth = FirebaseAuth.instance.currentUser;
+    User? auth = FirebaseAuth.instance.currentUser;
     if (auth != null) {
       return const MainPage();
     } else {

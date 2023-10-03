@@ -8,7 +8,7 @@ import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:on_edir/constants.dart';
 
 class JCEdir extends StatelessWidget {
-  JCEdir({Key key}) : super(key: key);
+  JCEdir({Key? key}) : super(key: key);
 
   MainController mainController = Get.put(MainController());
 

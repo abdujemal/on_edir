@@ -4,7 +4,7 @@ import 'package:on_edir/constants.dart';
 class EdirMemberItem extends StatelessWidget {
   String imgUrl, title, subtitle;
   void Function() onTap;
-  EdirMemberItem({Key key, @required this.imgUrl, @required this.title, @required this.subtitle, @required this.onTap}) : super(key: key);
+  EdirMemberItem({Key? key, required this.imgUrl, required this.title, required this.subtitle, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

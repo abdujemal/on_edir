@@ -9,7 +9,7 @@ import 'package:on_edir/constants.dart';
 
 class EdirInfoUser extends StatefulWidget {
   EdirInfoUser({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -6,11 +6,11 @@ class EdirMemberFrPayment extends StatelessWidget {
   void Function() onTap;
   
   EdirMemberFrPayment(
-      {Key key,
-      @required this.img_url,
-      @required this.name,
-      @required this.position,
-      @required this.onTap})
+      {Key? key,
+      required this.img_url,
+    required this.name,
+      required this.position,
+      required this.onTap})
       : super(key: key);
 
   @override

@@ -9,7 +9,7 @@ import 'package:on_edir/constants.dart';
 
 class StoreItem extends StatelessWidget {
   Store store;
-  StoreItem({Key key, @required this.store}) : super(key: key);
+  StoreItem({Key? key, required this.store}) : super(key: key);
 
   UserService userService = Get.put(UserService());
   EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());

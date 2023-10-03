@@ -1,13 +1,10 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/Model/edir.dart';
 import 'package:on_edir/View/Pages/EdirGroupChat/edir_group_chat.dart';
-import 'package:on_edir/View/Pages/EdirInfoAdmin/controller/edir_info_controller.dart';
 import 'package:on_edir/View/Pages/EdirInfoAdmin/edir_info_admin.dart';
 import 'package:on_edir/View/Pages/EdirInfoUser/edir_info_user.dart';
 import 'package:on_edir/View/Pages/EdirMembers/edir_members_page.dart';
@@ -19,15 +16,13 @@ import 'package:on_edir/View/Pages/PaymentAdmin/payment_admin.dart';
 import 'package:on_edir/View/Pages/PaymentUser/payment_user.dart';
 import 'package:on_edir/View/Pages/StoreManagementAdmin/store_management_admin.dart';
 import 'package:on_edir/View/Pages/StoreManagementUser/store_management_user.dart';
-import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/View/Widgets/drawer_list_item.dart';
-import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:on_edir/View/Widgets/small_edir_member_item.dart';
 import 'package:on_edir/constants.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class EdirDrawer extends StatefulWidget {
-  const EdirDrawer({Key key}) : super(key: key);
+  const EdirDrawer({Key? key}) : super(key: key);
 
   @override
   State<EdirDrawer> createState() => _EdirDrawerState();
@@ -41,7 +36,7 @@ class _EdirDrawerState extends State<EdirDrawer> {
 
   var userService = Get.put(UserService());
 
-  String uid = FirebaseAuth.instance.currentUser.uid;
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   Widget topPart() => Container(
         color: const Color.fromARGB(101, 0, 0, 0),
@@ -142,7 +137,7 @@ class _EdirDrawerState extends State<EdirDrawer> {
         onTap: () {
           edirPAgeController.setCurrentEdir(edir);
         },
-        id: edir.eid,
+        id: edir.eid, subtitle: '',
       ));
     }
   }

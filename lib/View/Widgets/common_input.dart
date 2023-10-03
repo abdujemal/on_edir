@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CommonInput extends StatelessWidget {
-  TextInputType keyboardType;
-  String hint;
-  TextEditingController controller;
-  IconData prefixIcon;
-  int maxLines;
+  final TextInputType keyboardType;
+  final String hint;
+  final TextEditingController controller;
+  final IconData? prefixIcon;
+  final int maxLines;
 
   CommonInput(
-      {Key key,
-      @required this.controller,
-      @required this.hint,
-      this.prefixIcon = null,
+      {Key? key,
+      required this.controller,
+      required this.hint,
+      this.prefixIcon,
       this.maxLines = 1,
-      @required this.keyboardType})
+      required this.keyboardType})
       : super(key: key);
 
   @override
@@ -27,9 +27,10 @@ class CommonInput extends StatelessWidget {
       child: TextFormField(
         // ignore: missing_return
         validator: (v) {
-          if (v.isEmpty) {
+          if (v!.isEmpty) {
             return "This Field is required.".tr;
           }
+          return null;
         },
         
         controller: controller,

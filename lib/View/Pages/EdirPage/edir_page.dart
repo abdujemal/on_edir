@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
@@ -14,7 +13,7 @@ import 'package:on_edir/constants.dart';
 
 class EdirPage extends StatefulWidget {
   String edirId;
-  EdirPage({Key key, @required this.edirId}) : super(key: key);
+  EdirPage({Key? key, required this.edirId}) : super(key: key);
 
   @override
   State<EdirPage> createState() => _EdirPageState();
@@ -82,7 +81,7 @@ class _EdirPageState extends State<EdirPage> {
           leading: IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              _key.currentState.openDrawer();
+              _key.currentState!.openDrawer();
             },
           ),
           actions: [

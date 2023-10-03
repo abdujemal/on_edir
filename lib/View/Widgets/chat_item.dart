@@ -3,7 +3,12 @@ import 'package:on_edir/constants.dart';
 
 class ChatItem extends StatelessWidget {
   String userName, text, img_url;
-  ChatItem({Key key, @required this.userName, @required this.text, @required this.img_url}) : super(key: key);
+  ChatItem({
+    Key? key,
+    required this.userName,
+    required this.text,
+    required this.img_url,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,7 @@ import 'package:on_edir/View/Widgets/request_item_user.dart';
 import 'package:on_edir/constants.dart';
 
 class PaymentUser extends StatefulWidget {
-  const PaymentUser({Key key}) : super(key: key);
+  const PaymentUser({Key? key}) : super(key: key);
 
   @override
   State<PaymentUser> createState() => _PaymentUserState();
@@ -33,12 +33,12 @@ class _PaymentUserState extends State<PaymentUser> {
         body: StreamBuilder(
           stream: requestRef.child(mainController.myInfo.value.uid).onValue,
           builder: (context, snapshot) {
-            List<PaymentRequest> reqList;
+            List<PaymentRequest>? reqList;
             if (snapshot.hasData) {
               reqList = [];
               if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
                 Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                    (snapshot.data as DatabaseEvent).snapshot.value);
+                    (snapshot.data as DatabaseEvent).snapshot.value as Map);
                 for (Map<dynamic, dynamic> reqData in data.values) {
                   if (reqData != null) {
                     PaymentRequest paymentRequest =
@@ -64,7 +64,7 @@ class _PaymentUserState extends State<PaymentUser> {
                     child: ListView.builder(
                         itemCount: reqList.length,
                         itemBuilder: (context, index) => RequestItemUser(
-                              paymentRequest: reqList[index],
+                              paymentRequest: reqList![index],
                             )),
                   );
           },

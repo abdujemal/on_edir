@@ -12,7 +12,7 @@ import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:on_edir/constants.dart';
 
 class AddStoreItem extends StatefulWidget {
-  const AddStoreItem({Key key}) : super(key: key);
+  const AddStoreItem({Key? key}) : super(key: key);
 
   @override
   State<AddStoreItem> createState() => _AddStoreItemState();
@@ -119,7 +119,7 @@ class _AddStoreItemState extends State<AddStoreItem> {
                     : CommonBtn(
                         text: "Save".tr,
                         action: () {
-                          if (!_key.currentState.validate()) {
+                          if (!_key.currentState!.validate()) {
                           } else if (addStoreController.filePath.value == "") {
                             MSGSnack msgSnack = MSGSnack(
                                 title: "Alert!".tr,

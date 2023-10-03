@@ -4,8 +4,8 @@ import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart
 import 'package:on_edir/constants.dart';
 
 class BottomBar extends StatefulWidget {
-  List<BottomNavigationBarItem> items;
-  BottomBar({Key key, @required this.items}) : super(key: key);
+  final List<BottomNavigationBarItem> items;
+  const BottomBar({Key? key, required this.items}) : super(key: key);
 
   @override
   State<BottomBar> createState() => _BottomBarState();

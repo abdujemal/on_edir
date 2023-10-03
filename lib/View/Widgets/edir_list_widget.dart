@@ -7,7 +7,7 @@ import 'package:on_edir/View/Widgets/edir_member_item.dart';
 
 class EdirListWidget extends StatefulWidget {
   const EdirListWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

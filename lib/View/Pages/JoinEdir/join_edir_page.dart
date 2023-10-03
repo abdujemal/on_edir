@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
-import 'package:on_edir/View/Pages/EdirPage/edir_page.dart';
 import 'package:on_edir/View/Pages/JoinEdir/controller/join_edir_controller.dart';
 import 'package:on_edir/View/Pages/QrScannerPage/qr_scanner_page.dart';
 import 'package:on_edir/View/Widgets/common_btn.dart';
@@ -9,7 +8,7 @@ import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/constants.dart';
 
 class JoinEdirPage extends StatefulWidget {
-  const JoinEdirPage({Key key}) : super(key: key);
+  const JoinEdirPage({Key? key}) : super(key: key);
 
   @override
   State<JoinEdirPage> createState() => _JoinEdirPageState();

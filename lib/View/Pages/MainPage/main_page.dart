@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
-import 'package:on_edir/Model/edir.dart';
 import 'package:on_edir/View/Pages/CreateEdir/create_edir_page.dart';
 import 'package:on_edir/View/Pages/JoinEdir/join_edir_page.dart';
 import 'package:on_edir/View/Pages/LoginSignUp/login_signin_page.dart';
@@ -16,7 +13,7 @@ import 'package:on_edir/View/Widgets/join_create_edir.dart';
 import 'package:on_edir/constants.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key key}) : super(key: key);
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -70,7 +67,7 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
         floatingActionButton:  Obx(()=>
-          mainController.edirList.value.isEmpty ?
+          mainController.edirList.isEmpty ?
           const SizedBox():
            SpeedDial(
             animatedIcon: AnimatedIcons.menu_close,

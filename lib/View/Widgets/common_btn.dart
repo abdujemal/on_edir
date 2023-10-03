@@ -4,7 +4,7 @@ import 'package:on_edir/constants.dart';
 class CommonBtn extends StatelessWidget {
   String text;
   void Function() action;
-  CommonBtn({Key key, @required this.text, @required this.action}) : super(key: key);
+  CommonBtn({Key? key, required this.text, required this.action}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

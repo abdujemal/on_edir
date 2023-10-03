@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.10.3 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -27,28 +27,28 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  agora_rtc_engine: ^6.1.0
-  cupertino_icons: ^1.0.2
-  firebase_analytics: ^9.1.0
-  firebase_auth: ^3.3.7
-  firebase_core: ^1.12.0
+  agora_rtc_engine: any
+  cupertino_icons: any
+  firebase_analytics: any
+  firebase_auth: any
+  firebase_core: any
   firebase_database: any
-  firebase_messaging: ^11.4.1
-  firebase_storage: ^10.2.7
+  firebase_messaging: any
+  firebase_storage: any
   flutter:
     sdk: flutter
-  flutter_speed_dial: ^5.0.0+1
-  font_awesome_flutter: ^9.2.0
-  get: ^4.6.1
-  google_sign_in: ^5.2.3
-  http: ^0.13.4
-  image_picker: ^0.8.4+11
-  native_pdf_view: ^6.0.0+1
-  path_provider: ^2.0.9
-  pdfx: any
+  flutter_speed_dial: any
+  font_awesome_flutter: any
+  get: any
+  google_sign_in: any
+  http: any
+  image_picker: any
+  # native_pdf_view: ^6.0.0+1
+  path_provider: any
+  # pdfx: any
   permission_handler: null
-  qr_code_scanner: ^0.7.0
-  qr_flutter: ^4.0.0
+  qr_code_scanner: any
+  qr_flutter: any
 
 dev_dependencies:
   flutter_lints: ^1.0.0

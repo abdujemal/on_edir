@@ -8,7 +8,7 @@ import 'package:on_edir/View/Widgets/common_btn.dart';
 import '../../../constants.dart';
 
 class StoreManagemntUser extends StatefulWidget {
-  const StoreManagemntUser({Key key}) : super(key: key);
+  const StoreManagemntUser({Key? key}) : super(key: key);
 
   @override
   State<StoreManagemntUser> createState() => _StoreManagemntUserState();
@@ -36,12 +36,12 @@ class _StoreManagemntUserState extends State<StoreManagemntUser> {
             StreamBuilder(
               stream: ref.onValue,
               builder: (context, snapshot) {
-                List<StoreItemRequest> list;
+                List<StoreItemRequest>? list;
                 if (snapshot.hasData) {
                   list = [];
                   if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
                     Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                        (snapshot.data as DatabaseEvent).snapshot.value);
+                        (snapshot.data as DatabaseEvent).snapshot.value as Map);
                     for (Map<dynamic, dynamic> reqData in data.values) {
                       if (reqData != null) {
                         StoreItemRequest storeItemRequest =

@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/Model/edir_member.dart';
 import 'package:on_edir/Model/payment_request.dart';
 import 'package:on_edir/View/Pages/PaymentRequestForm/payment_request_form.dart';
@@ -10,9 +9,9 @@ import 'package:on_edir/View/Widgets/request_item_admin.dart';
 import 'package:on_edir/constants.dart';
 
 class PaymentRequestPageAdmin extends StatefulWidget {
-  EdirMember edirMember;
+  final EdirMember edirMember;
 
-  PaymentRequestPageAdmin({Key key, @required this.edirMember})
+  const PaymentRequestPageAdmin({Key? key, required this.edirMember})
       : super(key: key);
 
   @override
@@ -43,12 +42,12 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
         body: StreamBuilder(
           stream: requestRef.child(widget.edirMember.uid).onValue,
           builder: (context, snapshot) {
-            List<PaymentRequest> reqList;
+            List<PaymentRequest>? reqList;
             if (snapshot.hasData) {
               reqList = [];
               if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
                 Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                    (snapshot.data as DatabaseEvent).snapshot.value);
+                    (snapshot.data as DatabaseEvent).snapshot.value as Map);
                 for (Map<dynamic, dynamic> reqData in data.values) {
                   if (reqData != null) {
                     PaymentRequest paymentRequest =
@@ -74,7 +73,7 @@ class _PaymentRequestPageAdminState extends State<PaymentRequestPageAdmin> {
                     child: ListView.builder(
                         itemCount: reqList.length,
                         itemBuilder: (context, index) => RequestItemAdmin(
-                              paymentRequest: reqList[index],
+                              paymentRequest: reqList![index],
                             )),
                   );
           },

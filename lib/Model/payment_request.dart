@@ -1,16 +1,11 @@
 class PaymentRequest {
-  String senderId,
-      receiverId,
-      state,
-      title,
-      description,
-      pid,
-      eid,
-      transactionId;
+  String senderId, receiverId, state, title, description, pid, eid;
+  String? transactionId;
   PaymentRequest(this.senderId, this.description, this.receiverId, this.state,
-      this.title, this.pid, this.eid, {this.transactionId});
+      this.title, this.pid, this.eid,
+      {this.transactionId});
 
-  Map<String, Object> toFirbaseMap(PaymentRequest paymentRequest) {
+  Map<String, dynamic> toFirbaseMap(PaymentRequest paymentRequest) {
     return {
       "senderId": paymentRequest.senderId,
       "receiverId": paymentRequest.receiverId,

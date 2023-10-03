@@ -77,7 +77,7 @@ class Login extends StatelessWidget {
            SLBtn(
             text: "Log In".tr,
             onTap: () {
-              if (_key.currentState.validate()) {
+              if (_key.currentState!.validate()) {
                 userService.loginWEmailNPW(
                     emailTC.text, passwordTC.text, context);
               }

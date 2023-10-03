@@ -6,12 +6,10 @@ import 'package:on_edir/View/Pages/AddAnnouncementPage/add_announcement_page.dar
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Widgets/announcement_item.dart';
-import 'package:on_edir/View/Widgets/common_btn.dart';
 import 'package:on_edir/View/Widgets/custom_fab.dart';
-import 'package:on_edir/constants.dart';
 
 class AnnouncementPage extends StatefulWidget {
-  const AnnouncementPage({Key key}) : super(key: key);
+  const AnnouncementPage({Key? key}) : super(key: key);
 
   @override
   State<AnnouncementPage> createState() => _AnnouncementPageState();
@@ -34,37 +32,36 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 .child(edirPAgeController.currentEdir.value.eid)
                 .onValue,
             builder: (context, snapshot) {
-              List<Announcement> announcementList;
+              List<Announcement>? announcementList;
               if (snapshot.hasData) {
                 announcementList = [];
                 if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
-                  Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                      (snapshot.data as DatabaseEvent).snapshot.value);
+                  Map<dynamic, dynamic> data =
+                      (snapshot.data as DatabaseEvent).snapshot.value as Map;
                   for (Map<dynamic, dynamic> anounceData in data.values) {
                     Map<dynamic, dynamic> adata =
                         Map<dynamic, dynamic>.from(anounceData);
                     Announcement announcement =
                         Announcement.fromFirebaseMap(adata);
                     // print(anounceData);
-                    if (announcement.aid != null) {
-                      announcementList.add(announcement);
-                    }
+                    announcementList.add(announcement);
                   }
                   announcementList.sort(((a, b) =>
                       a.aid.toLowerCase().compareTo(b.aid.toLowerCase())));
                 }
               }
-              return 
-              announcementList == null?
-              const Center(child: CircularProgressIndicator(),):
-              announcementList.isEmpty
-                  ? Center(
-                      child: Text("No Announcement".tr),
+              return announcementList == null
+                  ? const Center(
+                      child: CircularProgressIndicator(),
                     )
-                  : ListView.builder(
-                      itemCount: announcementList.length,
-                      itemBuilder: (context, index) => AnnouncementItem(
-                          announcement: announcementList[index]));
+                  : announcementList.isEmpty
+                      ? Center(
+                          child: Text("No Announcement".tr),
+                        )
+                      : ListView.builder(
+                          itemCount: announcementList.length,
+                          itemBuilder: (context, index) => AnnouncementItem(
+                              announcement: announcementList![index]));
             })),
         Obx(() => edirPAgeController.currentEdir.value.created_by !=
                 mainController.myInfo.value.uid

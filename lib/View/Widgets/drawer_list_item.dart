@@ -6,10 +6,10 @@ class DrawerListItem extends StatelessWidget {
   void Function() action;
 
   DrawerListItem(
-      {Key key,
-      @required this.text,
-      @required this.action,
-      @required this.icon})
+      {Key? key,
+      required this.text,
+      required this.action,
+      required this.icon})
       : super(key: key);
 
   @override

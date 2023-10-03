@@ -26,7 +26,6 @@ import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Pages/MainPage/main_page.dart';
 import 'package:on_edir/View/Pages/MyProfile/controller/my_profile_controller.dart';
 import 'package:on_edir/View/Pages/StoreDetail/controller/store_detail_controller.dart';
-import 'package:on_edir/View/Pages/StoreDetail/store_detail.dart';
 import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:http/http.dart' as http;
 import '../View/Pages/LoginSignUp/controller/l_s_controller.dart';
@@ -60,7 +59,7 @@ class UserService extends GetxService {
 
   AddStoreController addStoreController = Get.put(AddStoreController());
 
-  Future<String> uploadImage(String path, File file) async {
+  Future<String?> uploadImage(String path, File file) async {
     try {
       UploadTask uploadTask = storage.ref(path).putFile(file);
       TaskSnapshot taskSnapshot = await uploadTask;
@@ -73,6 +72,7 @@ class UserService extends GetxService {
           color: Colors.red);
       msgSnack.show();
     }
+    return null;
   }
 
   sendStoreRentRequest(String reason, String dateOfReturn, BuildContext context,
@@ -95,7 +95,7 @@ class UserService extends GetxService {
           reason,
           ref.key.toString(),
           "Pending",
-          auth.currentUser.uid,
+          auth.currentUser!.uid,
           p_name);
 
       await ref.update(storeItemRequest.toFirebaseMap(storeItemRequest));
@@ -167,7 +167,7 @@ class UserService extends GetxService {
     try {
       edirPAgeController.isTokenLoading(true);
 
-      String token = await getAccessTokenFromServer(
+      String? token = await getAccessTokenFromServer(
           edirPAgeController.currentEdir.value.eid);
 
       if (token != null) {
@@ -254,7 +254,7 @@ class UserService extends GetxService {
     }
   }
 
-  Future<String> getAccessTokenFromServer(String ChannelName) async {
+  Future<String?> getAccessTokenFromServer(String ChannelName) async {
     final getUrl =
         'https://morning-beach-95074.herokuapp.com/access_token?channelName=${ChannelName}';
 
@@ -276,12 +276,13 @@ class UserService extends GetxService {
     // increase, decrease and delete a qunatity of store item
     print(img_url);
     String imgpath = img_url
-              .replaceAll(
-                  "https://firebasestorage.googleapis.com/v0/b/onedir-42e14.appspot.com/o/",
-                  "")
-              .split("?")[0]
-              .replaceAll("%2F", "/").replaceAll(".png", "");
-    print("this "+imgpath);
+        .replaceAll(
+            "https://firebasestorage.googleapis.com/v0/b/onedir-42e14.appspot.com/o/",
+            "")
+        .split("?")[0]
+        .replaceAll("%2F", "/")
+        .replaceAll(".png", "");
+    print("this " + imgpath);
     try {
       int quan = int.parse(currentQuantity);
       DatabaseReference ref = database.ref(path);
@@ -322,11 +323,11 @@ class UserService extends GetxService {
         .child(edirPAgeController.currentEdir.value.eid)
         .push();
     try {
-      String imgUrl =
+      String? imgUrl =
           await uploadImage("StoreImage/${ref.key.toString()}.png", file);
 
       Store store = Store(
-          imgUrl,
+          imgUrl!,
           itemDescription,
           itemName,
           ref.key.toString(),
@@ -436,7 +437,7 @@ class UserService extends GetxService {
   }
 
   changePaymentRequestState(String state, String ref, PaymentRequest payment,
-      {String transationId}) async {
+      {String? transationId}) async {
     try {
       if (state == "Payed") {
         await database.ref(ref).child("state").set(state);
@@ -463,9 +464,9 @@ class UserService extends GetxService {
     try {
       DatabaseReference ref =
           database.ref().child("PaymentRequest").child(receiverId).push();
-      PaymentRequest paymentRequest = PaymentRequest(auth.currentUser.uid,
+      PaymentRequest paymentRequest = PaymentRequest(auth.currentUser!.uid,
           description, receiverId, state, title, ref.key.toString(), eid);
-      Map<String, Object> map = paymentRequest.toFirbaseMap(paymentRequest);
+      Map<String, dynamic> map = paymentRequest.toFirbaseMap(paymentRequest);
       await ref.update(map);
 
       SendNotification sendNotification = SendNotification(
@@ -518,16 +519,14 @@ class UserService extends GetxService {
   Future<List<BankAccountOption>> getOptionsUser(String eid) async {
     List<BankAccountOption> options = [];
     try {
-      DatabaseEvent databaseEvent =
-          await database.ref().child("PaymentOptions").child(eid).once();
-      if (databaseEvent.snapshot.exists) {
-        var optionsMap = databaseEvent.snapshot.value;
-        for (Map<dynamic, dynamic> option in optionsMap) {
-          if (option != null) {
-            BankAccountOption optionModel =
-                BankAccountOption.fromFirebase(option);
-            options.add(optionModel);
-          }
+      final ds = await database.ref().child("PaymentOptions").child(eid).get();
+      if (ds.exists) {
+        // var optionsMap = databaseEvent.snapshot.value! as Map;
+
+        for (var option in ds.children) {
+          BankAccountOption optionModel =
+              BankAccountOption.fromFirebase(option.value as Map);
+          options.add(optionModel);
         }
       }
     } catch (e) {
@@ -558,13 +557,13 @@ class UserService extends GetxService {
         "userRsPhone": userRsPhone,
         "familyMembers": familyMembers,
         "noOfFamily": noOfFamily,
-        "uid": auth.currentUser.uid
+        "uid": auth.currentUser!.uid
       };
 
       await database
           .ref()
           .child("Users")
-          .child(auth.currentUser.uid)
+          .child(auth.currentUser!.uid)
           .update(map);
       myProfileController.setIsLoading(false);
 
@@ -594,7 +593,7 @@ class UserService extends GetxService {
       DatabaseEvent databaseEvent =
           await database.ref().child("Edirs").child(eid).once();
       if (databaseEvent.snapshot.exists) {
-        Map<dynamic, dynamic> data = databaseEvent.snapshot.value;
+        Map<dynamic, dynamic> data = databaseEvent.snapshot.value as Map;
         Edir edirModel = Edir.fromFirebaseMap(data);
         edirPAgeController.setCurrentEdir(edirModel);
       }
@@ -612,15 +611,15 @@ class UserService extends GetxService {
 
     try {
       DatabaseEvent databaseEvent =
-          await ref.child("MyEdirLists").child(auth.currentUser.uid).once();
+          await ref.child("MyEdirLists").child(auth.currentUser!.uid).once();
       if (databaseEvent.snapshot.exists) {
         Map<dynamic, dynamic> edirData =
-            Map<dynamic, dynamic>.from(databaseEvent.snapshot.value);
-        List<String> edirIds = [];
+            Map<dynamic, dynamic>.from(databaseEvent.snapshot.value as Map);
+        // List<String> edirIds = [];
         for (String id in edirData.keys) {
           DatabaseEvent edirEvents = await ref.child("Edirs").child(id).once();
           Map<dynamic, dynamic> edirData =
-              Map<dynamic, dynamic>.from(edirEvents.snapshot.value);
+              Map<dynamic, dynamic>.from(edirEvents.snapshot.value as Map);
           Edir edirModel = Edir.fromFirebaseMap(edirData);
           edirList.add(edirModel);
         }
@@ -635,12 +634,12 @@ class UserService extends GetxService {
     return edirList;
   }
 
-  Future<bool> getUserInfo() async {
+  Future<bool?> getUserInfo() async {
     try {
       DatabaseEvent databaseEvent = await database
           .ref()
           .child("Users")
-          .child(auth.currentUser.uid)
+          .child(auth.currentUser!.uid)
           .once();
 
       Map<dynamic, dynamic> data =
@@ -656,12 +655,13 @@ class UserService extends GetxService {
       msgSnack.show();
       mainController.setUserInfoIsAvailable(true);
     }
+    return null;
   }
 
   joinEdir(String edirId, String position, BuildContext context,
       String edirName) async {
     EdirMember edirMember = EdirMember(mainController.myInfo.value.img_url,
-        position, auth.currentUser.uid, mainController.myInfo.value.userName);
+        position, auth.currentUser!.uid, mainController.myInfo.value.userName);
 
     Map<String, Object> joiningUser = edirMember.tofirebaseMap(edirMember);
     Map<String, Object> myEdirListItem = {"eid": edirId};
@@ -673,12 +673,12 @@ class UserService extends GetxService {
           .ref()
           .child("EdirMembers")
           .child(edirId)
-          .child(auth.currentUser.uid)
+          .child(auth.currentUser!.uid)
           .update(joiningUser);
       await database
           .ref()
           .child("MyEdirLists")
-          .child(auth.currentUser.uid)
+          .child(auth.currentUser!.uid)
           .child(edirId)
           .update(myEdirListItem);
 
@@ -737,7 +737,7 @@ class UserService extends GetxService {
       "durationOfPayment": durationOfPayment,
       "amountOfMoney": amountOfMoney,
       "rules": rules,
-      "created_by": auth.currentUser.uid,
+      "created_by": auth.currentUser!.uid,
       "created_by_name": mainController.myInfo.value.userName
     };
 
@@ -785,7 +785,8 @@ class UserService extends GetxService {
 
     createEdirController.setIsLoading(true);
 
-    String url = await uploadImage("EdirImage/${ref.key.toString()}.png", file);
+    String? url =
+        await uploadImage("EdirImage/${ref.key.toString()}.png", file);
 
     Map<String, Object> newEdir = {
       "eid": ref.key.toString(),
@@ -795,8 +796,8 @@ class UserService extends GetxService {
       "durationOfPayment": durationOfPayment,
       "amountOfMoney": amountOfMoney,
       "rules": rules,
-      "img_url": url,
-      "created_by": auth.currentUser.uid,
+      "img_url": url!,
+      "created_by": auth.currentUser!.uid,
       "created_by_name": mainController.myInfo.value.userName
     };
 
@@ -837,11 +838,11 @@ class UserService extends GetxService {
       await auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((UserCredential userCredential) async {
-        String imgUrl =
-            await uploadImage("Users/${auth.currentUser.uid}.png", file);
+        String? imgUrl =
+            await uploadImage("Users/${auth.currentUser!.uid}.png", file);
 
         Map<String, Object> map = {
-          "img_url": imgUrl,
+          "img_url": imgUrl!,
           "email": email,
           "userName": userName,
           "userBio": userBio,
@@ -849,13 +850,13 @@ class UserService extends GetxService {
           "userRsPhone": userRsPhone,
           "familyMembers": familyMembers,
           "noOfFamily": noOfFamily,
-          "uid": auth.currentUser.uid
+          "uid": auth.currentUser!.uid
         };
 
         await database
             .ref()
             .child("Users")
-            .child(auth.currentUser.uid)
+            .child(auth.currentUser!.uid)
             .update(map);
         slcontroller.setIsLoading(false);
 

@@ -11,13 +11,13 @@ import 'package:on_edir/constants.dart';
 
 class RequestItemAdmin extends StatelessWidget {
   PaymentRequest paymentRequest;
-  RequestItemAdmin({Key key, @required this.paymentRequest}) : super(key: key);
+  RequestItemAdmin({Key? key, required this.paymentRequest}) : super(key: key);
 
   EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
 
   UserService userService = Get.put(UserService());
 
-  Widget actionBtn() {
+  Widget? actionBtn() {
     if (paymentRequest.state == "Payed") {
       return null;
     } else if (paymentRequest.state == "Pending") {
@@ -77,7 +77,7 @@ class RequestItemAdmin extends StatelessWidget {
               subtitle: paymentRequest.transactionId != null ?
                Text("Amount Of Money: ".tr +
                   paymentRequest.description +
-                  ", TransactionId: ".tr+ paymentRequest.transactionId):
+                  ", TransactionId: ".tr+ paymentRequest.transactionId!):
                 Text("Amount Of Money: ".tr +
                   paymentRequest.description),
               leading: const Icon(Icons.payment),

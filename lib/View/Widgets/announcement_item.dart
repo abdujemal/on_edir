@@ -4,7 +4,7 @@ import 'package:on_edir/constants.dart';
 
 class AnnouncementItem extends StatelessWidget {
   Announcement announcement;
-  AnnouncementItem({Key key,@required this.announcement}) : super(key: key);
+  AnnouncementItem({Key? key,required this.announcement}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

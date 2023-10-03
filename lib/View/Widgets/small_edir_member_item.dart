@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/View/Pages/EdirPage/controller/edir_page_controller.dart';
-import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/constants.dart';
 
 class SmallEdirMemberItem extends StatelessWidget {
-  String imgUrl, title, subtitle, id;
+  String imgUrl, title, id;
+  String? subtitle;
   void Function() onTap;
   SmallEdirMemberItem(
-      {Key key,
-      @required this.imgUrl,
-      @required this.title,
-      @required this.subtitle,
-      @required this.id,
-      @required this.onTap})
+      {Key? key,
+      required this.imgUrl,
+      required this.title,
+      this.subtitle,
+      required this.id,
+      required this.onTap})
       : super(key: key);
 
   EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
 
   @override
   Widget build(BuildContext context) {
-    
     return InkWell(
       onTap: onTap,
       child: Ink(
@@ -37,20 +36,21 @@ class SmallEdirMemberItem extends StatelessWidget {
                     radius: 20,
                     backgroundImage: NetworkImage(imgUrl),
                   ),
-                  Obx(()=>
-                  edirPAgeController.currentEdir.value.eid == id
-                      ? Positioned(
-                          bottom: 2,
-                          right: 2,
-                          child: Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
-                        )
-                      : const SizedBox(),)
+                  Obx(
+                    () => edirPAgeController.currentEdir.value.eid == id
+                        ? Positioned(
+                            bottom: 2,
+                            right: 2,
+                            child: Container(
+                              height: 10,
+                              width: 10,
+                              decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
+                          )
+                        : const SizedBox(),
+                  )
                 ],
               ),
               const SizedBox(

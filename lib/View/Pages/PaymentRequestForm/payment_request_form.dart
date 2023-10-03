@@ -12,7 +12,7 @@ import 'package:on_edir/constants.dart';
 
 class PaymentRequestForm extends StatefulWidget {
   List<EdirMember> members;
-  PaymentRequestForm({Key key, @required this.members}) : super(key: key);
+  PaymentRequestForm({Key? key, required this.members}) : super(key: key);
 
   @override
   State<PaymentRequestForm> createState() => _PaymentRequestFormState();

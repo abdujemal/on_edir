@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_edir/Controller/user_service.dart';
 import 'package:on_edir/Model/store_item_request.dart';
-import 'package:on_edir/View/Pages/MainPage/controller/main_controller.dart';
 import 'package:on_edir/View/Widgets/store_request_item_admin.dart';
 import 'package:on_edir/constants.dart';
 
 class StoreManagementAdmin extends StatefulWidget {
-  const StoreManagementAdmin({Key key}) : super(key: key);
+  const StoreManagementAdmin({Key? key}) : super(key: key);
 
   @override
   State<StoreManagementAdmin> createState() => _StoreManagementAdminState();
@@ -32,12 +31,12 @@ class _StoreManagementAdminState extends State<StoreManagementAdmin> {
         body: StreamBuilder(
           stream: ref.onValue,
           builder: (context, snapshot) {
-            List<StoreItemRequest> list;
+            List<StoreItemRequest>? list;
             if (snapshot.hasData) {
               list = [];
               if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
-                Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                    (snapshot.data as DatabaseEvent).snapshot.value);
+                Map<dynamic, dynamic> data = 
+                    (snapshot.data as DatabaseEvent).snapshot.value as Map ;
 
                 for (Map<dynamic, dynamic> reqData in data.values) {
                   if (reqData != null) {
@@ -63,7 +62,7 @@ class _StoreManagementAdminState extends State<StoreManagementAdmin> {
                         itemCount: list.length,
                         itemBuilder: (context, index) => StoreRequestItemAdmin(
                             userService: userService,
-                            storeItemRequest: list[index]));
+                            storeItemRequest: list![index]));
           },
         ),
       ),

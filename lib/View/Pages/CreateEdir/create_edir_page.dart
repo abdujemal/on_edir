@@ -14,7 +14,7 @@ import 'package:on_edir/View/Widgets/msg_snack.dart';
 import 'package:on_edir/constants.dart';
 
 class CreateEdirPage extends StatefulWidget {
-  const CreateEdirPage({Key key}) : super(key: key);
+  const CreateEdirPage({Key? key}) : super(key: key);
 
   @override
   State<CreateEdirPage> createState() => _CreateEdirPageState();
@@ -178,7 +178,7 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                               const SizedBox(
                                 width: 10,
                               ),
-                              createEdirController.options.value.isEmpty
+                              createEdirController.options.isEmpty
                                   ? const SizedBox()
                                   : ActionBtn(
                                       text: "Clear",
@@ -213,7 +213,7 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                         ActionBtn(
                             text: "Add Option",
                             action: () {
-                              if (_optionKey.currentState.validate()) {
+                              if (_optionKey.currentState!.validate()) {
                                 createEdirController.options.add(
                                     BankAccountOption(
                                         bankTc.text, accountTc.text));
@@ -227,8 +227,8 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                         Obx(
                           () => Column(
                               children: createEdirController
-                                      .options.value.isNotEmpty
-                                  ? createEdirController.options.value
+                                      .options.isNotEmpty
+                                  ? createEdirController.options
                                       .map(
                                         (v) => ListTile(
                                           trailing: const Icon(Icons.payment),
@@ -251,7 +251,7 @@ class _CreateEdirPageState extends State<CreateEdirPage> {
                         : CommonBtn(
                             text: "Create Edir".tr,
                             action: () {
-                              if (!_createEdirKey.currentState.validate()) {
+                              if (!_createEdirKey.currentState!.validate()) {
                               } else if (createEdirController
                                       .pickedfilePath.value ==
                                   "") {

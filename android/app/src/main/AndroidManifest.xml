@@ -1,6 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.aj.on_edir">
-   <application
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
         android:label="on_edir"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

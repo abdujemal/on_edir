@@ -9,7 +9,7 @@ import 'package:on_edir/View/Widgets/custom_fab.dart';
 import 'package:on_edir/View/Widgets/stroe_item.dart';
 
 class StorePage extends StatefulWidget {
-  const StorePage({Key key}) : super(key: key);
+  const StorePage({Key? key}) : super(key: key);
 
   @override
   State<StorePage> createState() => _StorePageState();
@@ -30,12 +30,11 @@ class _StorePageState extends State<StorePage> {
           () => StreamBuilder(
             stream: ref.child(edirPAgeController.currentEdir.value.eid).onValue,
             builder: (context, snapshot) {
-              List<Store> storeList;
+              List<Store>? storeList;
               if (snapshot.hasData) {
                 storeList = [];
                 if ((snapshot.data as DatabaseEvent).snapshot.value != null) {
-                  Map<dynamic, dynamic> data = Map<dynamic, dynamic>.from(
-                      (snapshot.data as DatabaseEvent).snapshot.value);
+                  Map<dynamic, dynamic> data = (snapshot.data as DatabaseEvent).snapshot.value as Map;
                   for (Map<dynamic, dynamic> storeData in data.values) {
                     Store store = Store.fromFirebaseMap(storeData);
                     if (store.img_url != null) {
@@ -57,7 +56,7 @@ class _StorePageState extends State<StorePage> {
                   : ListView.builder(
                       itemCount: storeList.length,
                       itemBuilder: (context, index) => StoreItem(
-                            store: storeList[index],
+                            store: storeList![index],
                           ));
             },
           ),

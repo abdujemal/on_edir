@@ -8,7 +8,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 
 class QrScannerPage extends StatefulWidget {
-  const QrScannerPage({Key key}) : super(key: key);
+  const QrScannerPage({Key? key}) : super(key: key);
 
   @override
   State<QrScannerPage> createState() => _QrScannerPageState();
@@ -16,8 +16,8 @@ class QrScannerPage extends StatefulWidget {
 
 class _QrScannerPageState extends State<QrScannerPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode result;
-  QRViewController controller;
+  Barcode? result;
+  QRViewController? controller;
   UserService userService = Get.put(UserService());
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -26,9 +26,9 @@ class _QrScannerPageState extends State<QrScannerPage> {
   void reassemble() {
     super.reassemble();
     if (Platform.isAndroid) {
-      controller.pauseCamera();
+      controller!.pauseCamera();
     } else if (Platform.isIOS) {
-      controller.resumeCamera();
+      controller!.resumeCamera();
     }
   }
 
@@ -49,7 +49,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
             child: Center(
               child: (result != null)
                   ? Text(
-                      'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}')
+                      'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
                   : Text('Scan a code'.tr),
             ),
           )
@@ -64,7 +64,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       setState(() {
         result = scanData;
       });
-      userService.joinEdir(scanData.code,"User",context, "New");
+      userService.joinEdir(scanData.code!,"User",context, "New");
     });
   }
 

@@ -13,7 +13,7 @@ class RequestItemUser extends StatelessWidget {
   PaymentRequest paymentRequest;
 
   var transactionIdTc = TextEditingController();
-  RequestItemUser({Key key, @required this.paymentRequest}) : super(key: key);
+  RequestItemUser({Key? key, required this.paymentRequest}) : super(key: key);
 
   EdirPAgeController edirPAgeController = Get.put(EdirPAgeController());
 
@@ -21,7 +21,7 @@ class RequestItemUser extends StatelessWidget {
 
   MainController mainController = Get.put(MainController());
 
-  Widget actionBtn() {
+  Widget? actionBtn() {
     if (paymentRequest.state == "Payed") {
       return null;
     } else if (paymentRequest.state == "Pending") {
@@ -86,7 +86,7 @@ class RequestItemUser extends StatelessWidget {
               subtitle: paymentRequest.transactionId != null ?
                Text("Amount Of Money: ".tr +
                   paymentRequest.description +
-                  ", TransactionId: ".tr+ paymentRequest.transactionId):
+                  ", TransactionId: ".tr+ paymentRequest.transactionId!):
                 Text("Amount Of Money: ".tr +
                   paymentRequest.description),
               leading: const Icon(Icons.payment),

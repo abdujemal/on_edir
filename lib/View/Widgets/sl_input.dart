@@ -8,12 +8,12 @@ class SLInput extends StatelessWidget {
   TextEditingController controller;
   bool isObscure;
   SLInput(
-      {Key key,
+      {Key? key,
       this.isObscure = false,
-      @required this.title,
-      @required this.hint,
-      @required this.keyboardType,
-      @required this.controller})
+      required this.title,
+      required this.hint,
+      required this.keyboardType,
+      required this.controller})
       : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class SLInput extends StatelessWidget {
           ),
           TextFormField(
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return "This Field is required.".tr;
               }
             },

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:on_edir/constants.dart';
 
 class BigBtn extends StatelessWidget {
-  String text;
-  IconData icon;
-  void Function() action;
-  BigBtn({Key key, @required this.text, @required this.icon, @required this.action}) : super(key: key);
+  final String text;
+  final IconData icon;
+  final void Function() action;
+  const BigBtn({Key? key, required this.text, required this.icon, required this.action}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:on_edir/Model/store_item_request.dart';
 class StoreRequestItemUser extends StatefulWidget {
   StoreItemRequest storeItemRequest;
   UserService userService;
-  StoreRequestItemUser({ Key key, @required this.storeItemRequest, @required this.userService }) : super(key: key);
+  StoreRequestItemUser({ Key? key, required this.storeItemRequest, required this.userService }) : super(key: key);
 
   @override
   State<StoreRequestItemUser> createState() => _StoreRequestItemUserState();

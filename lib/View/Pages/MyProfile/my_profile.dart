@@ -8,7 +8,7 @@ import 'package:on_edir/View/Widgets/common_input.dart';
 import 'package:on_edir/constants.dart';
 
 class MyProfile extends StatefulWidget {
-  const MyProfile({Key key}) : super(key: key);
+  const MyProfile({Key? key}) : super(key: key);
 
   @override
   State<MyProfile> createState() => _MyProfileState();
@@ -169,7 +169,7 @@ class _MyProfileState extends State<MyProfile> {
                 CommonBtn(
                     text: "Save Changes".tr,
                     action: () {
-                      if (profile_key.currentState.validate()) {
+                      if (profile_key.currentState!.validate()) {
                         userService.updateUserInfo(
                             emailAddressTc.text,
                             userNameTc.text,
